@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Create your Skillverge account">
+  <title>Sign Up - Skillverge</title>
+  
+  <!-- CSS Files -->
+  <link rel="stylesheet" href="css/variables.css">
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/navigation.css">
+  <link rel="stylesheet" href="css/footer.css">
+  <link rel="stylesheet" href="css/auth-pages.css">
+</head>
+<body>
+  <!-- Navigation Header -->
+  <header class="navbar">
+    <div class="navbar-container">
+      <a href="index.html" class="logo">Skillverge</a>
+      
+      <nav class="nav-menu" role="navigation">
+        <ul class="nav-links">
+          <li><a href="index.html">Home</a></li>
+          <li><a href="courses.html">Courses</a></li>
+          <li><a href="sell-with-us.html">Sell With Us</a></li>
+          <li><a href="about.html">About</a></li>
+          <li><a href="contact.html">Contact</a></li>
+        </ul>
+        
+        <div class="nav-actions">
+          <a href="login.html" class="btn-secondary">Login</a>
+          <a href="register.html" class="btn-primary active">Sign Up</a>
+        </div>
+      </nav>
+      
+      <button class="mobile-toggle" aria-label="Toggle navigation menu" aria-expanded="false">
+        <span class="hamburger"></span>
+      </button>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main>
+    <section class="auth-section">
+      <div class="auth-split-container">
+        <!-- Left Side - Form -->
+        <div class="auth-form-side">
+          <div class="auth-card">
+            <div class="auth-header">
+              <h1>Create Account</h1>
+              <p>Start your learning journey today</p>
+            </div>
+            
+            <form class="auth-form" id="registerForm">
+              <div class="form-group">
+                <label for="fullName" class="form-label">Full Name</label>
+                <input type="text" id="fullName" name="fullName" class="form-input" placeholder="Enter your full name" required>
+                <span class="error-message"></span>
+              </div>
+              
+              <div class="form-group">
+                <label for="email" class="form-label">Email Address</label>
+                <input type="email" id="email" name="email" class="form-input" placeholder="your@email.com" required>
+                <span class="error-message"></span>
+              </div>
+              
+              <div class="form-group">
+                <label for="password" class="form-label">Password</label>
+                <input type="password" id="password" name="password" class="form-input" placeholder="Create a password (min 8 characters)" required>
+                <span class="error-message"></span>
+              </div>
+              
+              <div class="form-group">
+                <label for="userType" class="form-label">I want to</label>
+                <select id="userType" name="userType" class="form-select" required>
+                  <option value="">Select an option</option>
+                  <option value="learner">Learn (Take Courses)</option>
+                  <option value="creator">Teach (Create Courses)</option>
+                  <option value="both">Both</option>
+                </select>
+                <span class="error-message"></span>
+              </div>
+              
+              <div class="form-group">
+                <label class="checkbox-label">
+                  <input type="checkbox" name="terms" required>
+                  <span>I agree to the <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a></span>
+                </label>
+                <span class="error-message"></span>
+              </div>
+              
+              <button type="submit" class="btn-primary btn-large" style="width: 100%;">Create Account</button>
+            </form>
+            
+            <div class="auth-footer">
+              <p>Already have an account? <a href="login.html">Login</a></p>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Right Side - Image -->
+        <div class="auth-image-side">
+          <!-- Placeholder: Registration illustration - Join Skillverge community -->
+          <div class="auth-image-placeholder">
+            <i class="bi bi-person-plus" style="font-size: 5rem; color: var(--color-white);"></i>
+            <h2>Join Skillverge Today</h2>
+            <p>Start learning from expert instructors and upgrade your skills</p>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="footer-container">
+      <div class="footer-column">
+        <h4>Skillverge</h4>
+        <p>Affordable online learning for everyone. Upgrade your skills with courses starting from ₹100.</p>
+      </div>
+      
+      <div class="footer-column">
+        <h4>Quick Links</h4>
+        <ul>
+          <li><a href="courses.html">Courses</a></li>
+          <li><a href="about.html">About</a></li>
+          <li><a href="contact.html">Contact</a></li>
+          <li><a href="sell-with-us.html">Sell With Us</a></li>
+        </ul>
+      </div>
+      
+      <div class="footer-column">
+        <h4>Follow Us</h4>
+        <div class="social-icons">
+          <a href="#" aria-label="Facebook" title="Facebook">
+            <i class="bi bi-facebook"></i>
+          </a>
+          <a href="#" aria-label="Twitter" title="Twitter">
+            <i class="bi bi-twitter"></i>
+          </a>
+          <a href="#" aria-label="Instagram" title="Instagram">
+            <i class="bi bi-instagram"></i>
+          </a>
+          <a href="#" aria-label="LinkedIn" title="LinkedIn">
+            <i class="bi bi-linkedin"></i>
+          </a>
+          <a href="#" aria-label="YouTube" title="YouTube">
+            <i class="bi bi-youtube"></i>
+          </a>
+        </div>
+      </div>
+    </div>
+    
+    <div class="footer-bottom">
+      <p>Copyright © Skillverge 2025</p>
+    </div>
+  </footer>
+
+  <!-- JavaScript -->
+  <script type="module" src="js/main.js"></script>
+</body>
+</html>

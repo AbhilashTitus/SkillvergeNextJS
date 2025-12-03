@@ -1,0 +1,755 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Browse all courses on Skillverge. Find the perfect course for your learning journey.">
+  <title>All Courses - Skillverge</title>
+  
+  <!-- CSS Files -->
+  <link rel="stylesheet" href="css/variables.css">
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/navigation.css">
+  <link rel="stylesheet" href="css/footer.css">
+  <link rel="stylesheet" href="css/course-card.css">
+  <link rel="stylesheet" href="css/courses-page.css">
+</head>
+<body>
+  <!-- Navigation Header -->
+  <header class="navbar">
+    <div class="navbar-container">
+      <a href="index.html" class="logo">Skillverge</a>
+      
+      <nav class="nav-menu" role="navigation">
+        <ul class="nav-links">
+          <li><a href="index.html">Home</a></li>
+          <li><a href="courses.html" class="active">Courses</a></li>
+          <li><a href="sell-with-us.html">Sell With Us</a></li>
+          <li><a href="about.html">About</a></li>
+          <li><a href="contact.html">Contact</a></li>
+        </ul>
+        
+        <div class="nav-actions">
+          <a href="login.html" class="btn-secondary">Login</a>
+          <a href="register.html" class="btn-primary">Sign Up</a>
+        </div>
+      </nav>
+      
+      <button class="mobile-toggle" aria-label="Toggle navigation menu" aria-expanded="false">
+        <span class="hamburger"></span>
+      </button>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main>
+    <!-- Page Header -->
+    <section class="page-header">
+      <div class="container">
+        <h1>All Courses</h1>
+        <p>Explore our complete collection of courses and start learning today</p>
+      </div>
+    </section>
+
+    <!-- Courses Section -->
+    <section class="section courses-section">
+      <div class="container">
+        <div class="courses-layout">
+          <!-- Filter Sidebar -->
+          <aside class="filter-sidebar">
+            <div class="filter-header">
+              <h3>Filters</h3>
+              <button class="clear-filters">Clear All</button>
+            </div>
+            
+            <!-- Category Filter -->
+            <div class="filter-section">
+              <h4>Category</h4>
+              <div class="filter-options">
+                <label class="filter-option">
+                  <input type="checkbox" name="category" value="development">
+                  <span>Development</span>
+                </label>
+                <label class="filter-option">
+                  <input type="checkbox" name="category" value="business">
+                  <span>Business</span>
+                </label>
+                <label class="filter-option">
+                  <input type="checkbox" name="category" value="design">
+                  <span>Design</span>
+                </label>
+                <label class="filter-option">
+                  <input type="checkbox" name="category" value="marketing">
+                  <span>Marketing</span>
+                </label>
+                <label class="filter-option">
+                  <input type="checkbox" name="category" value="data-science">
+                  <span>Data Science</span>
+                </label>
+                <label class="filter-option">
+                  <input type="checkbox" name="category" value="ai">
+                  <span>AI & Prompt Engineering</span>
+                </label>
+                <label class="filter-option">
+                  <input type="checkbox" name="category" value="productivity">
+                  <span>Productivity</span>
+                </label>
+              </div>
+            </div>
+            
+            <!-- Price Range Filter -->
+            <div class="filter-section">
+              <h4>Price Range</h4>
+              <div class="price-range">
+                <input type="range" min="100" max="5000" value="5000" class="price-slider" id="priceSlider">
+                <div class="price-display">₹100 - ₹5000</div>
+              </div>
+            </div>
+            
+            <!-- Level Filter -->
+            <div class="filter-section">
+              <h4>Level</h4>
+              <div class="filter-options">
+                <label class="filter-option">
+                  <input type="radio" name="level" value="beginner">
+                  <span>Beginner</span>
+                </label>
+                <label class="filter-option">
+                  <input type="radio" name="level" value="intermediate">
+                  <span>Intermediate</span>
+                </label>
+                <label class="filter-option">
+                  <input type="radio" name="level" value="advanced">
+                  <span>Advanced</span>
+                </label>
+              </div>
+            </div>
+          </aside>
+
+          <!-- Courses Content -->
+          <div class="courses-content">
+            <!-- Sort and Results Header -->
+            <div class="courses-header">
+              <div class="results-count">
+                <span id="resultsCount">25</span> courses found
+              </div>
+              <div class="sort-controls">
+                <label for="sortSelect">Sort by:</label>
+                <select id="sortSelect" class="sort-select">
+                  <option value="newest">Newest</option>
+                  <option value="price-low">Price: Low to High</option>
+                  <option value="price-high">Price: High to Low</option>
+                  <option value="rating">Highest Rated</option>
+                </select>
+              </div>
+            </div>
+
+            <!-- Courses Grid -->
+            <div class="grid grid-cols-3 courses-grid">
+              <!-- Copy all 25 course cards from index.html -->
+              <!-- Course 1 -->
+              <div class="course-card" data-category="ai" data-level="beginner">
+                <div class="course-thumbnail">
+                  <!-- Placeholder: Course thumbnail – AI Prompt Engineering basics -->
+                  <div class="placeholder-image">
+                    <i class="bi bi-robot" style="font-size: 2rem; color: var(--color-primary);"></i>
+                  </div>
+                </div>
+                <div class="course-content">
+                  <h3 class="course-title">AI Prompt Engineering Basics</h3>
+                  <p class="course-instructor">By Priya Sharma</p>
+                  <div class="course-meta">
+                    <div class="course-rating">
+                      <span class="stars" data-rating="4.5">★★★★★</span>
+                      <span class="rating-count">(4.5)</span>
+                    </div>
+                    <div class="course-price">₹199</div>
+                  </div>
+                  <button class="btn-enroll">Enroll Now</button>
+                </div>
+              </div>
+
+              <!-- Course 2 -->
+              <div class="course-card" data-category="ai" data-level="advanced">
+                <div class="course-thumbnail">
+                  <!-- Placeholder: Course thumbnail – Advanced Prompt Engineering -->
+                  <div class="placeholder-image">
+                    <i class="bi bi-stars" style="font-size: 2rem; color: var(--color-accent);"></i>
+                  </div>
+                </div>
+                <div class="course-content">
+                  <h3 class="course-title">Advanced Prompt Engineering</h3>
+                  <p class="course-instructor">By Rahul Verma</p>
+                  <div class="course-meta">
+                    <div class="course-rating">
+                      <span class="stars" data-rating="4.8">★★★★★</span>
+                      <span class="rating-count">(4.8)</span>
+                    </div>
+                    <div class="course-price">₹299</div>
+                  </div>
+                  <button class="btn-enroll">Enroll Now</button>
+                </div>
+              </div>
+
+              <!-- Course 3 -->
+              <div class="course-card" data-category="ai" data-level="intermediate">
+                <div class="course-thumbnail">
+                  <!-- Placeholder: Course thumbnail – ChatGPT Mastery -->
+                  <div class="placeholder-image">
+                    <i class="bi bi-chat-dots" style="font-size: 2rem; color: var(--color-primary);"></i>
+                  </div>
+                </div>
+                <div class="course-content">
+                  <h3 class="course-title">ChatGPT Mastery Course</h3>
+                  <p class="course-instructor">By Anjali Patel</p>
+                  <div class="course-meta">
+                    <div class="course-rating">
+                      <span class="stars" data-rating="4.7">★★★★★</span>
+                      <span class="rating-count">(4.7)</span>
+                    </div>
+                    <div class="course-price">₹249</div>
+                  </div>
+                  <button class="btn-enroll">Enroll Now</button>
+                </div>
+              </div>
+
+              <!-- Course 4 -->
+              <div class="course-card" data-category="development" data-level="advanced">
+                <div class="course-thumbnail">
+                  <!-- Placeholder: Course thumbnail – MERN Full Stack Development -->
+                  <div class="placeholder-image">
+                    <i class="bi bi-layers" style="font-size: 2rem; color: var(--color-accent);"></i>
+                  </div>
+                </div>
+                <div class="course-content">
+                  <h3 class="course-title">Complete MERN Stack Development</h3>
+                  <p class="course-instructor">By Vikram Singh</p>
+                  <div class="course-meta">
+                    <div class="course-rating">
+                      <span class="stars" data-rating="4.9">★★★★★</span>
+                      <span class="rating-count">(4.9)</span>
+                    </div>
+                    <div class="course-price">₹4,999</div>
+                  </div>
+                  <button class="btn-enroll">Enroll Now</button>
+                </div>
+              </div>
+
+              <!-- Course 5 -->
+              <div class="course-card" data-category="development" data-level="advanced">
+                <div class="course-thumbnail">
+                  <!-- Placeholder: Course thumbnail – Advanced MERN Stack -->
+                  <div class="placeholder-image">
+                    <i class="bi bi-code-square" style="font-size: 2rem; color: var(--color-primary);"></i>
+                  </div>
+                </div>
+                <div class="course-content">
+                  <h3 class="course-title">Advanced MERN Stack Projects</h3>
+                  <p class="course-instructor">By Arjun Mehta</p>
+                  <div class="course-meta">
+                    <div class="course-rating">
+                      <span class="stars" data-rating="4.8">★★★★★</span>
+                      <span class="rating-count">(4.8)</span>
+                    </div>
+                    <div class="course-price">₹3,499</div>
+                  </div>
+                  <button class="btn-enroll">Enroll Now</button>
+                </div>
+              </div>
+
+              <!-- Course 6 -->
+              <div class="course-card" data-category="development" data-level="beginner">
+                <div class="course-thumbnail">
+                  <!-- Placeholder: Course thumbnail – Python for Beginners -->
+                  <div class="placeholder-image">
+                    <i class="bi bi-file-code" style="font-size: 2rem; color: var(--color-accent);"></i>
+                  </div>
+                </div>
+                <div class="course-content">
+                  <h3 class="course-title">Python Programming for Beginners</h3>
+                  <p class="course-instructor">By Sneha Reddy</p>
+                  <div class="course-meta">
+                    <div class="course-rating">
+                      <span class="stars" data-rating="4.6">★★★★★</span>
+                      <span class="rating-count">(4.6)</span>
+                    </div>
+                    <div class="course-price">₹999</div>
+                  </div>
+                  <button class="btn-enroll">Enroll Now</button>
+                </div>
+              </div>
+
+              <!-- Course 7 -->
+              <div class="course-card" data-category="data-science" data-level="intermediate">
+                <div class="course-thumbnail">
+                  <!-- Placeholder: Course thumbnail – Python for Data Science -->
+                  <div class="placeholder-image">
+                    <i class="bi bi-graph-up-arrow" style="font-size: 2rem; color: var(--color-primary);"></i>
+                  </div>
+                </div>
+                <div class="course-content">
+                  <h3 class="course-title">Python for Data Science</h3>
+                  <p class="course-instructor">By Karthik Kumar</p>
+                  <div class="course-meta">
+                    <div class="course-rating">
+                      <span class="stars" data-rating="4.7">★★★★★</span>
+                      <span class="rating-count">(4.7)</span>
+                    </div>
+                    <div class="course-price">₹2,499</div>
+                  </div>
+                  <button class="btn-enroll">Enroll Now</button>
+                </div>
+              </div>
+
+              <!-- Course 8 -->
+              <div class="course-card" data-category="development" data-level="beginner">
+                <div class="course-thumbnail">
+                  <!-- Placeholder: Course thumbnail – JavaScript Fundamentals -->
+                  <div class="placeholder-image">
+                    <i class="bi bi-braces" style="font-size: 2rem; color: var(--color-accent);"></i>
+                  </div>
+                </div>
+                <div class="course-content">
+                  <h3 class="course-title">JavaScript Fundamentals</h3>
+                  <p class="course-instructor">By Neha Gupta</p>
+                  <div class="course-meta">
+                    <div class="course-rating">
+                      <span class="stars" data-rating="4.5">★★★★★</span>
+                      <span class="rating-count">(4.5)</span>
+                    </div>
+                    <div class="course-price">₹899</div>
+                  </div>
+                  <button class="btn-enroll">Enroll Now</button>
+                </div>
+              </div>
+
+              <!-- Course 9 -->
+              <div class="course-card" data-category="development" data-level="advanced">
+                <div class="course-thumbnail">
+                  <!-- Placeholder: Course thumbnail – Advanced JavaScript -->
+                  <div class="placeholder-image">
+                    <i class="bi bi-terminal" style="font-size: 2rem; color: var(--color-primary);"></i>
+                  </div>
+                </div>
+                <div class="course-content">
+                  <h3 class="course-title">Advanced JavaScript & ES6+</h3>
+                  <p class="course-instructor">By Amit Joshi</p>
+                  <div class="course-meta">
+                    <div class="course-rating">
+                      <span class="stars" data-rating="4.8">★★★★★</span>
+                      <span class="rating-count">(4.8)</span>
+                    </div>
+                    <div class="course-price">₹1,999</div>
+                  </div>
+                  <button class="btn-enroll">Enroll Now</button>
+                </div>
+              </div>
+
+              <!-- Course 10 -->
+              <div class="course-card" data-category="development" data-level="intermediate">
+                <div class="course-thumbnail">
+                  <!-- Placeholder: Course thumbnail – Complete React Course -->
+                  <div class="placeholder-image">
+                    <i class="bi bi-arrow-repeat" style="font-size: 2rem; color: var(--color-accent);"></i>
+                  </div>
+                </div>
+                <div class="course-content">
+                  <h3 class="course-title">Complete React Development</h3>
+                  <p class="course-instructor">By Pooja Iyer</p>
+                  <div class="course-meta">
+                    <div class="course-rating">
+                      <span class="stars" data-rating="4.9">★★★★★</span>
+                      <span class="rating-count">(4.9)</span>
+                    </div>
+                    <div class="course-price">₹2,999</div>
+                  </div>
+                  <button class="btn-enroll">Enroll Now</button>
+                </div>
+              </div>
+
+              <!-- Course 11 -->
+              <div class="course-card" data-category="development" data-level="intermediate">
+                <div class="course-thumbnail">
+                  <!-- Placeholder: Course thumbnail – Node.js Backend Development -->
+                  <div class="placeholder-image">
+                    <i class="bi bi-server" style="font-size: 2rem; color: var(--color-primary);"></i>
+                  </div>
+                </div>
+                <div class="course-content">
+                  <h3 class="course-title">Node.js Backend Development</h3>
+                  <p class="course-instructor">By Rohan Das</p>
+                  <div class="course-meta">
+                    <div class="course-rating">
+                      <span class="stars" data-rating="4.7">★★★★★</span>
+                      <span class="rating-count">(4.7)</span>
+                    </div>
+                    <div class="course-price">₹2,499</div>
+                  </div>
+                  <button class="btn-enroll">Enroll Now</button>
+                </div>
+              </div>
+
+              <!-- Course 12 -->
+              <div class="course-card" data-category="design" data-level="beginner">
+                <div class="course-thumbnail">
+                  <!-- Placeholder: Course thumbnail – UI/UX Design Fundamentals -->
+                  <div class="placeholder-image">
+                    <i class="bi bi-palette2" style="font-size: 2rem; color: var(--color-accent);"></i>
+                  </div>
+                </div>
+                <div class="course-content">
+                  <h3 class="course-title">UI/UX Design Fundamentals</h3>
+                  <p class="course-instructor">By Divya Nair</p>
+                  <div class="course-meta">
+                    <div class="course-rating">
+                      <span class="stars" data-rating="4.6">★★★★★</span>
+                      <span class="rating-count">(4.6)</span>
+                    </div>
+                    <div class="course-price">₹1,499</div>
+                  </div>
+                  <button class="btn-enroll">Enroll Now</button>
+                </div>
+              </div>
+
+              <!-- Course 13 -->
+              <div class="course-card" data-category="design" data-level="intermediate">
+                <div class="course-thumbnail">
+                  <!-- Placeholder: Course thumbnail – Figma Mastery -->
+                  <div class="placeholder-image">
+                    <i class="bi bi-vector-pen" style="font-size: 2rem; color: var(--color-primary);"></i>
+                  </div>
+                </div>
+                <div class="course-content">
+                  <h3 class="course-title">Figma Design Mastery</h3>
+                  <p class="course-instructor">By Sanjay Kapoor</p>
+                  <div class="course-meta">
+                    <div class="course-rating">
+                      <span class="stars" data-rating="4.8">★★★★★</span>
+                      <span class="rating-count">(4.8)</span>
+                    </div>
+                    <div class="course-price">₹1,799</div>
+                  </div>
+                  <button class="btn-enroll">Enroll Now</button>
+                </div>
+              </div>
+
+              <!-- Course 14 -->
+              <div class="course-card" data-category="development" data-level="intermediate">
+                <div class="course-thumbnail">
+                  <!-- Placeholder: Course thumbnail – Mobile App Development -->
+                  <div class="placeholder-image">
+                    <i class="bi bi-phone" style="font-size: 2rem; color: var(--color-accent);"></i>
+                  </div>
+                </div>
+                <div class="course-content">
+                  <h3 class="course-title">Mobile App Development</h3>
+                  <p class="course-instructor">By Manish Agarwal</p>
+                  <div class="course-meta">
+                    <div class="course-rating">
+                      <span class="stars" data-rating="4.7">★★★★★</span>
+                      <span class="rating-count">(4.7)</span>
+                    </div>
+                    <div class="course-price">₹3,499</div>
+                  </div>
+                  <button class="btn-enroll">Enroll Now</button>
+                </div>
+              </div>
+
+              <!-- Course 15 -->
+              <div class="course-card" data-category="development" data-level="intermediate">
+                <div class="course-thumbnail">
+                  <!-- Placeholder: Course thumbnail – Flutter Complete Course -->
+                  <div class="placeholder-image">
+                    <i class="bi bi-app-indicator" style="font-size: 2rem; color: var(--color-primary);"></i>
+                  </div>
+                </div>
+                <div class="course-content">
+                  <h3 class="course-title">Flutter Complete Course</h3>
+                  <p class="course-instructor">By Ravi Shankar</p>
+                  <div class="course-meta">
+                    <div class="course-rating">
+                      <span class="stars" data-rating="4.8">★★★★★</span>
+                      <span class="rating-count">(4.8)</span>
+                    </div>
+                    <div class="course-price">₹2,999</div>
+                  </div>
+                  <button class="btn-enroll">Enroll Now</button>
+                </div>
+              </div>
+
+              <!-- Course 16 -->
+              <div class="course-card" data-category="business" data-level="beginner">
+                <div class="course-thumbnail">
+                  <!-- Placeholder: Course thumbnail – Freelancing Guide -->
+                  <div class="placeholder-image">
+                    <i class="bi bi-briefcase" style="font-size: 2rem; color: var(--color-accent);"></i>
+                  </div>
+                </div>
+                <div class="course-content">
+                  <h3 class="course-title">Complete Freelancing Guide</h3>
+                  <p class="course-instructor">By Meera Shah</p>
+                  <div class="course-meta">
+                    <div class="course-rating">
+                      <span class="stars" data-rating="4.5">★★★★★</span>
+                      <span class="rating-count">(4.5)</span>
+                    </div>
+                    <div class="course-price">₹799</div>
+                  </div>
+                  <button class="btn-enroll">Enroll Now</button>
+                </div>
+              </div>
+
+              <!-- Course 17 -->
+              <div class="course-card" data-category="productivity" data-level="beginner">
+                <div class="course-thumbnail">
+                  <!-- Placeholder: Course thumbnail – Productivity Hacks -->
+                  <div class="placeholder-image">
+                    <i class="bi bi-lightning-charge" style="font-size: 2rem; color: var(--color-primary);"></i>
+                  </div>
+                </div>
+                <div class="course-content">
+                  <h3 class="course-title">Productivity Hacks & Time Management</h3>
+                  <p class="course-instructor">By Kavita Desai</p>
+                  <div class="course-meta">
+                    <div class="course-rating">
+                      <span class="stars" data-rating="4.6">★★★★★</span>
+                      <span class="rating-count">(4.6)</span>
+                    </div>
+                    <div class="course-price">₹599</div>
+                  </div>
+                  <button class="btn-enroll">Enroll Now</button>
+                </div>
+              </div>
+
+              <!-- Course 18 -->
+              <div class="course-card" data-category="productivity" data-level="beginner">
+                <div class="course-thumbnail">
+                  <!-- Placeholder: Course thumbnail – Time Management Mastery -->
+                  <div class="placeholder-image">
+                    <i class="bi bi-clock-history" style="font-size: 2rem; color: var(--color-accent);"></i>
+                  </div>
+                </div>
+                <div class="course-content">
+                  <h3 class="course-title">Time Management Mastery</h3>
+                  <p class="course-instructor">By Suresh Pillai</p>
+                  <div class="course-meta">
+                    <div class="course-rating">
+                      <span class="stars" data-rating="4.4">★★★★★</span>
+                      <span class="rating-count">(4.4)</span>
+                    </div>
+                    <div class="course-price">₹499</div>
+                  </div>
+                  <button class="btn-enroll">Enroll Now</button>
+                </div>
+              </div>
+
+              <!-- Course 19 -->
+              <div class="course-card" data-category="marketing" data-level="intermediate">
+                <div class="course-thumbnail">
+                  <!-- Placeholder: Course thumbnail – Digital Marketing Complete -->
+                  <div class="placeholder-image">
+                    <i class="bi bi-megaphone" style="font-size: 2rem; color: var(--color-primary);"></i>
+                  </div>
+                </div>
+                <div class="course-content">
+                  <h3 class="course-title">Digital Marketing Complete Course</h3>
+                  <p class="course-instructor">By Tanvi Malhotra</p>
+                  <div class="course-meta">
+                    <div class="course-rating">
+                      <span class="stars" data-rating="4.7">★★★★★</span>
+                      <span class="rating-count">(4.7)</span>
+                    </div>
+                    <div class="course-price">₹1,999</div>
+                  </div>
+                  <button class="btn-enroll">Enroll Now</button>
+                </div>
+              </div>
+
+              <!-- Course 20 -->
+              <div class="course-card" data-category="marketing" data-level="advanced">
+                <div class="course-thumbnail">
+                  <!-- Placeholder: Course thumbnail – SEO Mastery -->
+                  <div class="placeholder-image">
+                    <i class="bi bi-search" style="font-size: 2rem; color: var(--color-accent);"></i>
+                  </div>
+                </div>
+                <div class="course-content">
+                  <h3 class="course-title">SEO Mastery & Google Rankings</h3>
+                  <p class="course-instructor">By Aditya Rao</p>
+                  <div class="course-meta">
+                    <div class="course-rating">
+                      <span class="stars" data-rating="4.8">★★★★★</span>
+                      <span class="rating-count">(4.8)</span>
+                    </div>
+                    <div class="course-price">₹1,799</div>
+                  </div>
+                  <button class="btn-enroll">Enroll Now</button>
+                </div>
+              </div>
+
+              <!-- Course 21 -->
+              <div class="course-card" data-category="data-science" data-level="intermediate">
+                <div class="course-thumbnail">
+                  <!-- Placeholder: Course thumbnail – Data Analytics Complete -->
+                  <div class="placeholder-image">
+                    <i class="bi bi-bar-chart-line" style="font-size: 2rem; color: var(--color-primary);"></i>
+                  </div>
+                </div>
+                <div class="course-content">
+                  <h3 class="course-title">Data Analytics Complete Course</h3>
+                  <p class="course-instructor">By Deepak Jain</p>
+                  <div class="course-meta">
+                    <div class="course-rating">
+                      <span class="stars" data-rating="4.7">★★★★★</span>
+                      <span class="rating-count">(4.7)</span>
+                    </div>
+                    <div class="course-price">₹2,999</div>
+                  </div>
+                  <button class="btn-enroll">Enroll Now</button>
+                </div>
+              </div>
+
+              <!-- Course 22 -->
+              <div class="course-card" data-category="productivity" data-level="intermediate">
+                <div class="course-thumbnail">
+                  <!-- Placeholder: Course thumbnail – Advanced Excel -->
+                  <div class="placeholder-image">
+                    <i class="bi bi-table" style="font-size: 2rem; color: var(--color-accent);"></i>
+                  </div>
+                </div>
+                <div class="course-content">
+                  <h3 class="course-title">Advanced Excel for Professionals</h3>
+                  <p class="course-instructor">By Lakshmi Krishnan</p>
+                  <div class="course-meta">
+                    <div class="course-rating">
+                      <span class="stars" data-rating="4.6">★★★★★</span>
+                      <span class="rating-count">(4.6)</span>
+                    </div>
+                    <div class="course-price">₹1,299</div>
+                  </div>
+                  <button class="btn-enroll">Enroll Now</button>
+                </div>
+              </div>
+
+              <!-- Course 23 -->
+              <div class="course-card" data-category="design" data-level="beginner">
+                <div class="course-thumbnail">
+                  <!-- Placeholder: Course thumbnail – Canva Design Course -->
+                  <div class="placeholder-image">
+                    <i class="bi bi-easel" style="font-size: 2rem; color: var(--color-primary);"></i>
+                  </div>
+                </div>
+                <div class="course-content">
+                  <h3 class="course-title">Canva Design for Beginners</h3>
+                  <p class="course-instructor">By Simran Kaur</p>
+                  <div class="course-meta">
+                    <div class="course-rating">
+                      <span class="stars" data-rating="4.5">★★★★★</span>
+                      <span class="rating-count">(4.5)</span>
+                    </div>
+                    <div class="course-price">₹699</div>
+                  </div>
+                  <button class="btn-enroll">Enroll Now</button>
+                </div>
+              </div>
+
+              <!-- Course 24 -->
+              <div class="course-card" data-category="development" data-level="beginner">
+                <div class="course-thumbnail">
+                  <!-- Placeholder: Course thumbnail – No-Code Tools -->
+                  <div class="placeholder-image">
+                    <i class="bi bi-puzzle" style="font-size: 2rem; color: var(--color-accent);"></i>
+                  </div>
+                </div>
+                <div class="course-content">
+                  <h3 class="course-title">No-Code Tools & App Building</h3>
+                  <p class="course-instructor">By Harsh Patel</p>
+                  <div class="course-meta">
+                    <div class="course-rating">
+                      <span class="stars" data-rating="4.6">★★★★★</span>
+                      <span class="rating-count">(4.6)</span>
+                    </div>
+                    <div class="course-price">₹1,499</div>
+                  </div>
+                  <button class="btn-enroll">Enroll Now</button>
+                </div>
+              </div>
+
+              <!-- Course 25 -->
+              <div class="course-card" data-category="business" data-level="intermediate">
+                <div class="course-thumbnail">
+                  <!-- Placeholder: Course thumbnail – Startup & Business Course -->
+                  <div class="placeholder-image">
+                    <i class="bi bi-rocket-takeoff" style="font-size: 2rem; color: var(--color-primary);"></i>
+                  </div>
+                </div>
+                <div class="course-content">
+                  <h3 class="course-title">Startup & Business Fundamentals</h3>
+                  <p class="course-instructor">By Nikhil Bhatia</p>
+                  <div class="course-meta">
+                    <div class="course-rating">
+                      <span class="stars" data-rating="4.8">★★★★★</span>
+                      <span class="rating-count">(4.8)</span>
+                    </div>
+                    <div class="course-price">₹2,499</div>
+                  </div>
+                  <button class="btn-enroll">Enroll Now</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="footer-container">
+      <div class="footer-column">
+        <h4>Skillverge</h4>
+        <p>Affordable online learning for everyone. Upgrade your skills with courses starting from ₹100.</p>
+      </div>
+      
+      <div class="footer-column">
+        <h4>Quick Links</h4>
+        <ul>
+          <li><a href="courses.html">Courses</a></li>
+          <li><a href="about.html">About</a></li>
+          <li><a href="contact.html">Contact</a></li>
+          <li><a href="sell-with-us.html">Sell With Us</a></li>
+        </ul>
+      </div>
+      
+      <div class="footer-column">
+        <h4>Follow Us</h4>
+        <div class="social-icons">
+          <a href="#" aria-label="Facebook" title="Facebook">
+            <i class="bi bi-facebook"></i>
+          </a>
+          <a href="#" aria-label="Twitter" title="Twitter">
+            <i class="bi bi-twitter"></i>
+          </a>
+          <a href="#" aria-label="Instagram" title="Instagram">
+            <i class="bi bi-instagram"></i>
+          </a>
+          <a href="#" aria-label="LinkedIn" title="LinkedIn">
+            <i class="bi bi-linkedin"></i>
+          </a>
+          <a href="#" aria-label="YouTube" title="YouTube">
+            <i class="bi bi-youtube"></i>
+          </a>
+        </div>
+      </div>
+    </div>
+    
+    <div class="footer-bottom">
+      <p>Copyright © Skillverge 2025</p>
+    </div>
+  </footer>
+
+  <!-- JavaScript -->
+  <script type="module" src="js/main.js"></script>
+</body>
+</html>

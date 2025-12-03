@@ -1,0 +1,324 @@
+/* Seller Onboarding Page Styles */
+
+/* Seller Hero Section */
+.seller-hero {
+  background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-dark) 100%);
+  color: var(--color-white);
+  padding: var(--spacing-3xl) 0;
+}
+
+.seller-hero-content {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--spacing-xl);
+  align-items: center;
+}
+
+.seller-hero-text h1 {
+  font-size: var(--font-size-4xl);
+  color: var(--color-white);
+  margin-bottom: var(--spacing-md);
+}
+
+.seller-hero-text p {
+  font-size: var(--font-size-lg);
+  color: rgba(255, 255, 255, 0.9);
+  margin-bottom: var(--spacing-xl);
+}
+
+.seller-hero-image .placeholder-image {
+  border-radius: var(--radius-xl);
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+/* Seller Benefits Section */
+.seller-benefits {
+  background-color: var(--color-white);
+}
+
+.benefits-grid {
+  margin-top: var(--spacing-lg);
+}
+
+.benefit-card {
+  text-align: center;
+  padding: var(--spacing-xl);
+  background-color: var(--color-light-gray);
+  border-radius: var(--radius-lg);
+  transition: all var(--transition-normal);
+}
+
+.benefit-card:hover {
+  transform: translateY(-8px);
+  box-shadow: var(--shadow-lg);
+}
+
+.benefit-icon {
+  width: 80px;
+  height: 80px;
+  margin: 0 auto var(--spacing-md);
+  background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-dark) 100%);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.benefit-icon i {
+  font-size: 2.5rem;
+  color: var(--color-white);
+}
+
+.benefit-card h3 {
+  font-size: var(--font-size-xl);
+  margin-bottom: var(--spacing-sm);
+}
+
+.benefit-card p {
+  color: var(--color-dark-gray);
+  font-size: var(--font-size-base);
+}
+
+/* Platform Metrics Section */
+.platform-metrics {
+  background: linear-gradient(135deg, var(--color-secondary) 0%, #0f1420 100%);
+  color: var(--color-white);
+}
+
+.metrics-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--spacing-xl);
+}
+
+.metric-card {
+  text-align: center;
+  padding: var(--spacing-xl);
+  background-color: rgba(255, 255, 255, 0.1);
+  border-radius: var(--radius-lg);
+  backdrop-filter: blur(10px);
+}
+
+.metric-number {
+  font-size: var(--font-size-5xl);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-accent);
+  margin-bottom: var(--spacing-sm);
+}
+
+.metric-label {
+  font-size: var(--font-size-lg);
+  color: rgba(255, 255, 255, 0.9);
+}
+
+/* Seller Registration Section */
+.seller-registration {
+  background-color: var(--color-light-gray);
+}
+
+.registration-layout {
+  display: grid;
+  grid-template-columns: 1fr 1.2fr;
+  gap: var(--spacing-2xl);
+}
+
+.registration-info h2 {
+  font-size: var(--font-size-3xl);
+  margin-bottom: var(--spacing-md);
+}
+
+.registration-info > p {
+  font-size: var(--font-size-lg);
+  color: var(--color-dark-gray);
+  margin-bottom: var(--spacing-xl);
+}
+
+/* Registration Steps */
+.registration-steps {
+  margin-bottom: var(--spacing-xl);
+}
+
+.step {
+  display: flex;
+  gap: var(--spacing-md);
+  margin-bottom: var(--spacing-lg);
+}
+
+.step-number {
+  width: 50px;
+  height: 50px;
+  background-color: var(--color-primary);
+  color: var(--color-white);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: var(--font-size-xl);
+  font-weight: var(--font-weight-bold);
+  flex-shrink: 0;
+}
+
+.step-content h4 {
+  font-size: var(--font-size-lg);
+  margin-bottom: var(--spacing-xs);
+}
+
+.step-content p {
+  font-size: var(--font-size-sm);
+  color: var(--color-dark-gray);
+}
+
+/* Registration Form */
+.registration-form-container {
+  background-color: var(--color-white);
+  border-radius: var(--radius-lg);
+  padding: var(--spacing-xl);
+  box-shadow: var(--shadow-lg);
+}
+
+.seller-form h3 {
+  font-size: var(--font-size-2xl);
+  margin-bottom: var(--spacing-lg);
+  text-align: center;
+}
+
+/* File Upload Zone */
+.file-upload-zone {
+  position: relative;
+  border: 2px dashed var(--color-gray);
+  border-radius: var(--radius-md);
+  padding: var(--spacing-xl);
+  text-align: center;
+  transition: all var(--transition-normal);
+  cursor: pointer;
+}
+
+.file-upload-zone:hover {
+  border-color: var(--color-primary);
+  background-color: var(--color-light-gray);
+}
+
+.file-input {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.file-upload-label {
+  pointer-events: none;
+}
+
+.file-upload-label i {
+  font-size: 3rem;
+  color: var(--color-primary);
+  margin-bottom: var(--spacing-sm);
+}
+
+.file-upload-label p {
+  font-size: var(--font-size-base);
+  color: var(--color-secondary);
+  margin-bottom: var(--spacing-xs);
+}
+
+.file-upload-label span {
+  font-size: var(--font-size-sm);
+  color: var(--color-dark-gray);
+}
+
+/* FAQ Section */
+.seller-faq {
+  background-color: var(--color-white);
+}
+
+.faq-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--spacing-lg);
+  margin-top: var(--spacing-lg);
+}
+
+.faq-item {
+  padding: var(--spacing-lg);
+  background-color: var(--color-light-gray);
+  border-radius: var(--radius-md);
+  border-left: 4px solid var(--color-primary);
+}
+
+.faq-item h4 {
+  font-size: var(--font-size-lg);
+  margin-bottom: var(--spacing-sm);
+  color: var(--color-secondary);
+}
+
+.faq-item p {
+  font-size: var(--font-size-base);
+  color: var(--color-dark-gray);
+  line-height: 1.6;
+}
+
+/* Tablet Styles */
+@media (max-width: 1024px) {
+  .seller-hero-content {
+    grid-template-columns: 1fr;
+  }
+  
+  .registration-layout {
+    grid-template-columns: 1fr;
+  }
+  
+  .metrics-grid {
+    grid-template-columns: 1fr;
+    gap: var(--spacing-md);
+  }
+  
+  .faq-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Mobile Styles */
+@media (max-width: 767px) {
+  .seller-hero {
+    padding: var(--spacing-xl) 0;
+  }
+  
+  .seller-hero-text h1 {
+    font-size: var(--font-size-2xl);
+  }
+  
+  .seller-hero-text p {
+    font-size: var(--font-size-base);
+  }
+  
+  .seller-hero-image {
+    order: -1;
+  }
+  
+  .benefits-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .benefit-card {
+    padding: var(--spacing-lg);
+  }
+  
+  .metric-number {
+    font-size: var(--font-size-3xl);
+  }
+  
+  .registration-info h2 {
+    font-size: var(--font-size-xl);
+  }
+  
+  .registration-form-container {
+    padding: var(--spacing-md);
+  }
+  
+  .seller-form h3 {
+    font-size: var(--font-size-xl);
+  }
+}

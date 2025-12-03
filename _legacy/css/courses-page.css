@@ -1,0 +1,306 @@
+/* Courses Page Specific Styles */
+
+/* Page Header */
+.page-header {
+  background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-dark) 100%);
+  color: var(--color-white);
+  padding: var(--spacing-2xl) 0;
+  text-align: center;
+}
+
+.page-header h1 {
+  font-size: var(--font-size-4xl);
+  color: var(--color-white);
+  margin-bottom: var(--spacing-sm);
+}
+
+.page-header p {
+  font-size: var(--font-size-lg);
+  color: rgba(255, 255, 255, 0.9);
+  margin: 0;
+}
+
+/* Courses Section */
+.courses-section {
+  padding: var(--spacing-2xl) 0;
+}
+
+.courses-layout {
+  display: grid;
+  grid-template-columns: 280px 1fr;
+  gap: var(--spacing-xl);
+}
+
+/* Filter Sidebar */
+.filter-sidebar {
+  background-color: var(--color-white);
+  border-radius: var(--radius-md);
+  padding: var(--spacing-lg);
+  box-shadow: var(--shadow-sm);
+  height: fit-content;
+  position: sticky;
+  top: 80px;
+}
+
+.filter-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--spacing-lg);
+  padding-bottom: var(--spacing-sm);
+  border-bottom: 1px solid var(--color-gray);
+}
+
+.filter-header h3 {
+  font-size: var(--font-size-xl);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-secondary);
+  margin: 0;
+}
+
+.clear-filters {
+  font-size: var(--font-size-sm);
+  color: var(--color-primary);
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0.25rem 0.5rem;
+  border-radius: var(--radius-sm);
+  transition: all var(--transition-fast);
+}
+
+.clear-filters:hover {
+  background-color: var(--color-light-gray);
+}
+
+/* Filter Section */
+.filter-section {
+  margin-bottom: var(--spacing-lg);
+}
+
+.filter-section h4 {
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-secondary);
+  margin-bottom: var(--spacing-sm);
+}
+
+.filter-options {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-xs);
+}
+
+.filter-option {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-xs);
+  cursor: pointer;
+  padding: 0.5rem;
+  border-radius: var(--radius-sm);
+  transition: background-color var(--transition-fast);
+}
+
+.filter-option:hover {
+  background-color: var(--color-light-gray);
+}
+
+.filter-option input[type="checkbox"],
+.filter-option input[type="radio"] {
+  cursor: pointer;
+  width: 18px;
+  height: 18px;
+}
+
+.filter-option span {
+  font-size: var(--font-size-sm);
+  color: var(--color-secondary);
+}
+
+/* Price Range */
+.price-range {
+  padding: var(--spacing-sm) 0;
+}
+
+.price-slider {
+  width: 100%;
+  height: 6px;
+  border-radius: var(--radius-full);
+  background: var(--color-gray);
+  outline: none;
+  cursor: pointer;
+  margin-bottom: var(--spacing-sm);
+}
+
+.price-slider::-webkit-slider-thumb {
+  appearance: none;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: var(--color-primary);
+  cursor: pointer;
+}
+
+.price-slider::-moz-range-thumb {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: var(--color-primary);
+  cursor: pointer;
+  border: none;
+}
+
+.price-display {
+  text-align: center;
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+  color: var(--color-primary);
+}
+
+/* Courses Content */
+.courses-content {
+  min-height: 600px;
+}
+
+.courses-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--spacing-lg);
+  padding: var(--spacing-md);
+  background-color: var(--color-white);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-sm);
+}
+
+.results-count {
+  font-size: var(--font-size-base);
+  color: var(--color-secondary);
+}
+
+.results-count span {
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-primary);
+}
+
+.sort-controls {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+}
+
+.sort-controls label {
+  font-size: var(--font-size-sm);
+  color: var(--color-secondary);
+}
+
+.sort-select {
+  padding: 0.5rem 1rem;
+  border: 1px solid var(--color-gray);
+  border-radius: var(--radius-sm);
+  font-size: var(--font-size-sm);
+  color: var(--color-secondary);
+  background-color: var(--color-white);
+  cursor: pointer;
+  transition: border-color var(--transition-fast);
+}
+
+.sort-select:hover {
+  border-color: var(--color-primary);
+}
+
+.sort-select:focus {
+  outline: none;
+  border-color: var(--color-primary);
+}
+
+/* No Results Message */
+.no-results {
+  grid-column: 1 / -1;
+  text-align: center;
+  padding: var(--spacing-3xl) var(--spacing-lg);
+  background-color: var(--color-light-gray);
+  border-radius: var(--radius-md);
+}
+
+.no-results p {
+  font-size: var(--font-size-lg);
+  color: var(--color-dark-gray);
+  margin: 0;
+}
+
+/* Tablet Styles (768px - 1024px) */
+@media (max-width: 1024px) {
+  .courses-layout {
+    grid-template-columns: 240px 1fr;
+    gap: var(--spacing-lg);
+  }
+  
+  .filter-sidebar {
+    padding: var(--spacing-md);
+  }
+  
+  .page-header h1 {
+    font-size: var(--font-size-3xl);
+  }
+  
+  .page-header p {
+    font-size: var(--font-size-base);
+  }
+}
+
+/* Mobile Styles (< 768px) */
+@media (max-width: 767px) {
+  .page-header {
+    padding: var(--spacing-xl) 0;
+  }
+  
+  .page-header h1 {
+    font-size: var(--font-size-2xl);
+  }
+  
+  .page-header p {
+    font-size: var(--font-size-sm);
+  }
+  
+  .courses-layout {
+    grid-template-columns: 1fr;
+    gap: var(--spacing-md);
+  }
+  
+  .filter-sidebar {
+    position: static;
+    order: 2;
+    margin-top: var(--spacing-lg);
+  }
+  
+  .courses-content {
+    order: 1;
+  }
+  
+  .courses-header {
+    flex-direction: column;
+    gap: var(--spacing-sm);
+    align-items: flex-start;
+  }
+  
+  .sort-controls {
+    width: 100%;
+    justify-content: space-between;
+  }
+  
+  .sort-select {
+    flex: 1;
+  }
+  
+  /* Mobile Filter Toggle (Optional Enhancement) */
+  .filter-sidebar {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height var(--transition-normal);
+  }
+  
+  .filter-sidebar.active {
+    max-height: 1000px;
+  }
+}

@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Contact Skillverge - Get in touch with us for any questions or support">
+  <title>Contact Us - Skillverge</title>
+  
+  <!-- CSS Files -->
+  <link rel="stylesheet" href="css/variables.css">
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/navigation.css">
+  <link rel="stylesheet" href="css/footer.css">
+  <link rel="stylesheet" href="css/contact-page.css">
+</head>
+<body>
+  <!-- Navigation Header -->
+  <header class="navbar">
+    <div class="navbar-container">
+      <a href="index.html" class="logo">Skillverge</a>
+      
+      <nav class="nav-menu" role="navigation">
+        <ul class="nav-links">
+          <li><a href="index.html">Home</a></li>
+          <li><a href="courses.html">Courses</a></li>
+          <li><a href="sell-with-us.html">Sell With Us</a></li>
+          <li><a href="about.html">About</a></li>
+          <li><a href="contact.html" class="active">Contact</a></li>
+        </ul>
+        
+        <div class="nav-actions">
+          <a href="login.html" class="btn-secondary">Login</a>
+          <a href="register.html" class="btn-primary">Sign Up</a>
+        </div>
+      </nav>
+      
+      <button class="mobile-toggle" aria-label="Toggle navigation menu" aria-expanded="false">
+        <span class="hamburger"></span>
+      </button>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main>
+    <!-- Page Header -->
+    <section class="page-header">
+      <div class="container">
+        <h1>Contact Us</h1>
+        <p>Have questions? We'd love to hear from you. Send us a message and we'll respond as soon as possible.</p>
+      </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section class="section contact-section">
+      <div class="container">
+        <div class="contact-layout">
+          <!-- Contact Information -->
+          <div class="contact-info">
+            <h2>Get in Touch</h2>
+            <p>Whether you have a question about courses, pricing, or anything else, our team is ready to answer all your questions.</p>
+            
+            <div class="contact-methods">
+              <div class="contact-method">
+                <div class="method-icon">
+                  <i class="bi bi-envelope-fill"></i>
+                </div>
+                <div class="method-content">
+                  <h4>Email</h4>
+                  <p>support@skillverge.com</p>
+                  <p>info@skillverge.com</p>
+                </div>
+              </div>
+              
+              <div class="contact-method">
+                <div class="method-icon">
+                  <i class="bi bi-telephone-fill"></i>
+                </div>
+                <div class="method-content">
+                  <h4>Phone</h4>
+                  <p>+91-9876543210</p>
+                  <p>Mon-Fri: 9AM - 6PM IST</p>
+                </div>
+              </div>
+              
+              <div class="contact-method">
+                <div class="method-icon">
+                  <i class="bi bi-geo-alt-fill"></i>
+                </div>
+                <div class="method-content">
+                  <h4>Office</h4>
+                  <p>123 Tech Park, Bangalore</p>
+                  <p>Karnataka, India - 560001</p>
+                </div>
+              </div>
+            </div>
+            
+            <div class="social-connect">
+              <h4>Connect With Us</h4>
+              <div class="social-icons">
+                <a href="#" aria-label="Facebook" title="Facebook">
+                  <i class="bi bi-facebook"></i>
+                </a>
+                <a href="#" aria-label="Twitter" title="Twitter">
+                  <i class="bi bi-twitter"></i>
+                </a>
+                <a href="#" aria-label="Instagram" title="Instagram">
+                  <i class="bi bi-instagram"></i>
+                </a>
+                <a href="#" aria-label="LinkedIn" title="LinkedIn">
+                  <i class="bi bi-linkedin"></i>
+                </a>
+                <a href="#" aria-label="YouTube" title="YouTube">
+                  <i class="bi bi-youtube"></i>
+                </a>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Contact Form -->
+          <div class="contact-form-container">
+            <form class="contact-form" id="contactForm">
+              <h3>Send us a Message</h3>
+              
+              <div class="form-group">
+                <label for="name" class="form-label">Your Name *</label>
+                <input type="text" id="name" name="name" class="form-input" placeholder="Enter your name" required>
+                <span class="error-message"></span>
+              </div>
+              
+              <div class="form-group">
+                <label for="email" class="form-label">Email Address *</label>
+                <input type="email" id="email" name="email" class="form-input" placeholder="your@email.com" required>
+                <span class="error-message"></span>
+              </div>
+              
+              <div class="form-group">
+                <label for="subject" class="form-label">Subject *</label>
+                <input type="text" id="subject" name="subject" class="form-input" placeholder="What is this about?" required>
+                <span class="error-message"></span>
+              </div>
+              
+              <div class="form-group">
+                <label for="message" class="form-label">Message *</label>
+                <textarea id="message" name="message" class="form-textarea" rows="6" placeholder="Tell us more about your inquiry..." required></textarea>
+                <span class="error-message"></span>
+              </div>
+              
+              <button type="submit" class="btn-primary btn-large" style="width: 100%;">Send Message</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- FAQ Section -->
+    <section class="section contact-faq">
+      <div class="container">
+        <h2 class="section-title">Frequently Asked Questions</h2>
+        <div class="faq-grid">
+          <div class="faq-item">
+            <h4>How do I enroll in a course?</h4>
+            <p>Browse our courses, click on any course you're interested in, and click the "Enroll Now" button. You'll need to create an account or login to complete enrollment.</p>
+          </div>
+          
+          <div class="faq-item">
+            <h4>What payment methods do you accept?</h4>
+            <p>We accept all major credit/debit cards, UPI, net banking, and digital wallets. All payments are secure and encrypted.</p>
+          </div>
+          
+          <div class="faq-item">
+            <h4>Can I get a refund?</h4>
+            <p>Yes, we offer a 7-day money-back guarantee. If you're not satisfied with a course, contact us within 7 days for a full refund.</p>
+          </div>
+          
+          <div class="faq-item">
+            <h4>How long do I have access to a course?</h4>
+            <p>Once enrolled, you have lifetime access to the course materials, including all future updates.</p>
+          </div>
+          
+          <div class="faq-item">
+            <h4>Do you offer certificates?</h4>
+            <p>Yes, you'll receive a certificate of completion after finishing all course modules and assessments.</p>
+          </div>
+          
+          <div class="faq-item">
+            <h4>How can I become an instructor?</h4>
+            <p>Visit our "Sell With Us" page and fill out the instructor application form. We'll review your application within 48 hours.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="footer-container">
+      <div class="footer-column">
+        <h4>Skillverge</h4>
+        <p>Affordable online learning for everyone. Upgrade your skills with courses starting from ₹100.</p>
+      </div>
+      
+      <div class="footer-column">
+        <h4>Quick Links</h4>
+        <ul>
+          <li><a href="courses.html">Courses</a></li>
+          <li><a href="about.html">About</a></li>
+          <li><a href="contact.html">Contact</a></li>
+          <li><a href="sell-with-us.html">Sell With Us</a></li>
+        </ul>
+      </div>
+      
+      <div class="footer-column">
+        <h4>Follow Us</h4>
+        <div class="social-icons">
+          <a href="#" aria-label="Facebook" title="Facebook">
+            <i class="bi bi-facebook"></i>
+          </a>
+          <a href="#" aria-label="Twitter" title="Twitter">
+            <i class="bi bi-twitter"></i>
+          </a>
+          <a href="#" aria-label="Instagram" title="Instagram">
+            <i class="bi bi-instagram"></i>
+          </a>
+          <a href="#" aria-label="LinkedIn" title="LinkedIn">
+            <i class="bi bi-linkedin"></i>
+          </a>
+          <a href="#" aria-label="YouTube" title="YouTube">
+            <i class="bi bi-youtube"></i>
+          </a>
+        </div>
+      </div>
+    </div>
+    
+    <div class="footer-bottom">
+      <p>Copyright © Skillverge 2025</p>
+    </div>
+  </footer>
+
+  <!-- JavaScript -->
+  <script type="module" src="js/main.js"></script>
+</body>
+</html>

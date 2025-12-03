@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Become a course creator on Skillverge. Sell your knowledge and earn instantly.">
+  <title>Sell With Us - Skillverge</title>
+  
+  <!-- CSS Files -->
+  <link rel="stylesheet" href="css/variables.css">
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/navigation.css">
+  <link rel="stylesheet" href="css/footer.css">
+  <link rel="stylesheet" href="css/seller-page.css">
+</head>
+<body>
+  <!-- Navigation Header -->
+  <header class="navbar">
+    <div class="navbar-container">
+      <a href="index.html" class="logo">Skillverge</a>
+      
+      <nav class="nav-menu" role="navigation">
+        <ul class="nav-links">
+          <li><a href="index.html">Home</a></li>
+          <li><a href="courses.html">Courses</a></li>
+          <li><a href="sell-with-us.html" class="active">Sell With Us</a></li>
+          <li><a href="about.html">About</a></li>
+          <li><a href="contact.html">Contact</a></li>
+        </ul>
+        
+        <div class="nav-actions">
+          <a href="login.html" class="btn-secondary">Login</a>
+          <a href="register.html" class="btn-primary">Sign Up</a>
+        </div>
+      </nav>
+      
+      <button class="mobile-toggle" aria-label="Toggle navigation menu" aria-expanded="false">
+        <span class="hamburger"></span>
+      </button>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main>
+    <!-- Hero Section -->
+    <section class="seller-hero">
+      <div class="container">
+        <div class="seller-hero-content">
+          <div class="seller-hero-text">
+            <h1>Sell Your Courses on Skillverge</h1>
+            <p>Join India's growing EdTech marketplace and earn instantly. Share your knowledge with thousands of eager learners.</p>
+            <a href="#onboarding-form" class="btn-primary btn-large">Start Onboarding</a>
+          </div>
+          <div class="seller-hero-image">
+            <!-- Placeholder: Marketplace illustration showing course creators -->
+            <div class="placeholder-image" style="height: 350px;">
+              <i class="bi bi-person-video3" style="font-size: 4rem; color: var(--color-primary);"></i>
+              <p>Marketplace illustration – Course creators</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Seller Benefits Section -->
+    <section class="section seller-benefits">
+      <div class="container">
+        <h2 class="section-title">Why Sell on Skillverge?</h2>
+        <div class="grid grid-cols-3 benefits-grid">
+          <div class="benefit-card">
+            <div class="benefit-icon">
+              <i class="bi bi-lightning-charge-fill"></i>
+            </div>
+            <h3>Fast Approval</h3>
+            <p>Get approved within 48 hours and start selling your courses immediately.</p>
+          </div>
+          
+          <div class="benefit-card">
+            <div class="benefit-icon">
+              <i class="bi bi-cash-coin"></i>
+            </div>
+            <h3>Weekly Payments</h3>
+            <p>Receive your earnings every week directly to your bank account.</p>
+          </div>
+          
+          <div class="benefit-card">
+            <div class="benefit-icon">
+              <i class="bi bi-graph-up-arrow"></i>
+            </div>
+            <h3>Marketplace Reach</h3>
+            <p>Access thousands of learners actively searching for courses like yours.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Platform Metrics Section -->
+    <section class="section platform-metrics">
+      <div class="container">
+        <div class="metrics-grid">
+          <div class="metric-card">
+            <div class="metric-number">10,000+</div>
+            <div class="metric-label">Monthly Learners</div>
+          </div>
+          
+          <div class="metric-card">
+            <div class="metric-number">2,000+</div>
+            <div class="metric-label">Active Sellers</div>
+          </div>
+          
+          <div class="metric-card">
+            <div class="metric-number">50,000+</div>
+            <div class="metric-label">Monthly Course Views</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Seller Registration Form Section -->
+    <section class="section seller-registration" id="onboarding-form">
+      <div class="container">
+        <div class="registration-layout">
+          <div class="registration-info">
+            <h2>Ready to Start Teaching?</h2>
+            <p>Fill out the form below to begin your journey as a course creator on Skillverge.</p>
+            
+            <div class="registration-steps">
+              <div class="step">
+                <div class="step-number">1</div>
+                <div class="step-content">
+                  <h4>Submit Application</h4>
+                  <p>Fill out the registration form with your details</p>
+                </div>
+              </div>
+              
+              <div class="step">
+                <div class="step-number">2</div>
+                <div class="step-content">
+                  <h4>Get Approved</h4>
+                  <p>Our team reviews your application within 48 hours</p>
+                </div>
+              </div>
+              
+              <div class="step">
+                <div class="step-number">3</div>
+                <div class="step-content">
+                  <h4>Start Selling</h4>
+                  <p>Upload your courses and start earning</p>
+                </div>
+              </div>
+            </div>
+            
+            <div class="seller-illustration">
+              <!-- Placeholder: Seller benefits illustration -->
+              <div class="placeholder-image" style="height: 250px;">
+                <i class="bi bi-award-fill" style="font-size: 3rem; color: var(--color-accent);"></i>
+                <p>Seller benefits illustration</p>
+              </div>
+            </div>
+          </div>
+          
+          <div class="registration-form-container">
+            <form class="seller-form" id="sellerForm">
+              <h3>Seller Registration Form</h3>
+              
+              <div class="form-group">
+                <label for="sellerName" class="form-label">Full Name *</label>
+                <input type="text" id="sellerName" name="sellerName" class="form-input" required>
+                <span class="error-message"></span>
+              </div>
+              
+              <div class="form-group">
+                <label for="sellerEmail" class="form-label">Email Address *</label>
+                <input type="email" id="sellerEmail" name="sellerEmail" class="form-input" required>
+                <span class="error-message"></span>
+              </div>
+              
+              <div class="form-group">
+                <label for="sellerPhone" class="form-label">Phone Number *</label>
+                <input type="tel" id="sellerPhone" name="sellerPhone" class="form-input" placeholder="+91-XXXXXXXXXX" required>
+                <span class="error-message"></span>
+              </div>
+              
+              <div class="form-group">
+                <label for="courseCategory" class="form-label">Course Category You Teach *</label>
+                <select id="courseCategory" name="courseCategory" class="form-select" required>
+                  <option value="">Select a category</option>
+                  <option value="development">Development</option>
+                  <option value="business">Business</option>
+                  <option value="design">Design</option>
+                  <option value="marketing">Marketing</option>
+                  <option value="data-science">Data Science</option>
+                  <option value="ai">AI & Prompt Engineering</option>
+                  <option value="productivity">Productivity</option>
+                  <option value="other">Other</option>
+                </select>
+                <span class="error-message"></span>
+              </div>
+              
+              <div class="form-group">
+                <label for="experienceLevel" class="form-label">Teaching Experience *</label>
+                <select id="experienceLevel" name="experienceLevel" class="form-select" required>
+                  <option value="">Select experience level</option>
+                  <option value="beginner">Beginner (0-2 years)</option>
+                  <option value="intermediate">Intermediate (2-5 years)</option>
+                  <option value="advanced">Advanced (5+ years)</option>
+                </select>
+                <span class="error-message"></span>
+              </div>
+              
+              <div class="form-group">
+                <label for="courseFile" class="form-label">Upload Sample Course Material (PDF/PPT)</label>
+                <div class="file-upload-zone">
+                  <input type="file" id="courseFile" name="courseFile" accept=".pdf,.ppt,.pptx" class="file-input">
+                  <div class="file-upload-label">
+                    <i class="bi bi-cloud-upload"></i>
+                    <p>Click to upload or drag and drop</p>
+                    <span>PDF or PPT (Max 5MB)</span>
+                  </div>
+                </div>
+                <span class="error-message"></span>
+              </div>
+              
+              <div class="form-group">
+                <label for="additionalInfo" class="form-label">Tell us about yourself (Optional)</label>
+                <textarea id="additionalInfo" name="additionalInfo" class="form-textarea" rows="4" placeholder="Share your teaching experience, expertise, and what makes you unique..."></textarea>
+              </div>
+              
+              <button type="submit" class="btn-primary btn-large" style="width: 100%;">Submit Application</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- FAQ Section -->
+    <section class="section seller-faq">
+      <div class="container">
+        <h2 class="section-title">Frequently Asked Questions</h2>
+        <div class="faq-grid">
+          <div class="faq-item">
+            <h4>How much can I earn?</h4>
+            <p>You keep 70% of the course price. With our growing marketplace, successful instructors earn ₹50,000+ per month.</p>
+          </div>
+          
+          <div class="faq-item">
+            <h4>What equipment do I need?</h4>
+            <p>A computer, microphone, and screen recording software are all you need to create quality courses.</p>
+          </div>
+          
+          <div class="faq-item">
+            <h4>How long does approval take?</h4>
+            <p>Most applications are reviewed within 48 hours. You'll receive an email with the decision.</p>
+          </div>
+          
+          <div class="faq-item">
+            <h4>Can I teach multiple subjects?</h4>
+            <p>Yes! You can create and sell courses in multiple categories once approved.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="footer-container">
+      <div class="footer-column">
+        <h4>Skillverge</h4>
+        <p>Affordable online learning for everyone. Upgrade your skills with courses starting from ₹100.</p>
+      </div>
+      
+      <div class="footer-column">
+        <h4>Quick Links</h4>
+        <ul>
+          <li><a href="courses.html">Courses</a></li>
+          <li><a href="about.html">About</a></li>
+          <li><a href="contact.html">Contact</a></li>
+          <li><a href="sell-with-us.html">Sell With Us</a></li>
+        </ul>
+      </div>
+      
+      <div class="footer-column">
+        <h4>Follow Us</h4>
+        <div class="social-icons">
+          <a href="#" aria-label="Facebook" title="Facebook">
+            <i class="bi bi-facebook"></i>
+          </a>
+          <a href="#" aria-label="Twitter" title="Twitter">
+            <i class="bi bi-twitter"></i>
+          </a>
+          <a href="#" aria-label="Instagram" title="Instagram">
+            <i class="bi bi-instagram"></i>
+          </a>
+          <a href="#" aria-label="LinkedIn" title="LinkedIn">
+            <i class="bi bi-linkedin"></i>
+          </a>
+          <a href="#" aria-label="YouTube" title="YouTube">
+            <i class="bi bi-youtube"></i>
+          </a>
+        </div>
+      </div>
+    </div>
+    
+    <div class="footer-bottom">
+      <p>Copyright © Skillverge 2025</p>
+    </div>
+  </footer>
+
+  <!-- JavaScript -->
+  <script type="module" src="js/main.js"></script>
+</body>
+</html>

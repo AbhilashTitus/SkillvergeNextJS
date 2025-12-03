@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Login to your Skillverge account">
+  <title>Login - Skillverge</title>
+  
+  <!-- CSS Files -->
+  <link rel="stylesheet" href="css/variables.css">
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/navigation.css">
+  <link rel="stylesheet" href="css/footer.css">
+  <link rel="stylesheet" href="css/auth-pages.css">
+</head>
+<body>
+  <!-- Navigation Header -->
+  <header class="navbar">
+    <div class="navbar-container">
+      <a href="index.html" class="logo">Skillverge</a>
+      
+      <nav class="nav-menu" role="navigation">
+        <ul class="nav-links">
+          <li><a href="index.html">Home</a></li>
+          <li><a href="courses.html">Courses</a></li>
+          <li><a href="sell-with-us.html">Sell With Us</a></li>
+          <li><a href="about.html">About</a></li>
+          <li><a href="contact.html">Contact</a></li>
+        </ul>
+        
+        <div class="nav-actions">
+          <a href="login.html" class="btn-secondary active">Login</a>
+          <a href="register.html" class="btn-primary">Sign Up</a>
+        </div>
+      </nav>
+      
+      <button class="mobile-toggle" aria-label="Toggle navigation menu" aria-expanded="false">
+        <span class="hamburger"></span>
+      </button>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main>
+    <section class="auth-section">
+      <div class="auth-split-container">
+        <!-- Left Side - Form -->
+        <div class="auth-form-side">
+          <div class="auth-card">
+            <div class="auth-header">
+              <h1>Welcome Back</h1>
+              <p>Login to continue your learning journey</p>
+            </div>
+            
+            <form class="auth-form" id="loginForm">
+              <div class="form-group">
+                <label for="email" class="form-label">Email Address</label>
+                <input type="email" id="email" name="email" class="form-input" placeholder="your@email.com" required>
+                <span class="error-message"></span>
+              </div>
+              
+              <div class="form-group">
+                <label for="password" class="form-label">Password</label>
+                <input type="password" id="password" name="password" class="form-input" placeholder="Enter your password" required>
+                <span class="error-message"></span>
+              </div>
+              
+              <div class="form-options">
+                <label class="checkbox-label">
+                  <input type="checkbox" name="remember">
+                  <span>Remember me</span>
+                </label>
+                <a href="#" class="forgot-link">Forgot password?</a>
+              </div>
+              
+              <button type="submit" class="btn-primary btn-large" style="width: 100%;">Login</button>
+            </form>
+            
+            <div class="auth-footer">
+              <p>Don't have an account? <a href="register.html">Sign up</a></p>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Right Side - Image -->
+        <div class="auth-image-side">
+          <!-- Placeholder: Login illustration - Modern EdTech learning -->
+          <div class="auth-image-placeholder">
+            <i class="bi bi-person-check" style="font-size: 5rem; color: var(--color-white);"></i>
+            <h2>Welcome to Skillverge</h2>
+            <p>Access thousands of courses and continue your learning journey</p>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="footer-container">
+      <div class="footer-column">
+        <h4>Skillverge</h4>
+        <p>Affordable online learning for everyone. Upgrade your skills with courses starting from ₹100.</p>
+      </div>
+      
+      <div class="footer-column">
+        <h4>Quick Links</h4>
+        <ul>
+          <li><a href="courses.html">Courses</a></li>
+          <li><a href="about.html">About</a></li>
+          <li><a href="contact.html">Contact</a></li>
+          <li><a href="sell-with-us.html">Sell With Us</a></li>
+        </ul>
+      </div>
+      
+      <div class="footer-column">
+        <h4>Follow Us</h4>
+        <div class="social-icons">
+          <a href="#" aria-label="Facebook" title="Facebook">
+            <i class="bi bi-facebook"></i>
+          </a>
+          <a href="#" aria-label="Twitter" title="Twitter">
+            <i class="bi bi-twitter"></i>
+          </a>
+          <a href="#" aria-label="Instagram" title="Instagram">
+            <i class="bi bi-instagram"></i>
+          </a>
+          <a href="#" aria-label="LinkedIn" title="LinkedIn">
+            <i class="bi bi-linkedin"></i>
+          </a>
+          <a href="#" aria-label="YouTube" title="YouTube">
+            <i class="bi bi-youtube"></i>
+          </a>
+        </div>
+      </div>
+    </div>
+    
+    <div class="footer-bottom">
+      <p>Copyright © Skillverge 2025</p>
+    </div>
+  </footer>
+
+  <!-- JavaScript -->
+  <script type="module" src="js/main.js"></script>
+</body>
+</html>
