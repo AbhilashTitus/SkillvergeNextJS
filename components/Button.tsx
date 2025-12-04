@@ -1,47 +1,52 @@
-import React from 'react';
-import Link from 'next/link';
-import { cn } from '@/lib/utils';
+import Link from "next/link";
+import { cn } from "@/lib/utils";
 
-interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
-    variant?: 'primary' | 'secondary' | 'outline' | 'ghost';
-    size?: 'sm' | 'md' | 'lg';
+interface ButtonProps {
+    children: React.ReactNode;
+    variant?: "primary" | "secondary" | "accent";
+    size?: "sm" | "md" | "lg";
     href?: string;
+    onClick?: () => void;
+    className?: string;
+    type?: "button" | "submit" | "reset";
 }
 
-export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
-    ({ className, variant = 'primary', size = 'md', href, ...props }, ref) => {
-        const variants = {
-            primary: 'bg-primary text-white hover:bg-primary-dark shadow-md hover:shadow-hover',
-            secondary: 'bg-white text-primary border border-primary hover:bg-gray-light',
-            outline: 'bg-transparent border border-gray-300 text-gray-700 hover:border-primary hover:text-primary',
-            ghost: 'bg-transparent text-gray-700 hover:bg-gray-100',
-        };
+export function Button({
+    children,
+    variant = "primary",
+    size = "md",
+    href,
+    onClick,
+    className,
+    type = "button",
+}: ButtonProps) {
+    const baseStyles = "inline-block text-center rounded-none transition-all duration-[300ms] cursor-pointer no-underline leading-[1.5] font-medium";
 
-        const sizes = {
-            sm: 'px-3 py-1.5 text-sm',
-            md: 'px-6 py-2.5 text-base',
-            lg: 'px-8 py-3 text-lg',
-        };
+    const variantStyles = {
+        primary: "bg-[#2D6DF6] text-white hover:bg-[#1a4fd6] hover:-translate-y-0.5 hover:shadow-[0_12px_28px_rgba(45,109,246,0.2)]",
+        secondary: "bg-transparent text-[#2D6DF6] border-2 border-[#2D6DF6] hover:bg-[#2D6DF6] hover:text-white hover:-translate-y-0.5",
+        accent: "bg-[#00B894] text-white hover:bg-[#009874] hover:-translate-y-0.5",
+    };
 
-        const classes = cn(
-            'inline-flex items-center justify-center rounded-lg font-medium transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-primary/50 disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer',
-            variants[variant],
-            sizes[size],
-            className
-        );
+    const sizeStyles = {
+        sm: "py-2 px-5 text-sm",
+        md: "py-3 px-6 text-base",
+        lg: "py-4 px-8 text-lg",
+    };
 
-        if (href) {
-            return (
-                <Link href={href} className={classes}>
-                    {props.children}
-                </Link>
-            );
-        }
+    const classes = cn(baseStyles, variantStyles[variant], sizeStyles[size], className);
 
+    if (href) {
         return (
-            <button ref={ref} className={classes} {...props} />
+            <Link href={href} className={classes}>
+                {children}
+            </Link>
         );
     }
-);
 
-Button.displayName = 'Button';
+    return (
+        <button type={type} onClick={onClick} className={classes}>
+            {children}
+        </button>
+    );
+}

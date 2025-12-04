@@ -1,6 +1,5 @@
 import Link from "next/link";
 import { Star } from "lucide-react";
-import { Button } from "./Button";
 
 export interface CourseProps {
     id: string;
@@ -16,26 +15,38 @@ export interface CourseProps {
 
 export function CourseCard({ course }: { course: CourseProps }) {
     return (
-        <div className="bg-white rounded-xl shadow-sm hover:shadow-hover transition-all duration-300 overflow-hidden border border-gray-100 flex flex-col h-full group">
-            <div className="h-48 bg-gray-50 flex items-center justify-center relative overflow-hidden">
-                <div className="transform group-hover:scale-110 transition-transform duration-500 text-4xl" style={{ color: course.color }}>
-                    {course.icon}
+        <div className="bg-white rounded-xl shadow-[0_2px_4px_rgba(0,0,0,0.1)] overflow-hidden transition-all duration-[300ms] flex flex-col h-full hover:shadow-[0_12px_28px_rgba(45,109,246,0.2)] hover:-translate-y-1.5">
+            {/* Course Thumbnail */}
+            <div className="relative w-full h-[200px] overflow-hidden bg-[#F8F9FB]">
+                <div className="h-full flex items-center justify-center">
+                    <div className="text-4xl transition-transform duration-[400ms] group-hover:scale-105" style={{ color: course.color }}>
+                        {course.icon}
+                    </div>
                 </div>
             </div>
-            <div className="p-5 flex flex-col flex-grow">
-                <h3 className="text-lg font-bold text-secondary mb-1 line-clamp-2">{course.title}</h3>
-                <p className="text-sm text-gray-500 mb-3">By {course.instructor}</p>
 
-                <div className="mt-auto">
-                    <div className="flex items-center justify-between mb-4">
-                        <div className="flex items-center gap-1">
-                            <Star className="w-4 h-4 text-yellow-400 fill-yellow-400" />
-                            <span className="text-sm font-medium text-secondary">{course.rating}</span>
-                        </div>
-                        <div className="text-lg font-bold text-primary">₹{course.price.toLocaleString()}</div>
+            {/* Course Content */}
+            <div className="p-6 flex flex-col flex-grow">
+                <h3 className="text-lg font-semibold text-[#1A1F36] mb-2 leading-[1.3] line-clamp-2">
+                    {course.title}
+                </h3>
+                <p className="text-sm text-gray-600 mb-4">By {course.instructor}</p>
+
+                {/* Course Meta */}
+                <div className="flex justify-between items-center mb-6 mt-auto">
+                    <div className="flex items-center gap-1">
+                        <Star className="w-4 h-4 text-[#FFA500] fill-[#FFA500]" />
+                        <span className="text-xs text-gray-600">({course.rating})</span>
                     </div>
-                    <Button className="w-full">Enroll Now</Button>
+                    <div className="text-xl font-bold text-[#2D6DF6]">
+                        ₹{course.price.toLocaleString()}
+                    </div>
                 </div>
+
+                {/* Enroll Button */}
+                <button className="w-full py-3 bg-[#2D6DF6] text-white border-none rounded-lg text-base font-medium cursor-pointer transition-all duration-[300ms] hover:bg-[#1a4fd6] hover:-translate-y-0.5 active:translate-y-0">
+                    Enroll Now
+                </button>
             </div>
         </div>
     );

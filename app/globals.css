@@ -1,22 +1,33 @@
 @import "tailwindcss";
 
 @theme {
+  /* Custom Colors from Legacy */
   --color-primary: #2D6DF6;
   --color-primary-dark: #1a4fd6;
   --color-primary-light: #5a8df7;
   --color-secondary: #1A1F36;
   --color-accent: #00B894;
   --color-accent-dark: #009874;
-  --color-gray-light: #F8F9FB;
-  --color-gray: #E5E7EB;
-  --color-gray-dark: #6B7280;
-  --color-error: #EF4444;
-  --color-success: #10B981;
 
-  --font-sans: var(--font-montserrat), sans-serif;
+  /* Font Family */
+  --font-sans: var(--font-montserrat), 'Montserrat', sans-serif;
 }
 
+/* Base Styles */
 body {
   font-family: var(--font-sans);
-  color: var(--color-secondary);
+  color: #1A1F36;
+}
+
+/* Animation for Hero */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }

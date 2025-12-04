@@ -1,75 +1,111 @@
+"use client";
+
+import { useState } from "react";
 import Link from "next/link";
-import { Button } from "@/components/Button";
+import { Navbar } from "@/components/Navbar";
+import { Footer } from "@/components/Footer";
 
-export default function LoginPage() {
+export default function Login() {
+    const [formData, setFormData] = useState({
+        email: "",
+        password: "",
+        remember: false
+    });
+
+    const handleSubmit = (e: React.FormEvent) => {
+        e.preventDefault();
+        console.log("Login:", formData);
+    };
+
     return (
-        <div className="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
-            <div className="max-w-md w-full space-y-8 bg-white p-8 rounded-xl shadow-lg">
-                <div className="text-center">
-                    <Link href="/" className="text-3xl font-bold text-primary">Skillverge</Link>
-                    <h2 className="mt-6 text-3xl font-bold text-gray-900">Welcome Back</h2>
-                    <p className="mt-2 text-sm text-gray-600">
-                        Don't have an account?{' '}
-                        <Link href="/signup" className="font-medium text-primary hover:text-primary-dark">
-                            Sign up
-                        </Link>
-                    </p>
+        <div className="min-h-screen flex flex-col">
+            <Navbar />
+            <main className="flex-grow">
+                <div className="min-h-screen flex items-stretch">
+                    <div className="grid grid-cols-1 md:grid-cols-2 w-full min-h-screen">
+                        {/* Left Side - Form */}
+                        <div className="flex items-center justify-center p-12 bg-white">
+                            <div className="w-full max-w-[480px] p-12">
+                                <div className="text-center mb-12">
+                                    <h1 className="text-3xl text-[#1A1F36] mb-4">Welcome Back</h1>
+                                    <p className="text-base text-gray-600">Login to access your account</p>
+                                </div>
+
+                                <form onSubmit={handleSubmit} className="mb-8">
+                                    <div className="mb-6">
+                                        <label className="block text-sm font-semibold text-[#1A1F36] mb-2">Email Address</label>
+                                        <input
+                                            type="email"
+                                            value={formData.email}
+                                            onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                                            className="w-full py-3 px-4 border border-[#E5E7EB] rounded-lg focus:outline-none focus:border-[#2D6DF6]"
+                                            placeholder="your@email.com"
+                                            required
+                                        />
+                                    </div>
+
+                                    <div className="mb-6">
+                                        <label className="block text-sm font-semibold text-[#1A1F36] mb-2">Password</label>
+                                        <input
+                                            type="password"
+                                            value={formData.password}
+                                            onChange={(e) => setFormData({ ...formData, password: e.target.value })}
+                                            className="w-full py-3 px-4 border border-[#E5E7EB] rounded-lg focus:outline-none focus:border-[#2D6DF6]"
+                                            placeholder="Enter your password"
+                                            required
+                                        />
+                                    </div>
+
+                                    <div className="flex justify-between items-center mb-8">
+                                        <label className="flex items-center gap-2 text-sm text-[#1A1F36] cursor-pointer">
+                                            <input
+                                                type="checkbox"
+                                                checked={formData.remember}
+                                                onChange={(e) => setFormData({ ...formData, remember: e.target.checked })}
+                                                className="cursor-pointer"
+                                            />
+                                            Remember me
+                                        </label>
+                                        <Link href="/forgot-password" className="text-sm text-[#2D6DF6] no-underline hover:underline">
+                                            Forgot Password?
+                                        </Link>
+                                    </div>
+
+                                    <button
+                                        type="submit"
+                                        className="w-full py-4 px-8 text-lg font-medium text-center rounded-lg transition-all duration-[300ms] cursor-pointer no-underline leading-[1.5] bg-[#2D6DF6] text-white hover:bg-[#1a4fd6] hover:-translate-y-0.5 hover:shadow-[0_12px_28px_rgba(45,109,246,0.2)]"
+                                    >
+                                        Login
+                                    </button>
+                                </form>
+
+                                <div className="text-center pt-8 border-t border-[#E5E7EB]">
+                                    <p className="text-base text-gray-600">
+                                        Don't have an account?{" "}
+                                        <Link href="/signup" className="text-[#2D6DF6] font-medium no-underline hover:underline">
+                                            Create Account
+                                        </Link>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+
+                        {/* Right Side - Gradient */}
+                        <div className="relative bg-gradient-to-br from-[#2D6DF6] to-[#1a4fd6] flex items-center justify-center p-12 overflow-hidden">
+                            <div className="relative z-[1] text-center text-white max-w-[500px]">
+                                <i className="bi bi-person-check text-[5rem] mb-8 opacity-90"></i>
+                                <h2 className="text-3xl font-bold text-white mb-6 [text-shadow:0_2px_8px_rgba(0,0,0,0.2)]">
+                                    Welcome to Skillverge
+                                </h2>
+                                <p className="text-lg text-white/90 leading-[1.6]">
+                                    Access thousands of courses and continue your learning journey
+                                </p>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <form className="mt-8 space-y-6">
-                    <div className="rounded-md shadow-sm -space-y-px">
-                        <div className="mb-4">
-                            <label htmlFor="email-address" className="block text-sm font-medium text-gray-700 mb-1">Email address</label>
-                            <input
-                                id="email-address"
-                                name="email"
-                                type="email"
-                                autoComplete="email"
-                                required
-                                className="appearance-none rounded-lg relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-primary focus:border-primary focus:z-10 sm:text-sm"
-                                placeholder="Email address"
-                            />
-                        </div>
-                        <div>
-                            <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-1">Password</label>
-                            <input
-                                id="password"
-                                name="password"
-                                type="password"
-                                autoComplete="current-password"
-                                required
-                                className="appearance-none rounded-lg relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-primary focus:border-primary focus:z-10 sm:text-sm"
-                                placeholder="Password"
-                            />
-                        </div>
-                    </div>
-
-                    <div className="flex items-center justify-between">
-                        <div className="flex items-center">
-                            <input
-                                id="remember-me"
-                                name="remember-me"
-                                type="checkbox"
-                                className="h-4 w-4 text-primary focus:ring-primary border-gray-300 rounded"
-                            />
-                            <label htmlFor="remember-me" className="ml-2 block text-sm text-gray-900">
-                                Remember me
-                            </label>
-                        </div>
-
-                        <div className="text-sm">
-                            <a href="#" className="font-medium text-primary hover:text-primary-dark">
-                                Forgot your password?
-                            </a>
-                        </div>
-                    </div>
-
-                    <div>
-                        <Button className="w-full group relative flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-primary hover:bg-primary-dark focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary">
-                            Sign in
-                        </Button>
-                    </div>
-                </form>
-            </div>
+            </main>
+            <Footer />
         </div>
     );
 }

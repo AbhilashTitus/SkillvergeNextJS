@@ -1,70 +1,87 @@
-import Link from "next/link";
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
 import { CourseCard } from "@/components/CourseCard";
 import { CategoryCard } from "@/components/CategoryCard";
 import { Button } from "@/components/Button";
 import { categories, features, courses } from "@/lib/data";
-import { Video, Camera } from "lucide-react";
 
 export default function Home() {
   return (
     <div className="min-h-screen flex flex-col">
       <Navbar />
 
-      <main className="flex-grow">
-        {/* Hero Section */}
-        <section className="relative h-[600px] flex items-center justify-center overflow-hidden bg-secondary">
-          <div className="absolute inset-0 z-0">
-            <video
-              className="w-full h-full object-cover opacity-60"
-              autoPlay
-              muted
-              loop
-              playsInline
-            >
-              <source src="/assets/loop.mp4" type="video/mp4" />
-            </video>
-            <div className="absolute inset-0 bg-gradient-to-b from-black/60 to-black/30" />
-          </div>
+      <main>
+        {/* Hero Section with Video Background */}
+        <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
+          {/* Background Video */}
+          <video
+            className="absolute top-1/2 left-1/2 min-w-full min-h-full w-auto h-auto -translate-x-1/2 -translate-y-1/2 z-0 object-cover"
+            autoPlay
+            muted
+            loop
+            playsInline
+          >
+            <source src="/assets/loop.mp4" type="video/mp4" />
+          </video>
 
-          <div className="container relative z-10 text-center text-white px-4">
-            <h1 className="text-4xl md:text-6xl font-bold mb-6 animate-fade-in-up drop-shadow-lg">
-              Upgrade Your Skills With Skillverge
-            </h1>
-            <p className="text-xl md:text-2xl mb-8 text-gray-100 max-w-2xl mx-auto animate-fade-in-up delay-100 drop-shadow-md">
-              Affordable online learning starting from ₹100.
-            </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center animate-fade-in-up delay-200">
-              <Button size="lg" href="/courses" className="shadow-lg shadow-primary/30">Browse Courses</Button>
-              <Button size="lg" variant="secondary" href="/sell-with-us" className="shadow-lg">Become a Seller</Button>
+          {/* Hero Overlay */}
+          <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-br from-[rgba(26,31,54,0.85)] to-[rgba(45,109,246,0.75)] z-[1]" />
+
+          {/* Hero Content */}
+          <div className="relative z-[2] w-full py-24">
+            <div className="max-w-[1280px] mx-auto px-4 md:px-6">
+              <div className="text-center animate-[fadeInUp_0.8s_ease-out]">
+                <h1 className="text-5xl font-bold text-white mb-6 leading-[1.1] [text-shadow:0_4px_12px_rgba(0,0,0,0.3)]">
+                  Upgrade Your Skills With Skillverge
+                </h1>
+                <p className="text-xl text-white/95 mb-12 font-normal [text-shadow:0_2px_8px_rgba(0,0,0,0.3)]">
+                  Affordable online learning starting from ₹100.
+                </p>
+                <div className="flex gap-6 flex-wrap justify-center">
+                  <Button size="lg" href="/courses">
+                    Browse Courses
+                  </Button>
+                  <button className="inline-block py-4 px-8 text-lg font-medium text-center rounded-none transition-all duration-[300ms] cursor-pointer no-underline leading-[1.5] bg-white/20 text-white border-2 border-white backdrop-blur-[10px] hover:bg-white hover:text-[#2D6DF6]">
+                    Become a Seller
+                  </button>
+                </div>
+              </div>
             </div>
           </div>
         </section>
 
-        {/* Features */}
-        <section className="py-20 bg-white">
-          <div className="container mx-auto px-4">
-            <h2 className="text-3xl font-bold text-center mb-12 text-secondary">Why Choose Skillverge?</h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+        {/* Features Section */}
+        <section className="py-16 bg-white">
+          <div className="max-w-[1280px] mx-auto px-4 md:px-6">
+            <h2 className="text-3xl font-bold text-center mb-8 text-[#1A1F36]">
+              Why Choose Skillverge?
+            </h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mt-8">
               {features.map((feature, index) => (
-                <div key={index} className="p-6 rounded-xl bg-gray-50 text-center hover:shadow-lg transition-all duration-300 group">
-                  <div className="text-primary mb-4 flex justify-center [&>svg]:w-10 [&>svg]:h-10 group-hover:scale-110 transition-transform duration-300">
+                <div
+                  key={index}
+                  className="text-center p-8 border border-[#E5E7EB] rounded-xl transition-all duration-[300ms] hover:border-[#2D6DF6] hover:-translate-y-2"
+                >
+                  <div className="text-[3rem] text-[#2D6DF6] mb-6 flex justify-center [&>svg]:w-12 [&>svg]:h-12">
                     {feature.icon}
                   </div>
-                  <h3 className="text-xl font-bold mb-2 text-secondary">{feature.title}</h3>
-                  <p className="text-gray-600">{feature.description}</p>
+                  <h3 className="text-lg font-semibold mb-4 text-[#1A1F36]">
+                    {feature.title}
+                  </h3>
+                  <p className="text-sm text-gray-600">{feature.description}</p>
                 </div>
               ))}
             </div>
           </div>
         </section>
 
-        {/* Categories */}
-        <section className="py-20 bg-gray-50">
-          <div className="container mx-auto px-4">
-            <h2 className="text-3xl font-bold text-center mb-12 text-secondary">Popular Categories</h2>
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+        {/* Categories Section */}
+        <section className="py-16 bg-[#F8F9FB]">
+          <div className="max-w-[1280px] mx-auto px-4 md:px-6">
+            <h2 className="text-3xl font-bold text-center mb-8 text-[#1A1F36]">
+              Popular Categories
+            </h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mt-8">
               {categories.map((cat, index) => (
                 <CategoryCard key={index} title={cat.title} icon={cat.icon} />
               ))}
@@ -72,45 +89,43 @@ export default function Home() {
           </div>
         </section>
 
-        {/* Top Courses */}
-        <section className="py-20 bg-white">
-          <div className="container mx-auto px-4">
-            <h2 className="text-3xl font-bold text-center mb-4 text-secondary">Top Courses</h2>
-            <p className="text-center text-gray-600 mb-12 max-w-2xl mx-auto">
+        {/* Top Courses Section */}
+        <section className="py-16 bg-white">
+          <div className="max-w-[1280px] mx-auto px-4 md:px-6">
+            <h2 className="text-3xl font-bold text-center mb-8 text-[#1A1F36]">
+              Top Courses
+            </h2>
+            <p className="text-lg text-center text-gray-600 mb-12 max-w-[600px] mx-auto">
               Explore our most popular courses and start learning today
             </p>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-              {courses.map((course) => (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mt-8">
+              {courses.slice(0, 4).map((course) => (
                 <CourseCard key={course.id} course={course} />
               ))}
-            </div>
-            <div className="mt-12 text-center">
-              <Button variant="outline" size="lg" href="/courses">View All Courses</Button>
             </div>
           </div>
         </section>
 
         {/* CTA Section */}
-        <section className="py-20 bg-white">
-          <div className="container mx-auto px-4">
-            <div className="bg-secondary rounded-3xl overflow-hidden shadow-2xl flex flex-col md:flex-row">
-              <div className="p-12 md:w-1/2 flex flex-col justify-center text-white">
-                <div className="mb-6 text-accent">
-                  <Video size={48} />
-                </div>
-                <h2 className="text-3xl md:text-4xl font-bold mb-4">Become a Course Creator</h2>
-                <p className="text-lg text-gray-300 mb-8">
+        <section className="bg-gradient-to-br from-[#2D6DF6] to-[#1a4fd6] py-24">
+          <div className="max-w-[1280px] mx-auto px-4 md:px-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center bg-white/10 p-12 rounded-[20px] backdrop-blur-[10px]">
+              <div className="text-center text-white">
+                <i className="bi bi-camera-video text-[4rem] text-white mb-6"></i>
+                <h2 className="text-3xl text-white mb-4 font-bold">
+                  Become a Course Creator
+                </h2>
+                <p className="text-lg text-white/90 mb-8">
                   Sell your knowledge to thousands of learners and earn instantly.
                 </p>
-                <div>
-                  <Button size="lg" href="/sell-with-us">Start Selling</Button>
-                </div>
+                <button className="inline-block py-4 px-8 text-lg font-medium text-center rounded-none transition-all duration-[300ms] cursor-pointer no-underline leading-[1.5] bg-white text-[#2D6DF6] hover:bg-[#00B894] hover:text-white">
+                  Start Selling
+                </button>
               </div>
-              <div className="md:w-1/2 bg-gray-800 flex items-center justify-center min-h-[300px] relative">
-                <div className="absolute inset-0 bg-gradient-to-br from-secondary/50 to-gray-900/50" />
-                <div className="text-center text-gray-500 relative z-10">
-                  <Camera size={64} className="mx-auto mb-4 opacity-50" />
-                  <p className="opacity-50">Illustration of a teacher recording a course</p>
+              <div className="bg-white/20 rounded-lg p-12 flex items-center justify-center min-h-[300px]">
+                <div className="text-center text-white/70">
+                  <i className="bi bi-image text-[4rem] mb-4"></i>
+                  <p className="text-sm">Illustration of a teacher recording a course</p>
                 </div>
               </div>
             </div>

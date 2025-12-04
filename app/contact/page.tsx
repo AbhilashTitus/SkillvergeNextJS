@@ -1,110 +1,187 @@
+"use client";
+
+import { useState } from "react";
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
-import { Button } from "@/components/Button";
-import { Mail, Phone, MapPin, Facebook, Twitter, Instagram, Linkedin, Youtube } from "lucide-react";
 
-export default function ContactPage() {
+export default function Contact() {
+    const [formData, setFormData] = useState({
+        name: "",
+        email: "",
+        subject: "",
+        message: ""
+    });
+
+    const handleSubmit = (e: React.FormEvent) => {
+        e.preventDefault();
+        console.log("Form submitted:", formData);
+    };
+
+    const faqs = [
+        {
+            question: "How do I enroll in a course?",
+            answer: "Browse our courses, click on any course you're interested in, and click the \"Enroll Now\" button. You'll need to create an account or login to complete enrollment."
+        },
+        {
+            question: "What payment methods do you accept?",
+            answer: "We accept all major credit/debit cards, UPI, net banking, and digital wallets. All payments are secure and encrypted."
+        },
+        {
+            question: "Can I get a refund?",
+            answer: "Yes, we offer a 7-day money-back guarantee. If you're not satisfied with a course, contact us within 7 days for a full refund."
+        },
+        {
+            question: "How long do I have access to a course?",
+            answer: "Once enrolled, you have lifetime access to the course materials, including all future updates."
+        },
+        {
+            question: "Do you offer certificates?",
+            answer: "Yes, you'll receive a certificate of completion after finishing all course modules and assessments."
+        },
+        {
+            question: "How can I become an instructor?",
+            answer: "Visit our \"Sell With Us\" page and fill out the instructor application form. We'll review your application within 48 hours."
+        }
+    ];
+
     return (
         <div className="min-h-screen flex flex-col">
             <Navbar />
-            <main className="flex-grow pt-20">
-                {/* Header */}
-                <section className="bg-secondary text-white py-20 text-center">
-                    <div className="container mx-auto px-4">
-                        <h1 className="text-4xl md:text-5xl font-bold mb-4">Contact Us</h1>
-                        <p className="text-xl text-gray-300 max-w-2xl mx-auto">
-                            Have questions? We'd love to hear from you. Send us a message and we'll respond as soon as possible.
-                        </p>
+            <main className="flex-grow">
+                {/* Page Header */}
+                <div className="bg-gradient-to-br from-[#2D6DF6] to-[#1a4fd6] text-white py-16 text-center">
+                    <div className="max-w-[1280px] mx-auto px-4 md:px-6">
+                        <h1 className="text-4xl text-white mb-4">Contact Us</h1>
+                        <p className="text-lg text-white/90 m-0">Have questions? We'd love to hear from you. Send us a message and we'll respond as soon as possible.</p>
+                    </div>
+                </div>
+
+                {/* Contact Section */}
+                <section className="py-16 bg-[#F8F9FB]">
+                    <div className="max-w-[1280px] mx-auto px-4 md:px-6">
+                        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16">
+                            {/* Contact Info */}
+                            <div>
+                                <h2 className="text-3xl mb-6 font-bold text-[#1A1F36]">Get in Touch</h2>
+                                <p className="text-lg text-gray-600 mb-12 leading-[1.6]">
+                                    Whether you have a question about courses, pricing, or anything else, our team is ready to answer all your questions.
+                                </p>
+
+                                <div className="space-y-6 mb-12">
+                                    {/* Email */}
+                                    <div className="flex gap-6 p-8 bg-white rounded-xl transition-all duration-[300ms] hover:shadow-[0_4px_8px_rgba(0,0,0,0.12)] hover:translate-x-1">
+                                        <div className="w-[60px] h-[60px] bg-gradient-to-br from-[#2D6DF6] to-[#1a4fd6] rounded-xl flex items-center justify-center flex-shrink-0">
+                                            <i className="bi bi-envelope-fill text-[1.75rem] text-white"></i>
+                                        </div>
+                                        <div>
+                                            <h4 className="text-lg mb-2 text-[#1A1F36] font-semibold">Email</h4>
+                                            <p className="text-sm text-gray-600 mb-1">support@skillverge.com</p>
+                                            <p className="text-sm text-gray-600">info@skillverge.com</p>
+                                        </div>
+                                    </div>
+
+                                    {/* Phone */}
+                                    <div className="flex gap-6 p-8 bg-white rounded-xl transition-all duration-[300ms] hover:shadow-[0_4px_8px_rgba(0,0,0,0.12)] hover:translate-x-1">
+                                        <div className="w-[60px] h-[60px] bg-gradient-to-br from-[#2D6DF6] to-[#1a4fd6] rounded-xl flex items-center justify-center flex-shrink-0">
+                                            <i className="bi bi-telephone-fill text-[1.75rem] text-white"></i>
+                                        </div>
+                                        <div>
+                                            <h4 className="text-lg mb-2 text-[#1A1F36] font-semibold">Phone</h4>
+                                            <p className="text-sm text-gray-600 mb-1">+91-9876543210</p>
+                                            <p className="text-sm text-gray-600">Mon-Fri: 9AM - 6PM IST</p>
+                                        </div>
+                                    </div>
+
+                                    {/* Office */}
+                                    <div className="flex gap-6 p-8 bg-white rounded-xl transition-all duration-[300ms] hover:shadow-[0_4px_8px_rgba(0,0,0,0.12)] hover:translate-x-1">
+                                        <div className="w-[60px] h-[60px] bg-gradient-to-br from-[#2D6DF6] to-[#1a4fd6] rounded-xl flex items-center justify-center flex-shrink-0">
+                                            <i className="bi bi-geo-alt-fill text-[1.75rem] text-white"></i>
+                                        </div>
+                                        <div>
+                                            <h4 className="text-lg mb-2 text-[#1A1F36] font-semibold">Office</h4>
+                                            <p className="text-sm text-gray-600 mb-1">123 Tech Park, Bangalore</p>
+                                            <p className="text-sm text-gray-600">Karnataka, India - 560001</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            {/* Contact Form */}
+                            <div className="bg-white rounded-2xl p-12 shadow-[0_8px_16px_rgba(0,0,0,0.15)]">
+                                <form onSubmit={handleSubmit}>
+                                    <h3 className="text-2xl mb-8 text-center font-bold text-[#1A1F36]">Send us a Message</h3>
+
+                                    <div className="mb-6">
+                                        <label className="block text-sm font-semibold text-[#1A1F36] mb-2">Your Name *</label>
+                                        <input
+                                            type="text"
+                                            value={formData.name}
+                                            onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                                            className="w-full py-3 px-4 border border-[#E5E7EB] rounded-lg focus:outline-none focus:border-[#2D6DF6]"
+                                            placeholder="Enter your name"
+                                            required
+                                        />
+                                    </div>
+
+                                    <div className="mb-6">
+                                        <label className="block text-sm font-semibold text-[#1A1F36] mb-2">Email Address *</label>
+                                        <input
+                                            type="email"
+                                            value={formData.email}
+                                            onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                                            className="w-full py-3 px-4 border border-[#E5E7EB] rounded-lg focus:outline-none focus:border-[#2D6DF6]"
+                                            placeholder="your@email.com"
+                                            required
+                                        />
+                                    </div>
+
+                                    <div className="mb-6">
+                                        <label className="block text-sm font-semibold text-[#1A1F36] mb-2">Subject *</label>
+                                        <input
+                                            type="text"
+                                            value={formData.subject}
+                                            onChange={(e) => setFormData({ ...formData, subject: e.target.value })}
+                                            className="w-full py-3 px-4 border border-[#E5E7EB] rounded-lg focus:outline-none focus:border-[#2D6DF6]"
+                                            placeholder="What is this about?"
+                                            required
+                                        />
+                                    </div>
+
+                                    <div className="mb-6">
+                                        <label className="block text-sm font-semibold text-[#1A1F36] mb-2">Message *</label>
+                                        <textarea
+                                            value={formData.message}
+                                            onChange={(e) => setFormData({ ...formData, message: e.target.value })}
+                                            rows={6}
+                                            className="w-full py-3 px-4 border border-[#E5E7EB] rounded-lg focus:outline-none focus:border-[#2D6DF6] resize-none"
+                                            placeholder="Tell us more about your inquiry..."
+                                            required
+                                        />
+                                    </div>
+
+                                    <button
+                                        type="submit"
+                                        className="w-full py-4 px-8 text-lg font-medium text-center rounded-lg transition-all duration-[300ms] cursor-pointer no-underline leading-[1.5] bg-[#2D6DF6] text-white hover:bg-[#1a4fd6] hover:-translate-y-0.5 hover:shadow-[0_12px_28px_rgba(45,109,246,0.2)]"
+                                    >
+                                        Send Message
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
                     </div>
                 </section>
 
-                {/* Contact Content */}
-                <section className="py-20 bg-white">
-                    <div className="container mx-auto px-4">
-                        <div className="flex flex-col lg:flex-row gap-12">
-                            {/* Info */}
-                            <div className="lg:w-1/3 space-y-8">
-                                <div>
-                                    <h2 className="text-2xl font-bold mb-4 text-secondary">Get in Touch</h2>
-                                    <p className="text-gray-600">
-                                        Whether you have a question about courses, pricing, or anything else, our team is ready to answer all your questions.
-                                    </p>
+                {/* FAQ Section */}
+                <section className="py-16 bg-white">
+                    <div className="max-w-[1280px] mx-auto px-4 md:px-6">
+                        <h2 className="text-3xl font-bold text-center mb-8 text-[#1A1F36]">Frequently Asked Questions</h2>
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mt-8">
+                            {faqs.map((faq, index) => (
+                                <div key={index} className="p-8 bg-[#F8F9FB] rounded-xl border-l-4 border-[#2D6DF6]">
+                                    <h4 className="text-lg mb-4 text-[#1A1F36] font-semibold">{faq.question}</h4>
+                                    <p className="text-base text-gray-600 leading-[1.6]">{faq.answer}</p>
                                 </div>
-
-                                <div className="space-y-6">
-                                    <div className="flex gap-4">
-                                        <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center text-primary flex-shrink-0">
-                                            <Mail />
-                                        </div>
-                                        <div>
-                                            <h4 className="font-bold text-secondary">Email</h4>
-                                            <p className="text-gray-600">support@skillverge.com</p>
-                                            <p className="text-gray-600">info@skillverge.com</p>
-                                        </div>
-                                    </div>
-
-                                    <div className="flex gap-4">
-                                        <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center text-primary flex-shrink-0">
-                                            <Phone />
-                                        </div>
-                                        <div>
-                                            <h4 className="font-bold text-secondary">Phone</h4>
-                                            <p className="text-gray-600">+91-9876543210</p>
-                                            <p className="text-gray-600">Mon-Fri: 9AM - 6PM IST</p>
-                                        </div>
-                                    </div>
-
-                                    <div className="flex gap-4">
-                                        <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center text-primary flex-shrink-0">
-                                            <MapPin />
-                                        </div>
-                                        <div>
-                                            <h4 className="font-bold text-secondary">Office</h4>
-                                            <p className="text-gray-600">123 Tech Park, Bangalore</p>
-                                            <p className="text-gray-600">Karnataka, India - 560001</p>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div>
-                                    <h4 className="font-bold text-secondary mb-4">Connect With Us</h4>
-                                    <div className="flex gap-4 text-gray-400">
-                                        <a href="#" className="hover:text-primary transition-colors"><Facebook /></a>
-                                        <a href="#" className="hover:text-primary transition-colors"><Twitter /></a>
-                                        <a href="#" className="hover:text-primary transition-colors"><Instagram /></a>
-                                        <a href="#" className="hover:text-primary transition-colors"><Linkedin /></a>
-                                        <a href="#" className="hover:text-primary transition-colors"><Youtube /></a>
-                                    </div>
-                                </div>
-                            </div>
-
-                            {/* Form */}
-                            <div className="lg:w-2/3">
-                                <div className="bg-white p-8 rounded-xl shadow-lg border border-gray-100">
-                                    <h3 className="text-2xl font-bold mb-6 text-secondary">Send us a Message</h3>
-                                    <form className="space-y-6">
-                                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                                            <div>
-                                                <label className="block text-sm font-medium text-gray-700 mb-1">Your Name *</label>
-                                                <input type="text" className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-primary focus:border-primary outline-none" required />
-                                            </div>
-                                            <div>
-                                                <label className="block text-sm font-medium text-gray-700 mb-1">Email Address *</label>
-                                                <input type="email" className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-primary focus:border-primary outline-none" required />
-                                            </div>
-                                        </div>
-                                        <div>
-                                            <label className="block text-sm font-medium text-gray-700 mb-1">Subject *</label>
-                                            <input type="text" className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-primary focus:border-primary outline-none" required />
-                                        </div>
-                                        <div>
-                                            <label className="block text-sm font-medium text-gray-700 mb-1">Message *</label>
-                                            <textarea rows={6} className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-primary focus:border-primary outline-none" required></textarea>
-                                        </div>
-                                        <Button size="lg" className="w-full">Send Message</Button>
-                                    </form>
-                                </div>
-                            </div>
+                            ))}
                         </div>
                     </div>
                 </section>

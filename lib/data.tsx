@@ -71,6 +71,17 @@ export const courses: CourseProps[] = [
     },
     {
         id: "5",
+        title: "Advanced MERN Stack Projects",
+        instructor: "Arjun Mehta",
+        rating: 4.8,
+        price: 3499,
+        category: "development",
+        level: "advanced",
+        icon: <Terminal size={48} />,
+        color: "#2D6DF6"
+    },
+    {
+        id: "6",
         title: "Python Programming for Beginners",
         instructor: "Sneha Reddy",
         rating: 4.6,
@@ -81,7 +92,18 @@ export const courses: CourseProps[] = [
         color: "#00B894"
     },
     {
-        id: "6",
+        id: "7",
+        title: "Python for Data Science",
+        instructor: "Karthik Kumar",
+        rating: 4.7,
+        price: 2499,
+        category: "data-science",
+        level: "intermediate",
+        icon: <BarChart size={48} />,
+        color: "#2D6DF6"
+    },
+    {
+        id: "8",
         title: "JavaScript Fundamentals",
         instructor: "Neha Gupta",
         rating: 4.5,
@@ -92,7 +114,18 @@ export const courses: CourseProps[] = [
         color: "#00B894"
     },
     {
-        id: "7",
+        id: "9",
+        title: "Advanced JavaScript & ES6+",
+        instructor: "Amit Joshi",
+        rating: 4.8,
+        price: 1999,
+        category: "development",
+        level: "advanced",
+        icon: <Terminal size={48} />,
+        color: "#2D6DF6"
+    },
+    {
+        id: "10",
         title: "Complete React Development",
         instructor: "Pooja Iyer",
         rating: 4.9,
@@ -103,7 +136,18 @@ export const courses: CourseProps[] = [
         color: "#00B894"
     },
     {
-        id: "8",
+        id: "11",
+        title: "Node.js Backend Development",
+        instructor: "Rohan Das",
+        rating: 4.7,
+        price: 2499,
+        category: "development",
+        level: "intermediate",
+        icon: <Server size={48} />,
+        color: "#2D6DF6"
+    },
+    {
+        id: "12",
         title: "UI/UX Design Fundamentals",
         instructor: "Divya Nair",
         rating: 4.6,
@@ -112,5 +156,148 @@ export const courses: CourseProps[] = [
         level: "beginner",
         icon: <PaletteIcon size={48} />,
         color: "#00B894"
+    },
+    {
+        id: "13",
+        title: "Figma Design Mastery",
+        instructor: "Sanjay Kapoor",
+        rating: 4.8,
+        price: 1799,
+        category: "design",
+        level: "intermediate",
+        icon: <PenTool size={48} />,
+        color: "#2D6DF6"
+    },
+    {
+        id: "14",
+        title: "Mobile App Development",
+        instructor: "Manish Agarwal",
+        rating: 4.7,
+        price: 3499,
+        category: "development",
+        level: "intermediate",
+        icon: <Smartphone size={48} />,
+        color: "#00B894"
+    },
+    {
+        id: "15",
+        title: "Flutter Complete Course",
+        instructor: "Ravi Shankar",
+        rating: 4.8,
+        price: 2999,
+        category: "development",
+        level: "intermediate",
+        icon: <AppWindow size={48} />,
+        color: "#2D6DF6"
+    },
+    {
+        id: "16",
+        title: "Complete Freelancing Guide",
+        instructor: "Meera Shah",
+        rating: 4.5,
+        price: 799,
+        category: "business",
+        level: "beginner",
+        icon: <Briefcase size={48} />,
+        color: "#00B894"
+    },
+    {
+        id: "17",
+        title: "Productivity Hacks & Time Management",
+        instructor: "Kavita Desai",
+        rating: 4.6,
+        price: 599,
+        category: "productivity",
+        level: "beginner",
+        icon: <Zap size={48} />,
+        color: "#2D6DF6"
+    },
+    {
+        id: "18",
+        title: "Time Management Mastery",
+        instructor: "Suresh Pillai",
+        rating: 4.4,
+        price: 499,
+        category: "productivity",
+        level: "beginner",
+        icon: <Clock size={48} />,
+        color: "#00B894"
+    },
+    {
+        id: "19",
+        title: "Digital Marketing Complete Course",
+        instructor: "Tanvi Malhotra",
+        rating: 4.7,
+        price: 1999,
+        category: "marketing",
+        level: "intermediate",
+        icon: <Megaphone size={48} />,
+        color: "#2D6DF6"
+    },
+    {
+        id: "20",
+        title: "SEO Mastery & Google Rankings",
+        instructor: "Aditya Rao",
+        rating: 4.8,
+        price: 1799,
+        category: "marketing",
+        level: "advanced",
+        icon: <TrendingUp size={48} />,
+        color: "#00B894"
+    },
+    {
+        id: "21",
+        title: "Data Analytics Complete Course",
+        instructor: "Deepak Jain",
+        rating: 4.7,
+        price: 2999,
+        category: "data-science",
+        level: "intermediate",
+        icon: <BarChart size={48} />,
+        color: "#2D6DF6"
+    },
+    {
+        id: "22",
+        title: "Advanced Excel for Professionals",
+        instructor: "Lakshmi Krishnan",
+        rating: 4.6,
+        price: 1299,
+        category: "productivity",
+        level: "intermediate",
+        icon: <Table size={48} />,
+        color: "#00B894"
+    },
+    {
+        id: "23",
+        title: "Canva Design for Beginners",
+        instructor: "Simran Kaur",
+        rating: 4.5,
+        price: 699,
+        category: "design",
+        level: "beginner",
+        icon: <Layout size={48} />,
+        color: "#2D6DF6"
+    },
+    {
+        id: "24",
+        title: "No-Code Tools & App Building",
+        instructor: "Harsh Patel",
+        rating: 4.6,
+        price: 1499,
+        category: "development",
+        level: "beginner",
+        icon: <Code size={48} />,
+        color: "#00B894"
+    },
+    {
+        id: "25",
+        title: "Startup & Business Fundamentals",
+        instructor: "Nikhil Bhatia",
+        rating: 4.8,
+        price: 2499,
+        category: "business",
+        level: "intermediate",
+        icon: <Rocket size={48} />,
+        color: "#2D6DF6"
     }
 ];
