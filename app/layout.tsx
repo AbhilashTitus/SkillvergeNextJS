@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { Montserrat } from "next/font/google";
 import "./globals.css";
+import { CartProvider } from "@/lib/CartContext";
+import { AuthProvider } from "@/lib/AuthContext";
 
 const montserrat = Montserrat({
   subsets: ["latin"],
@@ -23,7 +25,11 @@ export default function RootLayout({
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css" />
       </head>
       <body className={`${montserrat.variable} antialiased`}>
-        {children}
+        <CartProvider>
+          <AuthProvider>
+            {children}
+          </AuthProvider>
+        </CartProvider>
       </body>
     </html>
   );

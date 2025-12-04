@@ -2,10 +2,14 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
+import { useAuth } from "@/lib/AuthContext";
 
 export default function SignUp() {
+    const router = useRouter();
+    const { signup } = useAuth();
     const [formData, setFormData] = useState({
         fullName: "",
         email: "",
@@ -16,7 +20,8 @@ export default function SignUp() {
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
-        console.log("Sign up:", formData);
+        signup(formData.fullName, formData.email);
+        router.push("/");
     };
 
     return (

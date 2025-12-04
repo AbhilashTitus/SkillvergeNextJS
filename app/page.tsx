@@ -1,11 +1,26 @@
+"use client";
+
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
 import { CourseCard } from "@/components/CourseCard";
 import { CategoryCard } from "@/components/CategoryCard";
 import { Button } from "@/components/Button";
 import { categories, features, courses } from "@/lib/data";
+import { useAuth } from "@/lib/AuthContext";
+import { useRouter } from "next/navigation";
 
 export default function Home() {
+  const { isAuthenticated } = useAuth();
+  const router = useRouter();
+
+  const handleSellerClick = () => {
+    if (isAuthenticated) {
+      router.push("/seller");
+    } else {
+      router.push("/login?redirect=/seller");
+    }
+  };
+
   return (
     <div className="min-h-screen flex flex-col">
       <Navbar />
@@ -41,7 +56,10 @@ export default function Home() {
                   <Button size="lg" href="/courses">
                     Browse Courses
                   </Button>
-                  <button className="inline-block py-4 px-8 text-lg font-medium text-center rounded-none transition-all duration-[300ms] cursor-pointer no-underline leading-[1.5] bg-white/20 text-white border-2 border-white backdrop-blur-[10px] hover:bg-white hover:text-[#2D6DF6]">
+                  <button
+                    onClick={handleSellerClick}
+                    className="inline-block py-4 px-8 text-lg font-medium text-center rounded-none transition-all duration-[300ms] cursor-pointer no-underline leading-[1.5] bg-white/20 text-white border-2 border-white backdrop-blur-[10px] hover:bg-white hover:text-[#2D6DF6]"
+                  >
                     Become a Seller
                   </button>
                 </div>
@@ -118,7 +136,10 @@ export default function Home() {
                 <p className="text-lg text-white/90 mb-8">
                   Sell your knowledge to thousands of learners and earn instantly.
                 </p>
-                <button className="inline-block py-4 px-8 text-lg font-medium text-center rounded-none transition-all duration-[300ms] cursor-pointer no-underline leading-[1.5] bg-white text-[#2D6DF6] hover:bg-[#00B894] hover:text-white">
+                <button
+                  onClick={handleSellerClick}
+                  className="inline-block py-4 px-8 text-lg font-medium text-center rounded-none transition-all duration-[300ms] cursor-pointer no-underline leading-[1.5] bg-white text-[#2D6DF6] hover:bg-[#00B894] hover:text-white"
+                >
                   Start Selling
                 </button>
               </div>

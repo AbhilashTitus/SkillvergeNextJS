@@ -2,10 +2,15 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import { useRouter, useSearchParams } from "next/navigation";
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
+import { useAuth } from "@/lib/AuthContext";
 
 export default function Login() {
+    const router = useRouter();
+    const searchParams = useSearchParams();
+    const { login } = useAuth();
     const [formData, setFormData] = useState({
         email: "",
         password: "",
@@ -14,7 +19,14 @@ export default function Login() {
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
-        console.log("Login:", formData);
+        // Mock login - in a real app this would validate credentials
+        // For now we just use the email part as the name
+        const name = formData.email.split('@')[0];
+        login(name, formData.email);
+
+        // Redirect to previous page or home
+        const redirect = searchParams.get('redirect') || '/';
+        router.push(redirect);
     };
 
     return (

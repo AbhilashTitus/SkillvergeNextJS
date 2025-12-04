@@ -299,5 +299,16 @@ export const courses: CourseProps[] = [
         level: "intermediate",
         icon: <Rocket size={48} />,
         color: "#2D6DF6"
+    },
+    {
+        id: "26",
+        title: "2025 AI Productivity Masterclass",
+        instructor: "Skillverge Team",
+        rating: 5.0,
+        price: 99,
+        category: "productivity",
+        level: "beginner",
+        icon: <Bot size={48} />,
+        color: "#00B894"
     }
 ];
