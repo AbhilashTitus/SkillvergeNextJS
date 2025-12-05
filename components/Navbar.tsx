@@ -148,23 +148,16 @@ export function Navbar() {
                                 </div>
                             </Link>
                         </li>
-                        {isAuthenticated && (
-                            <li>
-                                <Link
-                                    href="/my-learning"
-                                    className={`flex items-center gap-2 text-lg font-medium no-underline py-2 transition-colors duration-[200ms] ${isActive('/my-learning') ? "text-[#2D6DF6]" : "text-[#1A1F36] hover:text-[#2D6DF6]"}`}
-                                    onClick={() => setIsOpen(false)}
-                                >
-                                    My Learning
-                                    <BookOpen className="w-5 h-5" />
-                                </Link>
-                            </li>
-                        )}
+
                     </ul>
                     <div className="mt-auto flex flex-col gap-4">
                         {isAuthenticated ? (
                             <div className="flex flex-col gap-4">
-                                <div className="flex items-center gap-3 p-3 bg-gray-50 rounded-lg">
+                                <Link
+                                    href="/my-learning"
+                                    onClick={() => setIsOpen(false)}
+                                    className="flex items-center gap-3 p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors"
+                                >
                                     <div className="w-10 h-10 rounded-full bg-[#2D6DF6] text-white flex items-center justify-center font-bold text-lg">
                                         {user?.name.charAt(0).toUpperCase()}
                                     </div>
@@ -172,7 +165,7 @@ export function Navbar() {
                                         <p className="text-sm font-medium text-[#1A1F36] truncate">{user?.name}</p>
                                         <p className="text-xs text-gray-500 truncate">{user?.email}</p>
                                     </div>
-                                </div>
+                                </Link>
                                 <button
                                     onClick={() => {
                                         logout();
