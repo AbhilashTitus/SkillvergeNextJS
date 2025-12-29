@@ -6,6 +6,7 @@ import { Star, ShoppingCart, Heart, Eye, Check, PlayCircle } from "lucide-react"
 import { useCart } from "@/lib/CartContext";
 import { useAuth } from "@/lib/AuthContext";
 import { useRouter } from "next/navigation";
+import { useRazorpay } from "@/lib/useRazorpay";
 
 export interface CourseProps {
     id: string;
@@ -28,9 +29,11 @@ const isNew = (id: string) => parseInt(id) > 20;
 
 export function CourseCard({ course }: { course: CourseProps }) {
     const { addToCart, addToWishlist, removeFromWishlist, isInCart, isInWishlist } = useCart();
-    const { isAuthenticated, hasPurchased } = useAuth();
+    const { isAuthenticated, hasPurchased, user } = useAuth();
     const router = useRouter();
+    const { createOrder, openCheckout, isLoaded } = useRazorpay();
     const [showAddedFeedback, setShowAddedFeedback] = useState(false);
+    const [isProcessing, setIsProcessing] = useState(false);
 
     const inCart = isInCart(course.id);
     const inWishlist = isInWishlist(course.id);
@@ -46,18 +49,59 @@ export function CourseCard({ course }: { course: CourseProps }) {
         }
     };
 
-    const handleBuyNow = (e: React.MouseEvent) => {
+    const handleBuyNow = async (e: React.MouseEvent) => {
         e.preventDefault();
         e.stopPropagation();
+        
         if (isPurchased) {
             router.push("/my-learning");
             return;
         }
+
         if (!isAuthenticated) {
-            router.push("/login?redirect=/checkout");
-        } else {
-            addToCart(course);
-            router.push("/checkout");
+            router.push("/login?redirect=/courses");
+            return;
+        }
+
+        if (!isLoaded) {
+            alert("Payment system is loading. Please try again in a moment.");
+            return;
+        }
+
+        setIsProcessing(true);
+
+        try {
+            const order = await createOrder(course.price, `course_${course.id}_${Date.now()}`);
+            
+            openCheckout({
+                key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID!,
+                amount: order.amount,
+                currency: 'INR',
+                name: 'Skillverge',
+                description: course.title,
+                order_id: order.orderId,
+                handler: (response: any) => {
+                    // Payment successful
+                    router.push(`/success?payment_id=${response.razorpay_payment_id}&order_id=${response.razorpay_order_id}`);
+                },
+                prefill: {
+                    name: user?.name || '',
+                    email: user?.email || '',
+                },
+                theme: {
+                    color: '#2D6DF6',
+                },
+                modal: {
+                    ondismiss: () => {
+                        setIsProcessing(false);
+                    },
+                },
+            });
+        } catch (error) {
+            console.error('Payment failed:', error);
+            alert('Payment failed. Please try again.');
+        } finally {
+            setIsProcessing(false);
         }
     };
 
@@ -213,9 +257,14 @@ export function CourseCard({ course }: { course: CourseProps }) {
                                 </button>
                                 <button
                                     onClick={handleBuyNow}
-                                    className="flex-1 py-2.5 px-4 bg-[#2D6DF6] text-white rounded-lg text-sm font-semibold hover:bg-[#1a4fd6] transition-colors"
+                                    disabled={isProcessing}
+                                    className={`flex-1 py-2.5 px-4 rounded-lg text-sm font-semibold transition-colors ${
+                                        isProcessing 
+                                            ? 'bg-gray-400 text-white cursor-not-allowed' 
+                                            : 'bg-[#2D6DF6] text-white hover:bg-[#1a4fd6]'
+                                    }`}
                                 >
-                                    Buy Now
+                                    {isProcessing ? 'Processing...' : 'Buy Now'}
                                 </button>
                             </>
                         )}

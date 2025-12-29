@@ -6,15 +6,18 @@ import { Footer } from "@/components/Footer";
 import { courses } from "@/lib/data";
 import { useCart } from "@/lib/CartContext";
 import { useAuth } from "@/lib/AuthContext";
+import { useRazorpay } from "@/lib/useRazorpay";
 import { Star, ShoppingCart, Check, Clock, BookOpen, BarChart, PlayCircle } from "lucide-react";
 import { useState } from "react";
 
 export default function CourseDetailsPage() {
     const params = useParams();
     const { addToCart, isInCart } = useCart();
-    const { isAuthenticated, hasPurchased } = useAuth();
+    const { isAuthenticated, hasPurchased, user } = useAuth();
     const router = useRouter();
+    const { createOrder, openCheckout, isLoaded } = useRazorpay();
     const [showAddedFeedback, setShowAddedFeedback] = useState(false);
+    const [isProcessing, setIsProcessing] = useState(false);
 
     // Find the course based on the ID from the URL
     const course = courses.find(c => c.id === params.id);
@@ -44,16 +47,58 @@ export default function CourseDetailsPage() {
         }
     };
 
-    const handleBuyNow = () => {
+    const handleBuyNow = async () => {
+        if (!course) return;
+        
         if (isPurchased) {
             router.push("/my-learning");
             return;
         }
+
         if (!isAuthenticated) {
-            router.push("/login?redirect=/checkout");
-        } else {
-            addToCart(course);
-            router.push("/checkout");
+            router.push("/login?redirect=/courses");
+            return;
+        }
+
+        if (!isLoaded) {
+            alert("Payment system is loading. Please try again in a moment.");
+            return;
+        }
+
+        setIsProcessing(true);
+
+        try {
+            const order = await createOrder(course.price, `course_${course.id}_${Date.now()}`);
+            
+            openCheckout({
+                key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID!,
+                amount: order.amount,
+                currency: 'INR',
+                name: 'Skillverge',
+                description: course.title,
+                order_id: order.orderId,
+                handler: (response: any) => {
+                    // Payment successful
+                    router.push(`/success?payment_id=${response.razorpay_payment_id}&order_id=${response.razorpay_order_id}`);
+                },
+                prefill: {
+                    name: user?.name || '',
+                    email: user?.email || '',
+                },
+                theme: {
+                    color: '#2D6DF6',
+                },
+                modal: {
+                    ondismiss: () => {
+                        setIsProcessing(false);
+                    },
+                },
+            });
+        } catch (error) {
+            console.error('Payment failed:', error);
+            alert('Payment failed. Please try again.');
+        } finally {
+            setIsProcessing(false);
         }
     };
 
@@ -187,9 +232,14 @@ export default function CourseDetailsPage() {
                                         </button>
                                         <button
                                             onClick={handleBuyNow}
-                                            className="w-full py-3.5 border-2 border-[#1A1F36] text-[#1A1F36] rounded-lg font-bold text-lg hover:bg-gray-50 transition-colors"
+                                            disabled={isProcessing}
+                                            className={`w-full py-3.5 rounded-lg font-bold text-lg transition-all ${
+                                                isProcessing
+                                                    ? "bg-gray-400 text-white cursor-not-allowed"
+                                                    : "border-2 border-[#1A1F36] text-[#1A1F36] hover:bg-gray-50"
+                                            }`}
                                         >
-                                            Buy Now
+                                            {isProcessing ? "Processing..." : "Buy Now"}
                                         </button>
                                     </>
                                 )}

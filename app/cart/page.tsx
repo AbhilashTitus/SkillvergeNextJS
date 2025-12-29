@@ -4,10 +4,71 @@ import Link from "next/link";
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
 import { useCart } from "@/lib/CartContext";
+import { useAuth } from "@/lib/AuthContext";
+import { useRazorpay } from "@/lib/useRazorpay";
+import { useRouter } from "next/navigation";
 import { Trash2, ArrowRight, ShoppingBag } from "lucide-react";
+import { useState } from "react";
 
 export default function CartPage() {
     const { cartItems, removeFromCart, cartTotal, clearCart } = useCart();
+    const { isAuthenticated, user } = useAuth();
+    const { createOrder, openCheckout, isLoaded } = useRazorpay();
+    const router = useRouter();
+    const [isProcessing, setIsProcessing] = useState(false);
+
+    const handleCheckout = async () => {
+        if (!isAuthenticated) {
+            router.push("/login?redirect=/cart");
+            return;
+        }
+
+        if (cartItems.length === 0) {
+            return;
+        }
+
+        if (!isLoaded) {
+            alert("Payment system is loading. Please try again in a moment.");
+            return;
+        }
+
+        setIsProcessing(true);
+
+        try {
+            const order = await createOrder(cartTotal, `cart_${Date.now()}`);
+            
+            openCheckout({
+                key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID!,
+                amount: order.amount,
+                currency: 'INR',
+                name: 'Skillverge',
+                description: `${cartItems.length} Course${cartItems.length > 1 ? 's' : ''}`,
+                order_id: order.orderId,
+                handler: (response: any) => {
+                    // Payment successful
+                    clearCart(); // Clear cart after successful payment
+                    router.push(`/success?payment_id=${response.razorpay_payment_id}&order_id=${response.razorpay_order_id}`);
+                },
+                prefill: {
+                    name: user?.name || '',
+                    email: user?.email || '',
+                },
+                theme: {
+                    color: '#2D6DF6',
+                },
+                modal: {
+                    ondismiss: () => {
+                        setIsProcessing(false);
+                    },
+                },
+            });
+        } catch (error) {
+            console.error('Payment failed:', error);
+            alert('Payment failed. Please try again.');
+        } finally {
+            setIsProcessing(false);
+        }
+    };
 
     return (
         <div className="min-h-screen flex flex-col bg-[#F8F9FB]">
@@ -111,9 +172,17 @@ export default function CartPage() {
                                         </div>
                                     </div>
 
-                                    <button className="w-full py-3.5 bg-[#2D6DF6] text-white rounded-lg font-semibold text-base hover:bg-[#1a4fd6] transition-all transform active:scale-[0.98] flex items-center justify-center gap-2 shadow-lg shadow-blue-500/20">
-                                        Checkout
-                                        <ArrowRight className="w-5 h-5" />
+                                    <button 
+                                        onClick={handleCheckout}
+                                        disabled={isProcessing}
+                                        className={`w-full py-3.5 rounded-lg font-semibold text-base transition-all transform active:scale-[0.98] flex items-center justify-center gap-2 shadow-lg ${
+                                            isProcessing 
+                                                ? 'bg-gray-400 text-white cursor-not-allowed' 
+                                                : 'bg-[#2D6DF6] text-white hover:bg-[#1a4fd6] shadow-blue-500/20'
+                                        }`}
+                                    >
+                                        {isProcessing ? 'Processing...' : 'Checkout'}
+                                        {!isProcessing && <ArrowRight className="w-5 h-5" />}
                                     </button>
 
                                     <p className="text-xs text-center text-gray-500 mt-4">

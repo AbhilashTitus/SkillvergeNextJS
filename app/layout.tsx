@@ -10,8 +10,17 @@ const montserrat = Montserrat({
 });
 
 export const metadata: Metadata = {
-  title: "Skillverge - Upgrade Your Skills With Affordable Online Learning",
+  title: "Skillverge",
   description: "Skillverge - Affordable online learning platform. Upgrade your skills with courses starting from ₹100.",
+  keywords: ["online learning", "courses", "education", "skills", "affordable learning", "EdTech"],
+  authors: [{ name: "Skillverge Team" }],
+  creator: "Skillverge",
+  publisher: "Skillverge",
+  formatDetection: {
+    email: false,
+    address: false,
+    telephone: false,
+  },
 };
 
 export default function RootLayout({
@@ -23,6 +32,8 @@ export default function RootLayout({
     <html lang="en">
       <head>
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css" />
+        <meta name="theme-color" content="#2D6DF6" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
       </head>
       <body className={`${montserrat.variable} antialiased`}>
         <CartProvider>
