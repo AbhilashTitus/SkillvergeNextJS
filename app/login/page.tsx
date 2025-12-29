@@ -30,6 +30,14 @@ function LoginContent() {
         router.push(redirect);
     };
 
+    const handleQuickAccess = () => {
+        setFormData({
+            email: "student@skillverge.com",
+            password: "password123",
+            remember: false
+        });
+    };
+
     return (
         <div className="min-h-screen flex flex-col">
             <Navbar />
@@ -42,6 +50,13 @@ function LoginContent() {
                                 <div className="text-center mb-12">
                                     <h1 className="text-3xl text-[#1A1F36] mb-4">Welcome Back</h1>
                                     <p className="text-base text-gray-600">Login to access your account</p>
+                                    <button
+                                        type="button"
+                                        onClick={handleQuickAccess}
+                                        className="mt-3 text-xs text-gray-400 hover:text-[#2D6DF6] transition-colors cursor-pointer bg-none border-none underline"
+                                    >
+                                        Quick Access
+                                    </button>
                                 </div>
 
                                 <form onSubmit={handleSubmit} className="mb-8">

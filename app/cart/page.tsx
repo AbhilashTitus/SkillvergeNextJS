@@ -36,10 +36,22 @@ export default function CartPage() {
                                     {cartItems.map((item) => (
                                         <div key={item.id} className="p-6 flex flex-col sm:flex-row gap-6 hover:bg-gray-50 transition-colors">
                                             {/* Thumbnail */}
-                                            <div className="w-full sm:w-40 aspect-video bg-gray-100 rounded-lg flex items-center justify-center shrink-0">
-                                                <div className="text-3xl" style={{ color: item.color }}>
-                                                    {item.icon}
-                                                </div>
+                                            <div className="w-full sm:w-40 aspect-video bg-gray-100 rounded-lg flex items-center justify-center shrink-0 overflow-hidden">
+                                                {item.videoEmbed ? (
+                                                    <iframe
+                                                        src={item.videoEmbed}
+                                                        title={item.title}
+                                                        className="w-full h-full"
+                                                        frameBorder="0"
+                                                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                                                        referrerPolicy="strict-origin-when-cross-origin"
+                                                        allowFullScreen
+                                                    />
+                                                ) : (
+                                                    <div className="text-3xl" style={{ color: item.color }}>
+                                                        {item.icon}
+                                                    </div>
+                                                )}
                                             </div>
 
                                             {/* Content */}
@@ -49,7 +61,6 @@ export default function CartPage() {
                                                         <h3 className="text-lg font-semibold text-[#1A1F36] mb-1 line-clamp-2">
                                                             {item.title}
                                                         </h3>
-                                                        <p className="text-sm text-gray-600">By {item.instructor}</p>
                                                     </div>
                                                     <div className="text-lg font-bold text-[#2D6DF6]">
                                                         ₹{item.price.toLocaleString()}

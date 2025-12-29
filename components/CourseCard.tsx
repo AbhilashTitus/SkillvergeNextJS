@@ -17,6 +17,7 @@ export interface CourseProps {
     level: string;
     icon: React.ReactNode;
     color: string;
+    videoEmbed?: string; // Optional YouTube embed URL
 }
 
 // Helper to determine if course is bestseller (rating >= 4.7)
@@ -100,14 +101,28 @@ export function CourseCard({ course }: { course: CourseProps }) {
                 </button>
 
                 {/* Course Icon/Thumbnail */}
-                <div className="h-full flex items-center justify-center p-8">
-                    <div
-                        className="text-5xl transition-transform duration-500 group-hover:scale-110"
-                        style={{ color: course.color }}
-                    >
-                        {course.icon}
+                {course.videoEmbed ? (
+                    <div className="h-full w-full">
+                        <iframe
+                            src={course.videoEmbed}
+                            title={course.title}
+                            className="w-full h-full"
+                            frameBorder="0"
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                            referrerPolicy="strict-origin-when-cross-origin"
+                            allowFullScreen
+                        />
                     </div>
-                </div>
+                ) : (
+                    <div className="h-full flex items-center justify-center p-8">
+                        <div
+                            className="text-5xl transition-transform duration-500 group-hover:scale-110"
+                            style={{ color: course.color }}
+                        >
+                            {course.icon}
+                        </div>
+                    </div>
+                )}
 
                 {/* Quick View Overlay (appears on hover) */}
                 <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
@@ -134,14 +149,9 @@ export function CourseCard({ course }: { course: CourseProps }) {
                 </div>
 
                 {/* Title */}
-                <h3 className="text-base font-semibold text-[#1A1F36] mb-2 leading-snug line-clamp-2 min-h-[2.5rem]">
+                <h3 className="text-base font-semibold text-[#1A1F36] mb-5 leading-snug line-clamp-2 min-h-[2.5rem]">
                     {course.title}
                 </h3>
-
-                {/* Instructor */}
-                <p className="text-sm text-gray-600 mb-3">
-                    {course.instructor}
-                </p>
 
                 {/* Rating & Students */}
                 <div className="flex items-center gap-3 mb-4">

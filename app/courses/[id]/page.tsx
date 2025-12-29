@@ -90,9 +90,6 @@ export default function CourseDetailsPage() {
                                         </div>
                                     </div>
                                     <div className="text-gray-300">
-                                        By <span className="text-white font-medium underline decoration-dotted underline-offset-4">{course.instructor}</span>
-                                    </div>
-                                    <div className="text-gray-300">
                                         Last updated <span className="text-white">December 2025</span>
                                     </div>
                                 </div>
@@ -139,10 +136,22 @@ export default function CourseDetailsPage() {
                         {/* Sidebar */}
                         <div className="lg:relative">
                             <div className="bg-white rounded-xl shadow-lg border border-gray-200 p-6 lg:sticky lg:top-24 -mt-32 lg:mt-0 z-10">
-                                <div className="aspect-video bg-gray-100 rounded-lg mb-6 flex items-center justify-center">
-                                    <div className="text-5xl" style={{ color: course.color }}>
-                                        {course.icon}
-                                    </div>
+                                <div className="aspect-video bg-gray-100 rounded-lg mb-6 flex items-center justify-center overflow-hidden">
+                                    {course.videoEmbed ? (
+                                        <iframe
+                                            src={course.videoEmbed}
+                                            title={course.title}
+                                            className="w-full h-full"
+                                            frameBorder="0"
+                                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                                            referrerPolicy="strict-origin-when-cross-origin"
+                                            allowFullScreen
+                                        />
+                                    ) : (
+                                        <div className="text-5xl" style={{ color: course.color }}>
+                                            {course.icon}
+                                        </div>
+                                    )}
                                 </div>
                                 <div className="text-3xl font-bold text-[#1A1F36] mb-6">
                                     ₹{course.price.toLocaleString()}

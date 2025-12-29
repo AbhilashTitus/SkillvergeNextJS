@@ -143,11 +143,12 @@ export default function Home() {
                   Start Selling
                 </button>
               </div>
-              <div className="bg-white/20 rounded-lg p-12 flex items-center justify-center min-h-[300px]">
-                <div className="text-center text-white/70">
-                  <i className="bi bi-image text-[4rem] mb-4"></i>
-                  <p className="text-sm">Illustration of a teacher recording a course</p>
-                </div>
+              <div className="bg-white/20 rounded-lg p-12 flex items-center justify-center min-h-[300px] overflow-hidden">
+                <img 
+                  src="/assets/teacer.webp" 
+                  alt="Illustration of a teacher recording a course"
+                  className="w-full h-full object-cover rounded-lg"
+                />
               </div>
             </div>
           </div>

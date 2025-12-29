@@ -73,12 +73,12 @@ export default function SellWithUs() {
                                     Start Onboarding
                                 </a>
                             </div>
-                            <div className="bg-white/10 rounded-[20px] p-12 flex items-center justify-center min-h-[300px]">
+                            {/* <div className="bg-white/10 rounded-[20px] p-12 flex items-center justify-center min-h-[300px]">
                                 <div className="text-center text-white/70">
                                     <i className="bi bi-image text-[4rem] mb-4"></i>
                                     <p className="text-sm">Upload visual placeholder</p>
                                 </div>
-                            </div>
+                            </div> */}
                         </div>
                     </div>
                 </section>

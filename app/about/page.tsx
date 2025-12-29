@@ -63,7 +63,7 @@ export default function About() {
                             <div className="bg-[#F8F9FB] rounded-[20px] p-12 flex items-center justify-center min-h-[350px]">
                                 <div className="text-center text-gray-400">
                                     <i className="bi bi-lightbulb text-[4rem] mb-4"></i>
-                                    <p className="text-sm">Mission illustration – Education for all</p>
+                                    <p className="text-sm">Education for all</p>
                                 </div>
                             </div>
                         </div>

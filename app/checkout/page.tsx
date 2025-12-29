@@ -156,10 +156,22 @@ export default function CheckoutPage() {
                                 <div className="space-y-4 mb-6">
                                     {cartItems.map((item) => (
                                         <div key={item.id} className="flex gap-3">
-                                            <div className="w-16 h-10 bg-gray-100 rounded flex items-center justify-center shrink-0">
-                                                <div className="text-lg" style={{ color: item.color }}>
-                                                    {item.icon}
-                                                </div>
+                                            <div className="w-16 h-10 bg-gray-100 rounded flex items-center justify-center shrink-0 overflow-hidden">
+                                                {item.videoEmbed ? (
+                                                    <iframe
+                                                        src={item.videoEmbed}
+                                                        title={item.title}
+                                                        className="w-full h-full"
+                                                        frameBorder="0"
+                                                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                                                        referrerPolicy="strict-origin-when-cross-origin"
+                                                        allowFullScreen
+                                                    />
+                                                ) : (
+                                                    <div className="text-lg" style={{ color: item.color }}>
+                                                        {item.icon}
+                                                    </div>
+                                                )}
                                             </div>
                                             <div className="flex-grow min-w-0">
                                                 <p className="text-sm font-medium text-[#1A1F36] truncate">{item.title}</p>
