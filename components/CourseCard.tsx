@@ -18,7 +18,7 @@ export interface CourseProps {
     level: string;
     icon: React.ReactNode;
     color: string;
-    videoEmbed?: string; // Optional YouTube embed URL
+    videoEmbed?: string;
 }
 
 // Helper to determine if course is bestseller (rating >= 4.7)
@@ -52,7 +52,7 @@ export function CourseCard({ course }: { course: CourseProps }) {
     const handleBuyNow = async (e: React.MouseEvent) => {
         e.preventDefault();
         e.stopPropagation();
-        
+
         if (isPurchased) {
             router.push("/my-learning");
             return;
@@ -72,7 +72,7 @@ export function CourseCard({ course }: { course: CourseProps }) {
 
         try {
             const order = await createOrder(course.price, `course_${course.id}_${Date.now()}`);
-            
+
             openCheckout({
                 key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID!,
                 amount: order.amount,
@@ -82,7 +82,7 @@ export function CourseCard({ course }: { course: CourseProps }) {
                 order_id: order.orderId,
                 handler: (response: any) => {
                     // Payment successful
-                    router.push(`/success?payment_id=${response.razorpay_payment_id}&order_id=${response.razorpay_order_id}`);
+                    router.push(`/success?payment_id=${response.razorpay_payment_id}&order_id=${response.razorpay_order_id}&course_id=${course.id}`);
                 },
                 prefill: {
                     name: user?.name || '',
@@ -145,28 +145,14 @@ export function CourseCard({ course }: { course: CourseProps }) {
                 </button>
 
                 {/* Course Icon/Thumbnail */}
-                {course.videoEmbed ? (
-                    <div className="h-full w-full">
-                        <iframe
-                            src={course.videoEmbed}
-                            title={course.title}
-                            className="w-full h-full"
-                            frameBorder="0"
-                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                            referrerPolicy="strict-origin-when-cross-origin"
-                            allowFullScreen
-                        />
+                <div className="h-full flex items-center justify-center p-8">
+                    <div
+                        className="text-5xl transition-transform duration-500 group-hover:scale-110"
+                        style={{ color: course.color }}
+                    >
+                        {course.icon}
                     </div>
-                ) : (
-                    <div className="h-full flex items-center justify-center p-8">
-                        <div
-                            className="text-5xl transition-transform duration-500 group-hover:scale-110"
-                            style={{ color: course.color }}
-                        >
-                            {course.icon}
-                        </div>
-                    </div>
-                )}
+                </div>
 
                 {/* Quick View Overlay (appears on hover) */}
                 <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
@@ -258,11 +244,10 @@ export function CourseCard({ course }: { course: CourseProps }) {
                                 <button
                                     onClick={handleBuyNow}
                                     disabled={isProcessing}
-                                    className={`flex-1 py-2.5 px-4 rounded-lg text-sm font-semibold transition-colors ${
-                                        isProcessing 
-                                            ? 'bg-gray-400 text-white cursor-not-allowed' 
-                                            : 'bg-[#2D6DF6] text-white hover:bg-[#1a4fd6]'
-                                    }`}
+                                    className={`flex-1 py-2.5 px-4 rounded-lg text-sm font-semibold transition-colors ${isProcessing
+                                        ? 'bg-gray-400 text-white cursor-not-allowed'
+                                        : 'bg-[#2D6DF6] text-white hover:bg-[#1a4fd6]'
+                                        }`}
                                 >
                                     {isProcessing ? 'Processing...' : 'Buy Now'}
                                 </button>

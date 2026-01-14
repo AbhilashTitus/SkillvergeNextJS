@@ -12,7 +12,7 @@ import { Suspense } from "react";
 function SuccessContent() {
     const router = useRouter();
     const searchParams = useSearchParams();
-    const { buyCourse } = useAuth();
+    const { buyCourse, buyCourses } = useAuth();
     const { cartItems, clearCart } = useCart();
     const [paymentId, setPaymentId] = useState<string | null>(null);
     const [orderId, setOrderId] = useState<string | null>(null);
@@ -21,16 +21,45 @@ function SuccessContent() {
     useEffect(() => {
         setPaymentId(searchParams.get('payment_id'));
         setOrderId(searchParams.get('order_id'));
-        
+
         // Process course purchases on successful payment
-        if (!coursesProcessed && cartItems.length > 0) {
-            cartItems.forEach(course => {
-                buyCourse(course.id);
-            });
-            clearCart();
-            setCoursesProcessed(true);
+        if (!coursesProcessed) {
+            const courseId = searchParams.get('course_id');
+            const cartIdsParam = searchParams.get('cart_ids');
+
+            if (courseId) {
+                // Direct Buy Now
+                buyCourse(courseId);
+                setCoursesProcessed(true);
+            } else if (cartIdsParam) {
+                // Cart Checkout - Robust URL-based processing
+                const ids = cartIdsParam.split(',');
+
+                // Batch update via Context
+                buyCourses(ids);
+
+                // Redundant direct storage backup
+                const existing = JSON.parse(localStorage.getItem("skillverge-purchases") || "[]");
+                const merged = Array.from(new Set([...existing, ...ids]));
+                localStorage.setItem("skillverge-purchases", JSON.stringify(merged));
+
+                // Ensure cart is cleared (UI cleanup)
+                if (cartItems.length > 0) clearCart();
+                setCoursesProcessed(true);
+            } else if (cartItems.length > 0) {
+                // Fallback for legacy flow (if URL params missing)
+                const ids = cartItems.map(item => item.id);
+                buyCourses(ids);
+
+                const existing = JSON.parse(localStorage.getItem("skillverge-purchases") || "[]");
+                const merged = Array.from(new Set([...existing, ...ids]));
+                localStorage.setItem("skillverge-purchases", JSON.stringify(merged));
+
+                clearCart();
+                setCoursesProcessed(true);
+            }
         }
-    }, [searchParams, cartItems, buyCourse, clearCart, coursesProcessed]);
+    }, [searchParams, cartItems, buyCourse, buyCourses, clearCart, coursesProcessed]);
 
     return (
         <div className="min-h-screen flex flex-col bg-gradient-to-br from-[#F8F9FB] to-white">
@@ -41,7 +70,7 @@ function SuccessContent() {
                     <div className="bg-white rounded-2xl shadow-xl p-8 md:p-12 text-center relative overflow-hidden">
                         {/* Background Pattern */}
                         <div className="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-[#00B894] via-[#2D6DF6] to-[#00B894]"></div>
-                        
+
                         {/* Success Icon */}
                         <div className="relative mb-8">
                             <div className="w-24 h-24 bg-gradient-to-br from-[#00B894] to-[#00a180] rounded-full flex items-center justify-center mx-auto mb-6 shadow-lg">

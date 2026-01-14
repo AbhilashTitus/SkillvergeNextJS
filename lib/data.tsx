@@ -34,8 +34,7 @@ export const courses: CourseProps[] = [
         category: "ai",
         level: "beginner",
         icon: <Bot size={48} />,
-        color: "#2D6DF6",
-        videoEmbed: "https://www.youtube.com/embed/gHg1OA5wMDc?si=ik-dOehCz2bcPVWs"
+        color: "#2D6DF6"
     },
     {
         id: "2",
@@ -46,8 +45,7 @@ export const courses: CourseProps[] = [
         category: "ai",
         level: "advanced",
         icon: <Stars size={48} />,
-        color: "#00B894",
-        videoEmbed: "https://www.youtube.com/embed/ROjfumHCY7Y?si=NChjtsTompvhyCBw"
+        color: "#00B894"
     },
     {
         id: "3",
@@ -58,8 +56,7 @@ export const courses: CourseProps[] = [
         category: "ai",
         level: "intermediate",
         icon: <MessageSquare size={48} />,
-        color: "#2D6DF6",
-        videoEmbed: "https://www.youtube.com/embed/KMviqH0IYJ0?si=NQmEhd8_GOs8BePu"
+        color: "#2D6DF6"
     },
     {
         id: "4",
@@ -70,8 +67,7 @@ export const courses: CourseProps[] = [
         category: "development",
         level: "advanced",
         icon: <Layers size={48} />,
-        color: "#00B894",
-        videoEmbed: "https://www.youtube.com/embed/ib5_HfCwqL4?si=N15HLMhdDHrlh5FG"
+        color: "#00B894"
     },
     {
         id: "5",
@@ -82,8 +78,7 @@ export const courses: CourseProps[] = [
         category: "development",
         level: "advanced",
         icon: <Terminal size={48} />,
-        color: "#2D6DF6",
-        videoEmbed: "https://www.youtube.com/embed/jB_JBLbOpMg?si=xEAtl0aDBYdq5wL2"
+        color: "#2D6DF6"
     },
     {
         id: "6",
@@ -94,8 +89,7 @@ export const courses: CourseProps[] = [
         category: "development",
         level: "beginner",
         icon: <FileCode size={48} />,
-        color: "#00B894",
-        videoEmbed: "https://www.youtube.com/embed/jHk5tpF3NVI?si=IjerlAZqq92kYb4i"
+        color: "#00B894"
     },
     {
         id: "7",
@@ -106,8 +100,7 @@ export const courses: CourseProps[] = [
         category: "data-science",
         level: "intermediate",
         icon: <BarChart size={48} />,
-        color: "#2D6DF6",
-        videoEmbed: "https://www.youtube.com/embed/SBfEKDQw470?si=BMLAyCoscUByBd7o"
+        color: "#2D6DF6"
     },
     {
         id: "8",
@@ -118,8 +111,7 @@ export const courses: CourseProps[] = [
         category: "development",
         level: "beginner",
         icon: <Braces size={48} />,
-        color: "#00B894",
-        videoEmbed: "https://www.youtube.com/embed/b7je5Bqx550?si=kEE31kUDib2fsX5K"
+        color: "#00B894"
     },
     {
         id: "9",
@@ -130,8 +122,7 @@ export const courses: CourseProps[] = [
         category: "development",
         level: "advanced",
         icon: <Terminal size={48} />,
-        color: "#2D6DF6",
-        videoEmbed: "https://www.youtube.com/embed/GEjQouYYPnQ?si=sxIM2L9pH2JyDrHv"
+        color: "#2D6DF6"
     },
     {
         id: "10",
@@ -142,8 +133,7 @@ export const courses: CourseProps[] = [
         category: "development",
         level: "intermediate",
         icon: <Repeat size={48} />,
-        color: "#00B894",
-        videoEmbed: "https://www.youtube.com/embed/tqjJrXd27m4?si=abWmZudkQ59lF7Ld"
+        color: "#00B894"
     },
     {
         id: "11",
@@ -154,8 +144,7 @@ export const courses: CourseProps[] = [
         category: "development",
         level: "intermediate",
         icon: <Server size={48} />,
-        color: "#2D6DF6",
-        videoEmbed: "https://www.youtube.com/embed/g09PoiCob4Y?si=zqSOLIQqDnctMn3L"
+        color: "#2D6DF6"
     },
     {
         id: "12",
@@ -166,8 +155,7 @@ export const courses: CourseProps[] = [
         category: "design",
         level: "beginner",
         icon: <PaletteIcon size={48} />,
-        color: "#00B894",
-        videoEmbed: "https://www.youtube.com/embed/xaCrTHuiYz0?si=b0nXAdLDuXsikx5t"
+        color: "#00B894"
     },
     {
         id: "13",
@@ -178,8 +166,7 @@ export const courses: CourseProps[] = [
         category: "design",
         level: "intermediate",
         icon: <PenTool size={48} />,
-        color: "#2D6DF6",
-        videoEmbed: "https://www.youtube.com/embed/9N57WqxgkjA?si=qUmLtD7BtcfsTXWf"
+        color: "#2D6DF6"
     },
     {
         id: "14",
@@ -190,8 +177,7 @@ export const courses: CourseProps[] = [
         category: "development",
         level: "intermediate",
         icon: <Smartphone size={48} />,
-        color: "#00B894",
-        videoEmbed: "https://www.youtube.com/embed/ZRPn752U8r4?si=JPJwDgU6TXm5M7qG"
+        color: "#00B894"
     },
     {
         id: "15",
@@ -202,8 +188,7 @@ export const courses: CourseProps[] = [
         category: "development",
         level: "intermediate",
         icon: <AppWindow size={48} />,
-        color: "#2D6DF6",
-        videoEmbed: "https://www.youtube.com/embed/Jy_inQPBxsw?si=4QH6y6Hs5kKzSarS"
+        color: "#2D6DF6"
     },
     {
         id: "16",
@@ -214,8 +199,7 @@ export const courses: CourseProps[] = [
         category: "business",
         level: "beginner",
         icon: <Briefcase size={48} />,
-        color: "#00B894",
-        videoEmbed: "https://www.youtube.com/embed/gWIpsqIgxbA?si=SCybeL3dgQvxFsxZ"
+        color: "#00B894"
     },
     {
         id: "17",
@@ -226,8 +210,7 @@ export const courses: CourseProps[] = [
         category: "productivity",
         level: "beginner",
         icon: <Zap size={48} />,
-        color: "#2D6DF6",
-        videoEmbed: "https://www.youtube.com/embed/kZ8iLvqVz4E?si=R0vuv4o7NWU8M-o3"
+        color: "#2D6DF6"
     },
     {
         id: "18",
@@ -238,8 +221,7 @@ export const courses: CourseProps[] = [
         category: "productivity",
         level: "beginner",
         icon: <Clock size={48} />,
-        color: "#00B894",
-        videoEmbed: "https://www.youtube.com/embed/F0s-U2hO_Gw?si=1VPbW8JHJxi2utEe"
+        color: "#00B894"
     },
     {
         id: "19",
@@ -250,8 +232,7 @@ export const courses: CourseProps[] = [
         category: "marketing",
         level: "intermediate",
         icon: <Megaphone size={48} />,
-        color: "#2D6DF6",
-        videoEmbed: "https://www.youtube.com/embed/hIiHkaOw6Uw?si=T_EO-EpfethvCYpV"
+        color: "#2D6DF6"
     },
     {
         id: "20",
@@ -262,8 +243,7 @@ export const courses: CourseProps[] = [
         category: "marketing",
         level: "advanced",
         icon: <TrendingUp size={48} />,
-        color: "#00B894",
-        videoEmbed: "https://www.youtube.com/embed/gC5wFoi6v8E?si=xRoeZOUgpexxu4Av"
+        color: "#00B894"
     },
     {
         id: "21",
@@ -274,8 +254,7 @@ export const courses: CourseProps[] = [
         category: "data-science",
         level: "intermediate",
         icon: <BarChart size={48} />,
-        color: "#2D6DF6",
-        videoEmbed: "https://www.youtube.com/embed/UE2FYfujpFs?si=862MQrZE6HnjDtZ9"
+        color: "#2D6DF6"
     },
     {
         id: "22",
@@ -286,8 +265,7 @@ export const courses: CourseProps[] = [
         category: "productivity",
         level: "intermediate",
         icon: <Table size={48} />,
-        color: "#00B894",
-        videoEmbed: "https://www.youtube.com/embed/9aJFSH7-zTo?si=d9Qbz7m60V5CXT_m"
+        color: "#00B894"
     },
     {
         id: "23",
@@ -298,8 +276,7 @@ export const courses: CourseProps[] = [
         category: "design",
         level: "beginner",
         icon: <Layout size={48} />,
-        color: "#2D6DF6",
-        videoEmbed: "https://www.youtube.com/embed/o3JU8cHtR9s?si=EaaNe6-ErzL8-AmF"
+        color: "#2D6DF6"
     },
     {
         id: "24",
@@ -310,8 +287,7 @@ export const courses: CourseProps[] = [
         category: "development",
         level: "beginner",
         icon: <Code size={48} />,
-        color: "#00B894",
-        videoEmbed: "https://www.youtube.com/embed/mPfvfjLkiDA?si=aHp2fTv5VKav1zc0"
+        color: "#00B894"
     },
     {
         id: "25",
@@ -322,8 +298,7 @@ export const courses: CourseProps[] = [
         category: "business",
         level: "intermediate",
         icon: <Rocket size={48} />,
-        color: "#2D6DF6",
-        videoEmbed: "https://www.youtube.com/embed/jfKlXQ_Ei2I?si=OyXGdhn_Y44ep9u2"
+        color: "#2D6DF6"
     },
     {
         id: "26",
@@ -334,7 +309,6 @@ export const courses: CourseProps[] = [
         category: "productivity",
         level: "beginner",
         icon: <Bot size={48} />,
-        color: "#00B894",
-        videoEmbed: "https://www.youtube.com/embed/Uw78K4nMejM?si=oLRgoQbt28GdiUEH"
+        color: "#00B894"
     }
 ];

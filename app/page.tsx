@@ -1,6 +1,6 @@
 "use client";
 
-import { Navbar } from "@/components/Navbar";
+import { TransparentNavbar } from "@/components/TransparentNavbar";
 import { Footer } from "@/components/Footer";
 import { CourseCard } from "@/components/CourseCard";
 import { CategoryCard } from "@/components/CategoryCard";
@@ -14,42 +14,36 @@ export default function Home() {
   const router = useRouter();
 
   const handleSellerClick = () => {
-    if (isAuthenticated) {
-      router.push("/seller");
-    } else {
-      router.push("/login?redirect=/seller");
-    }
+    router.push("/sell-with-us");
   };
 
   return (
     <div className="min-h-screen flex flex-col">
-      <Navbar />
-
       <main>
-        {/* Hero Section with Video Background */}
+        {/* Hero Section with Background Image - Starts from top */}
         <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
-          {/* Background Video */}
-          <video
-            className="absolute top-1/2 left-1/2 min-w-full min-h-full w-auto h-auto -translate-x-1/2 -translate-y-1/2 z-0 object-cover"
-            autoPlay
-            muted
-            loop
-            playsInline
-          >
-            <source src="/assets/loop.mp4" type="video/mp4" />
-          </video>
+          {/* Background Image */}
+          <div
+            className="absolute top-0 left-0 w-full h-full bg-cover bg-top bg-no-repeat"
+            style={{ backgroundImage: "url('/assets/Gemini_Generated_Image_dbyarsdbyarsdbya.png')" }}
+          />
 
-          {/* Hero Overlay */}
-          <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-br from-[rgba(26,31,54,0.85)] to-[rgba(45,109,246,0.75)] z-[1]" />
+          {/* Hero Overlay - Subtle dark overlay for text readability */}
+          <div className="absolute top-0 left-0 w-full h-full bg-black/40 z-[1]" />
+
+          {/* Navbar positioned absolutely over hero */}
+          <div className="absolute top-0 left-0 w-full z-[1000]">
+            <TransparentNavbar />
+          </div>
 
           {/* Hero Content */}
-          <div className="relative z-[2] w-full py-24">
-            <div className="max-w-[1280px] mx-auto px-4 md:px-6">
+          <div className="relative z-[2] w-full py-24 flex items-end min-h-screen pb-32">
+            <div className="max-w-[1280px] mx-auto px-4 md:px-6 w-full">
               <div className="text-center animate-[fadeInUp_0.8s_ease-out]">
-                <h1 className="text-5xl font-bold text-white mb-6 leading-[1.1] [text-shadow:0_4px_12px_rgba(0,0,0,0.3)]">
+                <h1 className="text-5xl md:text-6xl font-bold text-white mb-6 leading-[1.1] [text-shadow:0_4px_20px_rgba(0,0,0,0.8),0_2px_8px_rgba(0,0,0,0.6)]">
                   Upgrade Your Skills With Skillverge
                 </h1>
-                <p className="text-xl text-white/95 mb-12 font-normal [text-shadow:0_2px_8px_rgba(0,0,0,0.3)]">
+                <p className="text-xl md:text-2xl text-white mb-12 font-medium [text-shadow:0_3px_12px_rgba(0,0,0,0.8),0_2px_6px_rgba(0,0,0,0.6)]">
                   Affordable online learning starting from ₹100.
                 </p>
                 <div className="flex gap-6 flex-wrap justify-center">
@@ -58,7 +52,7 @@ export default function Home() {
                   </Button>
                   <button
                     onClick={handleSellerClick}
-                    className="inline-block py-4 px-8 text-lg font-medium text-center rounded-none transition-all duration-[300ms] cursor-pointer no-underline leading-[1.5] bg-white/20 text-white border-2 border-white backdrop-blur-[10px] hover:bg-white hover:text-[#2D6DF6]"
+                    className="inline-block py-4 px-8 text-lg font-medium text-center rounded-none transition-all duration-[300ms] cursor-pointer no-underline leading-[1.5] bg-white/30 text-white border-2 border-white backdrop-blur-[10px] hover:bg-white hover:text-[#2D6DF6] shadow-lg"
                   >
                     Become a Seller
                   </button>
@@ -144,8 +138,8 @@ export default function Home() {
                 </button>
               </div>
               <div className="bg-white/20 rounded-lg p-12 flex items-center justify-center min-h-[300px] overflow-hidden">
-                <img 
-                  src="/assets/teacer.webp" 
+                <img
+                  src="/assets/teacer.webp"
                   alt="Illustration of a teacher recording a course"
                   className="w-full h-full object-cover rounded-lg"
                 />

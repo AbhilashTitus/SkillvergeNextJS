@@ -15,6 +15,7 @@ interface AuthContextType {
     signup: (name: string, email: string) => void;
     logout: () => void;
     buyCourse: (courseId: string) => void;
+    buyCourses: (courseIds: string[]) => void;
     hasPurchased: (courseId: string) => boolean;
     isAuthenticated: boolean;
 }
@@ -22,10 +23,13 @@ interface AuthContextType {
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
+    // ... existing state ...
     const [user, setUser] = useState<User | null>(null);
     const [purchasedCourses, setPurchasedCourses] = useState<string[]>([]);
     const [isLoaded, setIsLoaded] = useState(false);
     const router = useRouter();
+
+    // ... existing useEffects ...
 
     // Load from localStorage on mount
     useEffect(() => {
@@ -69,12 +73,10 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
     const login = (name: string, email: string) => {
         setUser({ name, email });
-        // In a real app, we would fetch purchased courses from API here
     };
 
     const signup = (name: string, email: string) => {
         setUser({ name, email });
-        // New user has no purchases
         setPurchasedCourses([]);
     };
 
@@ -87,9 +89,28 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     };
 
     const buyCourse = (courseId: string) => {
-        if (!purchasedCourses.includes(courseId)) {
-            setPurchasedCourses(prev => [...prev, courseId]);
-        }
+        setPurchasedCourses(prev => {
+            if (prev.includes(courseId)) return prev;
+            const updated = [...prev, courseId];
+            if (typeof window !== 'undefined') {
+                localStorage.setItem("skillverge-purchases", JSON.stringify(updated));
+            }
+            return updated;
+        });
+    };
+
+    const buyCourses = (courseIds: string[]) => {
+        setPurchasedCourses(prev => {
+            // Filter out IDs that are already present
+            const newIds = courseIds.filter(id => !prev.includes(id));
+            if (newIds.length === 0) return prev;
+
+            const updated = [...prev, ...newIds];
+            if (typeof window !== 'undefined') {
+                localStorage.setItem("skillverge-purchases", JSON.stringify(updated));
+            }
+            return updated;
+        });
     };
 
     const hasPurchased = (courseId: string) => {
@@ -105,6 +126,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
                 signup,
                 logout,
                 buyCourse,
+                buyCourses,
                 hasPurchased,
                 isAuthenticated: !!user,
             }}

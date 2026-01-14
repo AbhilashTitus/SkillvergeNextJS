@@ -35,7 +35,7 @@ export default function RootLayout({
         <meta name="theme-color" content="#2D6DF6" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
       </head>
-      <body className={`${montserrat.variable} antialiased`}>
+      <body className={`${montserrat.variable} antialiased`} suppressHydrationWarning>
         <CartProvider>
           <AuthProvider>
             {children}

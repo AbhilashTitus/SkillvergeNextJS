@@ -32,14 +32,31 @@ export const useRazorpay = () => {
   const [isLoaded, setIsLoaded] = useState(false);
 
   useEffect(() => {
-    const script = document.createElement('script');
-    script.src = 'https://checkout.razorpay.com/v1/checkout.js';
-    script.async = true;
-    script.onload = () => setIsLoaded(true);
-    document.body.appendChild(script);
+    // 1. Check if Razorpay is already available on window
+    if (typeof window !== 'undefined' && window.Razorpay) {
+      setIsLoaded(true);
+      return;
+    }
 
+    // 2. Check if script is already in document
+    const scriptSrc = 'https://checkout.razorpay.com/v1/checkout.js';
+    let script = document.querySelector(`script[src="${scriptSrc}"]`) as HTMLScriptElement;
+
+    if (!script) {
+      // 3. Create script if not found
+      script = document.createElement('script');
+      script.src = scriptSrc;
+      script.async = true;
+      document.body.appendChild(script);
+    }
+
+    // 4. Attach load listener
+    const handleLoad = () => setIsLoaded(true);
+    script.addEventListener('load', handleLoad);
+
+    // 5. Cleanup listener only (do NOT remove script)
     return () => {
-      document.body.removeChild(script);
+      script.removeEventListener('load', handleLoad);
     };
   }, []);
 

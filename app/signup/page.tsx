@@ -20,6 +20,18 @@ export default function SignUp() {
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
+
+        // Save to mock DB
+        const accounts = JSON.parse(localStorage.getItem("skillverge-accounts") || "[]");
+        if (!accounts.find((u: any) => u.email === formData.email)) {
+            accounts.push({
+                name: formData.fullName,
+                email: formData.email,
+                password: formData.password
+            });
+            localStorage.setItem("skillverge-accounts", JSON.stringify(accounts));
+        }
+
         signup(formData.fullName, formData.email);
         router.push("/");
     };

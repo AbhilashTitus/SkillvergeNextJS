@@ -1,7 +1,7 @@
 "use client";
 
 import { Suspense } from "react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Navbar } from "@/components/Navbar";
@@ -14,28 +14,45 @@ function LoginContent() {
     const { login } = useAuth();
     const [formData, setFormData] = useState({
         email: "",
-        password: "",
-        remember: false
+        password: ""
     });
+    const [error, setError] = useState("");
+
+    // Seed default user for Quick Access
+    useEffect(() => {
+        const accounts = JSON.parse(localStorage.getItem("skillverge-accounts") || "[]");
+        if (!accounts.find((u: any) => u.email === "student@skillverge.com")) {
+            accounts.push({ name: "Student", email: "student@skillverge.com", password: "password123" });
+            localStorage.setItem("skillverge-accounts", JSON.stringify(accounts));
+        }
+    }, []);
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
-        // Mock login - in a real app this would validate credentials
-        // For now we just use the email part as the name
-        const name = formData.email.split('@')[0];
-        login(name, formData.email);
+        setError("");
 
-        // Redirect to previous page or home
-        const redirect = searchParams.get('redirect') || '/';
-        router.push(redirect);
+        // 1. Get accounts
+        const accounts = JSON.parse(localStorage.getItem("skillverge-accounts") || "[]");
+
+        // 2. Find user
+        const user = accounts.find((u: any) => u.email === formData.email);
+
+        // 3. Validate
+        if (user && user.password === formData.password) {
+            login(user.name, user.email);
+            const redirect = searchParams.get('redirect') || '/';
+            router.push(redirect);
+        } else {
+            setError("Invalid email or password. Please try again.");
+        }
     };
 
     const handleQuickAccess = () => {
         setFormData({
             email: "student@skillverge.com",
-            password: "password123",
-            remember: false
+            password: "password123"
         });
+        setError("");
     };
 
     return (
@@ -60,13 +77,25 @@ function LoginContent() {
                                 </div>
 
                                 <form onSubmit={handleSubmit} className="mb-8">
+                                    {error && (
+                                        <div className="mb-6 p-4 bg-red-50 border border-red-100 text-red-600 rounded-lg text-sm flex items-center gap-2">
+                                            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                                                <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
+                                            </svg>
+                                            {error}
+                                        </div>
+                                    )}
+
                                     <div className="mb-6">
                                         <label className="block text-sm font-semibold text-[#1A1F36] mb-2">Email Address</label>
                                         <input
                                             type="email"
                                             value={formData.email}
-                                            onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                                            className="w-full py-3 px-4 border border-[#E5E7EB] rounded-lg focus:outline-none focus:border-[#2D6DF6]"
+                                            onChange={(e) => {
+                                                setFormData({ ...formData, email: e.target.value });
+                                                setError("");
+                                            }}
+                                            className={`w-full py-3 px-4 border ${error ? 'border-red-300 focus:border-red-500' : 'border-[#E5E7EB] focus:border-[#2D6DF6]'} rounded-lg focus:outline-none`}
                                             placeholder="your@email.com"
                                             required
                                         />
@@ -77,24 +106,18 @@ function LoginContent() {
                                         <input
                                             type="password"
                                             value={formData.password}
-                                            onChange={(e) => setFormData({ ...formData, password: e.target.value })}
-                                            className="w-full py-3 px-4 border border-[#E5E7EB] rounded-lg focus:outline-none focus:border-[#2D6DF6]"
+                                            onChange={(e) => {
+                                                setFormData({ ...formData, password: e.target.value });
+                                                setError("");
+                                            }}
+                                            className={`w-full py-3 px-4 border ${error ? 'border-red-300 focus:border-red-500' : 'border-[#E5E7EB] focus:border-[#2D6DF6]'} rounded-lg focus:outline-none`}
                                             placeholder="Enter your password"
                                             required
                                         />
                                     </div>
 
-                                    <div className="flex justify-between items-center mb-8">
-                                        <label className="flex items-center gap-2 text-sm text-[#1A1F36] cursor-pointer">
-                                            <input
-                                                type="checkbox"
-                                                checked={formData.remember}
-                                                onChange={(e) => setFormData({ ...formData, remember: e.target.checked })}
-                                                className="cursor-pointer"
-                                            />
-                                            Remember me
-                                        </label>
-                                        <Link href="/forgot-password" className="text-sm text-[#2D6DF6] no-underline hover:underline">
+                                    <div className="flex justify-end items-center mb-8">
+                                        <Link href="/auth/forgot-password" className="text-sm text-[#2D6DF6] no-underline hover:underline">
                                             Forgot Password?
                                         </Link>
                                     </div>

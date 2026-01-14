@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { ShoppingCart, User, LogOut, BookOpen } from "lucide-react";
@@ -12,14 +12,34 @@ export function Navbar() {
     const pathname = usePathname();
     const { cartCount } = useCart();
     const { user, logout, isAuthenticated } = useAuth();
+    const [isSeller, setIsSeller] = useState(false);
+
+    useEffect(() => {
+        const checkSellerStatus = () => {
+            const sellerData = localStorage.getItem("sm_new_seller");
+            setIsSeller(!!sellerData);
+        };
+
+        checkSellerStatus();
+        // Optional: Listen for storage events if needed, but simple mount check is usually enough 
+        // unless they register in another tab.
+        window.addEventListener('storage', checkSellerStatus);
+        return () => window.removeEventListener('storage', checkSellerStatus);
+    }, []);
 
     const navLinks = [
         { name: "Home", href: "/" },
         { name: "Courses", href: "/courses" },
-        { name: "Sell With Us", href: isAuthenticated ? "/seller" : "/login?redirect=/seller" },
+        {
+            name: isSeller ? "Seller Dashboard" : "Become a Seller",
+            href: isSeller ? "/seller-dashboard" : "/seller/register"
+        },
         { name: "About", href: "/about" },
         { name: "Contact", href: "/contact" },
     ];
+
+    // Fallback for "Sell With Us" landing page if we want to keep it accessible via another link or 
+    // replacing it entirely. Given the prompt, replacing "Sell With Us" seems correct.
 
     const isActive = (href: string) => pathname === href;
 

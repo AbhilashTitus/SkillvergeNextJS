@@ -32,9 +32,14 @@ export default function CheckoutPage() {
         await new Promise(resolve => setTimeout(resolve, 2000));
 
         // Process purchase
+        const newPurchases: string[] = [];
         cartItems.forEach(item => {
             buyCourse(item.id);
+            newPurchases.push(item.id);
         });
+
+        // Debug log to verify flow (visible in user console)
+        console.log("Processed purchases:", newPurchases);
 
         clearCart();
         setIsProcessing(false);
@@ -134,8 +139,8 @@ export default function CheckoutPage() {
                                         type="submit"
                                         disabled={isProcessing}
                                         className={`w-full py-4 rounded-lg font-bold text-lg text-white transition-all ${isProcessing
-                                                ? "bg-gray-400 cursor-not-allowed"
-                                                : "bg-[#2D6DF6] hover:bg-[#1a4fd6] shadow-lg shadow-blue-500/20"
+                                            ? "bg-gray-400 cursor-not-allowed"
+                                            : "bg-[#2D6DF6] hover:bg-[#1a4fd6] shadow-lg shadow-blue-500/20"
                                             }`}
                                     >
                                         {isProcessing ? "Processing..." : `Pay ₹${cartTotal.toLocaleString()}`}

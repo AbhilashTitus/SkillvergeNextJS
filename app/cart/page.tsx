@@ -36,7 +36,7 @@ export default function CartPage() {
 
         try {
             const order = await createOrder(cartTotal, `cart_${Date.now()}`);
-            
+
             openCheckout({
                 key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID!,
                 amount: order.amount,
@@ -46,8 +46,9 @@ export default function CartPage() {
                 order_id: order.orderId,
                 handler: (response: any) => {
                     // Payment successful
+                    const cartIds = cartItems.map(item => item.id).join(',');
                     clearCart(); // Clear cart after successful payment
-                    router.push(`/success?payment_id=${response.razorpay_payment_id}&order_id=${response.razorpay_order_id}`);
+                    router.push(`/success?payment_id=${response.razorpay_payment_id}&order_id=${response.razorpay_order_id}&cart_ids=${cartIds}`);
                 },
                 prefill: {
                     name: user?.name || '',
@@ -172,14 +173,13 @@ export default function CartPage() {
                                         </div>
                                     </div>
 
-                                    <button 
+                                    <button
                                         onClick={handleCheckout}
                                         disabled={isProcessing}
-                                        className={`w-full py-3.5 rounded-lg font-semibold text-base transition-all transform active:scale-[0.98] flex items-center justify-center gap-2 shadow-lg ${
-                                            isProcessing 
-                                                ? 'bg-gray-400 text-white cursor-not-allowed' 
+                                        className={`w-full py-3.5 rounded-lg font-semibold text-base transition-all transform active:scale-[0.98] flex items-center justify-center gap-2 shadow-lg ${isProcessing
+                                                ? 'bg-gray-400 text-white cursor-not-allowed'
                                                 : 'bg-[#2D6DF6] text-white hover:bg-[#1a4fd6] shadow-blue-500/20'
-                                        }`}
+                                            }`}
                                     >
                                         {isProcessing ? 'Processing...' : 'Checkout'}
                                         {!isProcessing && <ArrowRight className="w-5 h-5" />}
