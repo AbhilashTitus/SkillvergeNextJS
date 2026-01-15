@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, Suspense } from "react";
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
 import { CourseCard } from "@/components/CourseCard";
@@ -8,7 +8,7 @@ import { courses } from "@/lib/data";
 import { SlidersHorizontal, X } from "lucide-react";
 import { useSearchParams } from "next/navigation";
 
-export default function CoursesPage() {
+function CoursesContent() {
     const searchParams = useSearchParams();
     const [selectedCategory, setSelectedCategory] = useState<string | null>(searchParams.get('category'));
     const [selectedLevel, setSelectedLevel] = useState<string | null>(null);
@@ -280,5 +280,13 @@ export default function CoursesPage() {
             </main>
             <Footer />
         </div>
+    );
+}
+
+export default function CoursesPage() {
+    return (
+        <Suspense fallback={<div className="min-h-screen flex items-center justify-center">Loading courses...</div>}>
+            <CoursesContent />
+        </Suspense>
     );
 }
