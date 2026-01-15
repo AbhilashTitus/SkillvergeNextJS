@@ -3,6 +3,8 @@
 import React, { createContext, useContext, useState, useEffect } from "react";
 import { CourseProps } from "@/components/CourseCard";
 
+import { courses } from "@/lib/data";
+
 interface CartContextType {
     cartItems: CourseProps[];
     wishlistItems: CourseProps[];
@@ -30,7 +32,13 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
 
         if (savedCart) {
             try {
-                setCartItems(JSON.parse(savedCart));
+                const parsedCart = JSON.parse(savedCart);
+                // Rehydrate from source of truth to restore React Elements (icons)
+                const validCartItems = parsedCart
+                    .map((item: CourseProps) => courses.find(c => c.id === item.id))
+                    .filter(Boolean) as CourseProps[];
+
+                setCartItems(validCartItems);
             } catch (e) {
                 console.error("Failed to load cart:", e);
             }
@@ -38,7 +46,13 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
 
         if (savedWishlist) {
             try {
-                setWishlistItems(JSON.parse(savedWishlist));
+                const parsedWishlist = JSON.parse(savedWishlist);
+                // Rehydrate from source of truth
+                const validWishlistItems = parsedWishlist
+                    .map((item: CourseProps) => courses.find(c => c.id === item.id))
+                    .filter(Boolean) as CourseProps[];
+
+                setWishlistItems(validWishlistItems);
             } catch (e) {
                 console.error("Failed to load wishlist:", e);
             }
