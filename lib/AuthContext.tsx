@@ -3,9 +3,12 @@
 import React, { createContext, useContext, useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 
-interface User {
+export interface User {
     name: string;
     email: string;
+    membershipTier: 'Free' | 'Silver' | 'Gold';
+    coins: number;
+    subscriptionExpiry?: string;
 }
 
 interface AuthContextType {
@@ -17,19 +20,18 @@ interface AuthContextType {
     buyCourse: (courseId: string) => void;
     buyCourses: (courseIds: string[]) => void;
     hasPurchased: (courseId: string) => boolean;
+    upgradeMembership: (tier: 'Silver' | 'Gold') => void;
+    redeemCoins: (amount: number) => void;
     isAuthenticated: boolean;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
-    // ... existing state ...
     const [user, setUser] = useState<User | null>(null);
     const [purchasedCourses, setPurchasedCourses] = useState<string[]>([]);
     const [isLoaded, setIsLoaded] = useState(false);
     const router = useRouter();
-
-    // ... existing useEffects ...
 
     // Load from localStorage on mount
     useEffect(() => {
@@ -72,17 +74,71 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     }, [purchasedCourses, isLoaded]);
 
     const login = (name: string, email: string) => {
-        setUser({ name, email });
+        // In a real app, you'd fetch the user's data from the backend.
+        // For this mock, we'll see if there's a stored user or just create a default one.
+        // To preserve state across logins in this mock (if user re-logs in with same email), 
+        // we might check localStorage, but here we just reset or set default.
+        // Let's assume a fresh login gets default values if not persisted? 
+        // Or better yet, check if the user is already set.
+
+        // Since we don't have a real backend DB, we'll just set defaults
+        // If we wanted to "persist" between hard refreshes we use existing localStorage logic.
+        // If we want to simulate "fetching" user data:
+        setUser({
+            name,
+            email,
+            membershipTier: 'Free',
+            coins: 0,
+            subscriptionExpiry: undefined
+        });
     };
 
     const signup = (name: string, email: string) => {
-        setUser({ name, email });
+        setUser({
+            name,
+            email,
+            membershipTier: 'Free',
+            coins: 0
+        });
         setPurchasedCourses([]);
+    };
+
+    const upgradeMembership = (tier: 'Silver' | 'Gold') => {
+        if (!user) return;
+
+        let bonusCoins = 0;
+        if (tier === 'Silver') bonusCoins = 50;
+        if (tier === 'Gold') bonusCoins = 100;
+
+        const expiryDate = new Date();
+        expiryDate.setDate(expiryDate.getDate() + 30); // 30 days from now
+
+        setUser(prev => {
+            if (!prev) return null;
+            return {
+                ...prev,
+                membershipTier: tier,
+                coins: (prev.coins || 0) + bonusCoins,
+                subscriptionExpiry: expiryDate.toISOString()
+            };
+        });
+    };
+
+    const redeemCoins = (amount: number) => {
+        if (!user) return;
+        setUser(prev => {
+            if (!prev) return null;
+            return {
+                ...prev,
+                coins: Math.max(0, (prev.coins || 0) - amount)
+            };
+        });
     };
 
     const logout = () => {
         setUser(null);
         setPurchasedCourses([]);
+        // We persist data in localStorage but for "logout" we clear it to simulate session end.
         localStorage.removeItem("skillverge-user");
         localStorage.removeItem("skillverge-purchases");
         router.push("/");
@@ -128,6 +184,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
                 buyCourse,
                 buyCourses,
                 hasPurchased,
+                upgradeMembership,
+                redeemCoins,
                 isAuthenticated: !!user,
             }}
         >

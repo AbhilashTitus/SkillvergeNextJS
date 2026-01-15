@@ -19,7 +19,7 @@ export function Footer() {
                         {[
                             { name: "Home", href: "/" },
                             { name: "Courses", href: "/courses" },
-                            { name: "Sell With Us", href: "/sell-with-us" },
+                            { name: "Sell With Us", href: "/seller/register" },
                             { name: "About", href: "/about" },
                             { name: "Contact", href: "/contact" },
                         ].map((link) => (

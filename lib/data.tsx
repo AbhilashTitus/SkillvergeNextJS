@@ -7,14 +7,14 @@ import {
 import { CourseProps } from "@/components/CourseCard";
 
 export const categories = [
-    { title: "Development", icon: <Code /> },
-    { title: "Business", icon: <Briefcase /> },
-    { title: "Tech & IT", icon: <Cpu /> },
-    { title: "Creativity", icon: <Palette /> },
-    { title: "Data Science", icon: <BarChart /> },
-    { title: "Productivity", icon: <Zap /> },
-    { title: "AI & Prompt Engineering", icon: <Bot /> },
-    { title: "Marketing", icon: <Megaphone /> },
+    { title: "Development", slug: "development", icon: <Code /> },
+    { title: "Business", slug: "business", icon: <Briefcase /> },
+    { title: "Tech & IT", slug: "development", icon: <Cpu /> },
+    { title: "Creativity", slug: "design", icon: <Palette /> },
+    { title: "Data Science", slug: "data-science", icon: <BarChart /> },
+    { title: "Productivity", slug: "productivity", icon: <Zap /> },
+    { title: "AI & Prompt Engineering", slug: "ai", icon: <Bot /> },
+    { title: "Marketing", slug: "marketing", icon: <Megaphone /> },
 ];
 
 export const features = [
@@ -28,35 +28,41 @@ export const courses: CourseProps[] = [
     {
         id: "1",
         title: "AI Prompt Engineering Basics",
-        instructor: "Video Creator", // Replace with actual creator name from YouTube video
+        instructor: "Video Creator",
         rating: 4.5,
         price: 199,
         category: "ai",
         level: "beginner",
         icon: <Bot size={48} />,
-        color: "#2D6DF6"
+        color: "#2D6DF6",
+        pdfUrl: "/Courses/AI Prompt Engineering Basics.pdf",
+        image: "/assets/ai_prompt_engineering_course_thumbnail_1768397830024.png"
     },
     {
         id: "2",
         title: "Advanced Prompt Engineering",
-        instructor: "Video Creator", // Replace with actual creator name from YouTube video
+        instructor: "Video Creator",
         rating: 4.8,
         price: 299,
         category: "ai",
         level: "advanced",
         icon: <Stars size={48} />,
-        color: "#00B894"
+        color: "#00B894",
+        pdfUrl: "/Courses/Advanced Prompt Engineering.pdf",
+        image: "/assets/advanced_prompt_engineering_thumbnail_1768399009730.png"
     },
     {
         id: "3",
         title: "ChatGPT Mastery Course",
-        instructor: "Video Creator", // Replace with actual creator name from YouTube video
+        instructor: "Video Creator",
         rating: 4.7,
         price: 249,
         category: "ai",
         level: "intermediate",
         icon: <MessageSquare size={48} />,
-        color: "#2D6DF6"
+        color: "#2D6DF6",
+        pdfUrl: "/Courses/ChatGPT Mastery Course.pdf",
+        image: "/assets/chatgpt_mastery_thumbnail_1768399037483.png"
     },
     {
         id: "4",
@@ -67,7 +73,9 @@ export const courses: CourseProps[] = [
         category: "development",
         level: "advanced",
         icon: <Layers size={48} />,
-        color: "#00B894"
+        color: "#00B894",
+        pdfUrl: "/Courses/Complete MERN Stack Development.pdf",
+        image: "/assets/mern_stack_course_thumbnail_1768397860702.png"
     },
     {
         id: "5",
@@ -78,7 +86,9 @@ export const courses: CourseProps[] = [
         category: "development",
         level: "advanced",
         icon: <Terminal size={48} />,
-        color: "#2D6DF6"
+        color: "#2D6DF6",
+        pdfUrl: "/Courses/Advanced MERN Stack Projects.pdf",
+        image: "/assets/advanced_mern_stack_projects_thumbnail_1768399061289.png"
     },
     {
         id: "6",
@@ -89,7 +99,9 @@ export const courses: CourseProps[] = [
         category: "development",
         level: "beginner",
         icon: <FileCode size={48} />,
-        color: "#00B894"
+        color: "#00B894",
+        pdfUrl: "/Courses/Python Programming for Beginners.pdf",
+        image: "/assets/python_programming_course_thumbnail_1768397891530.png"
     },
     {
         id: "7",
@@ -100,7 +112,9 @@ export const courses: CourseProps[] = [
         category: "data-science",
         level: "intermediate",
         icon: <BarChart size={48} />,
-        color: "#2D6DF6"
+        color: "#2D6DF6",
+        pdfUrl: "/Courses/Python for Data Science.pdf",
+        image: "/assets/python_data_science_thumbnail_1768399091961.png"
     },
     {
         id: "8",
@@ -111,7 +125,9 @@ export const courses: CourseProps[] = [
         category: "development",
         level: "beginner",
         icon: <Braces size={48} />,
-        color: "#00B894"
+        color: "#00B894",
+        pdfUrl: "/Courses/JavaScript Fundamentals.pdf",
+        image: "/assets/javascript_fundamentals_course_thumbnail_1768397921893.png"
     },
     {
         id: "9",
@@ -122,7 +138,9 @@ export const courses: CourseProps[] = [
         category: "development",
         level: "advanced",
         icon: <Terminal size={48} />,
-        color: "#2D6DF6"
+        color: "#2D6DF6",
+        pdfUrl: "/Courses/Advanced JavaScript & ES6+.pdf",
+        image: "/assets/advanced_javascript_thumbnail_1768399115054.png"
     },
     {
         id: "10",
@@ -133,7 +151,9 @@ export const courses: CourseProps[] = [
         category: "development",
         level: "intermediate",
         icon: <Repeat size={48} />,
-        color: "#00B894"
+        color: "#00B894",
+        pdfUrl: "/Courses/Complete React Development.pdf",
+        image: "/assets/complete_react_development_thumbnail_1768399140636.png"
     },
     {
         id: "11",
@@ -144,7 +164,9 @@ export const courses: CourseProps[] = [
         category: "development",
         level: "intermediate",
         icon: <Server size={48} />,
-        color: "#2D6DF6"
+        color: "#2D6DF6",
+        pdfUrl: "/Courses/Node.js Backend Development.pdf",
+        image: "/assets/nodejs_backend_development_thumbnail_1768399180679.png"
     },
     {
         id: "12",
@@ -155,7 +177,9 @@ export const courses: CourseProps[] = [
         category: "design",
         level: "beginner",
         icon: <PaletteIcon size={48} />,
-        color: "#00B894"
+        color: "#00B894",
+        pdfUrl: "/Courses/UI/UX Design Fundamentals.pdf",
+        image: "/assets/ui_ux_design_course_thumbnail_1768397952998.png"
     },
     {
         id: "13",
@@ -166,7 +190,9 @@ export const courses: CourseProps[] = [
         category: "design",
         level: "intermediate",
         icon: <PenTool size={48} />,
-        color: "#2D6DF6"
+        color: "#2D6DF6",
+        pdfUrl: "/Courses/Figma Design Mastery.pdf",
+        image: "/assets/figma_design_mastery_thumbnail_1768399215142.png"
     },
     {
         id: "14",
@@ -177,7 +203,9 @@ export const courses: CourseProps[] = [
         category: "development",
         level: "intermediate",
         icon: <Smartphone size={48} />,
-        color: "#00B894"
+        color: "#00B894",
+        pdfUrl: "/Courses/Mobile App Development.pdf",
+        image: "/assets/mobile_app_development_thumbnail_1768399237323.png"
     },
     {
         id: "15",
@@ -188,7 +216,9 @@ export const courses: CourseProps[] = [
         category: "development",
         level: "intermediate",
         icon: <AppWindow size={48} />,
-        color: "#2D6DF6"
+        color: "#2D6DF6",
+        pdfUrl: "/Courses/Flutter Complete Course.pdf",
+        image: "/assets/flutter_complete_course_thumbnail_1768399272399.png"
     },
     {
         id: "16",
@@ -199,7 +229,9 @@ export const courses: CourseProps[] = [
         category: "business",
         level: "beginner",
         icon: <Briefcase size={48} />,
-        color: "#00B894"
+        color: "#00B894",
+        pdfUrl: "/Courses/Complete Freelancing Guide.pdf",
+        image: "/assets/business_and_freelancing_thumbnail_1768398010304.png"
     },
     {
         id: "17",
@@ -210,7 +242,9 @@ export const courses: CourseProps[] = [
         category: "productivity",
         level: "beginner",
         icon: <Zap size={48} />,
-        color: "#2D6DF6"
+        color: "#2D6DF6",
+        pdfUrl: "/Courses/Productivity Hacks & Time Management.pdf",
+        image: "/assets/productivity_hacks_thumbnail_1768399293481.png"
     },
     {
         id: "18",
@@ -221,7 +255,9 @@ export const courses: CourseProps[] = [
         category: "productivity",
         level: "beginner",
         icon: <Clock size={48} />,
-        color: "#00B894"
+        color: "#00B894",
+        pdfUrl: "/Courses/Time Management Mastery.pdf",
+        image: "/assets/time_management_mastery_thumbnail_1768399316323.png"
     },
     {
         id: "19",
@@ -232,7 +268,9 @@ export const courses: CourseProps[] = [
         category: "marketing",
         level: "intermediate",
         icon: <Megaphone size={48} />,
-        color: "#2D6DF6"
+        color: "#2D6DF6",
+        pdfUrl: "/Courses/Digital Marketing Complete Course.pdf",
+        image: "/assets/digital_marketing_course_thumbnail_1768397983870.png"
     },
     {
         id: "20",
@@ -243,7 +281,9 @@ export const courses: CourseProps[] = [
         category: "marketing",
         level: "advanced",
         icon: <TrendingUp size={48} />,
-        color: "#00B894"
+        color: "#00B894",
+        pdfUrl: "/Courses/SEO Mastery & Google Rankings.pdf",
+        image: "/assets/seo_mastery_thumbnail_1768399351956.png"
     },
     {
         id: "21",
@@ -254,7 +294,9 @@ export const courses: CourseProps[] = [
         category: "data-science",
         level: "intermediate",
         icon: <BarChart size={48} />,
-        color: "#2D6DF6"
+        color: "#2D6DF6",
+        pdfUrl: "/Courses/Data Analytics Complete Course.pdf",
+        image: "/assets/data_analytics_complete_course_thumbnail_1768399383321.png"
     },
     {
         id: "22",
@@ -265,7 +307,9 @@ export const courses: CourseProps[] = [
         category: "productivity",
         level: "intermediate",
         icon: <Table size={48} />,
-        color: "#00B894"
+        color: "#00B894",
+        pdfUrl: "/Courses/Advanced Excel for Professionals.pdf",
+        image: "/assets/data_analytics_complete_course_thumbnail_1768399383321.png"
     },
     {
         id: "23",
@@ -276,7 +320,9 @@ export const courses: CourseProps[] = [
         category: "design",
         level: "beginner",
         icon: <Layout size={48} />,
-        color: "#2D6DF6"
+        color: "#2D6DF6",
+        pdfUrl: "/Courses/Canva Design for Beginners.pdf",
+        image: "/assets/canva course.jpg"
     },
     {
         id: "24",
@@ -287,7 +333,9 @@ export const courses: CourseProps[] = [
         category: "development",
         level: "beginner",
         icon: <Code size={48} />,
-        color: "#00B894"
+        color: "#00B894",
+        pdfUrl: "/Courses/No-Code Tools & App Building.pdf",
+        image: "/assets/flutter_complete_course_thumbnail_1768399272399.png"
     },
     {
         id: "25",
@@ -298,7 +346,9 @@ export const courses: CourseProps[] = [
         category: "business",
         level: "intermediate",
         icon: <Rocket size={48} />,
-        color: "#2D6DF6"
+        color: "#2D6DF6",
+        pdfUrl: "/Courses/Startup & Business Fundamentals.pdf",
+        image: "/assets/business_and_freelancing_thumbnail_1768398010304.png"
     },
     {
         id: "26",
@@ -309,6 +359,8 @@ export const courses: CourseProps[] = [
         category: "productivity",
         level: "beginner",
         icon: <Bot size={48} />,
-        color: "#00B894"
+        color: "#00B894",
+        pdfUrl: "/Courses/2025 AI Productivity Masterclass.pdf",
+        image: "/assets/productivity_hacks_thumbnail_1768399293481.png"
     }
 ];

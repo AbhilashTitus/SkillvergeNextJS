@@ -60,11 +60,12 @@ export default function About() {
                                     We're building India's most inclusive EdTech marketplace where passionate instructors can share their knowledge and eager learners can access world-class education starting from just ₹100.
                                 </p>
                             </div>
-                            <div className="bg-[#F8F9FB] rounded-[20px] p-12 flex items-center justify-center min-h-[350px]">
-                                <div className="text-center text-gray-400">
-                                    <i className="bi bi-lightbulb text-[4rem] mb-4"></i>
-                                    <p className="text-sm">Education for all</p>
-                                </div>
+                            <div className="flex items-center justify-center min-h-[350px]">
+                                <img
+                                    src="/assets/education_for_all.png"
+                                    alt="Education for All"
+                                    className="w-full h-auto object-cover rounded-[20px] shadow-xl hover:scale-[1.02] transition-transform duration-500"
+                                />
                             </div>
                         </div>
                     </div>
@@ -118,7 +119,7 @@ export default function About() {
                             <a href="/courses" className="inline-block py-4 px-8 text-lg font-medium text-center rounded-lg transition-all duration-[300ms] cursor-pointer no-underline leading-[1.5] bg-[#2D6DF6] text-white hover:bg-[#1a4fd6] hover:-translate-y-0.5 hover:shadow-[0_12px_28px_rgba(45,109,246,0.2)]">
                                 Browse Courses
                             </a>
-                            <a href="/sell-with-us" className="inline-block py-4 px-8 text-lg font-medium text-center rounded-lg transition-all duration-[300ms] cursor-pointer no-underline leading-[1.5] bg-transparent text-white border-2 border-white hover:bg-white hover:text-[#1A1F36] hover:-translate-y-0.5">
+                            <a href="/seller/register" className="inline-block py-4 px-8 text-lg font-medium text-center rounded-lg transition-all duration-[300ms] cursor-pointer no-underline leading-[1.5] bg-transparent text-white border-2 border-white hover:bg-white hover:text-[#1A1F36] hover:-translate-y-0.5">
                                 Become an Instructor
                             </a>
                         </div>

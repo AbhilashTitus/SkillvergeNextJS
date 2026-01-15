@@ -1,18 +1,28 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
 import { CourseCard } from "@/components/CourseCard";
 import { courses } from "@/lib/data";
 import { SlidersHorizontal, X } from "lucide-react";
+import { useSearchParams } from "next/navigation";
 
 export default function CoursesPage() {
-    const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
+    const searchParams = useSearchParams();
+    const [selectedCategory, setSelectedCategory] = useState<string | null>(searchParams.get('category'));
     const [selectedLevel, setSelectedLevel] = useState<string | null>(null);
     const [priceRange, setPriceRange] = useState(5000);
     const [sortBy, setSortBy] = useState("newest");
     const [isFilterOpen, setIsFilterOpen] = useState(false);
+
+    // Sync URL with state (optional but good for professional feel)
+    useEffect(() => {
+        const cat = searchParams.get('category');
+        if (cat !== selectedCategory) {
+            setSelectedCategory(cat);
+        }
+    }, [searchParams]);
 
     const filteredCourses = courses.filter(course => {
         if (selectedCategory && course.category !== selectedCategory) return false;
@@ -183,7 +193,7 @@ export default function CoursesPage() {
                         <div className="grid grid-cols-1 lg:grid-cols-[280px_1fr] gap-8">
                             {/* Desktop Filter Sidebar */}
                             <aside className="hidden lg:block">
-                                <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-200 sticky top-24">
+                                <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-200 sticky top-24 max-h-[80vh] overflow-y-auto">
                                     <FilterContent />
                                 </div>
                             </aside>

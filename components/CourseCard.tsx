@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { Star, ShoppingCart, Heart, Eye, Check, PlayCircle } from "lucide-react";
+import { Star, ShoppingCart, Eye, Check, PlayCircle } from "lucide-react";
 import { useCart } from "@/lib/CartContext";
 import { useAuth } from "@/lib/AuthContext";
 import { useRouter } from "next/navigation";
@@ -19,6 +19,8 @@ export interface CourseProps {
     icon: React.ReactNode;
     color: string;
     videoEmbed?: string;
+    pdfUrl?: string;
+    image?: string;
 }
 
 // Helper to determine if course is bestseller (rating >= 4.7)
@@ -28,7 +30,7 @@ const isBestseller = (rating: number) => rating >= 4.7;
 const isNew = (id: string) => parseInt(id) > 20;
 
 export function CourseCard({ course }: { course: CourseProps }) {
-    const { addToCart, addToWishlist, removeFromWishlist, isInCart, isInWishlist } = useCart();
+    const { addToCart, isInCart } = useCart();
     const { isAuthenticated, hasPurchased, user } = useAuth();
     const router = useRouter();
     const { createOrder, openCheckout, isLoaded } = useRazorpay();
@@ -36,7 +38,7 @@ export function CourseCard({ course }: { course: CourseProps }) {
     const [isProcessing, setIsProcessing] = useState(false);
 
     const inCart = isInCart(course.id);
-    const inWishlist = isInWishlist(course.id);
+
     const isPurchased = hasPurchased(course.id);
 
     const handleAddToCart = (e: React.MouseEvent) => {
@@ -49,7 +51,7 @@ export function CourseCard({ course }: { course: CourseProps }) {
         }
     };
 
-    const handleBuyNow = async (e: React.MouseEvent) => {
+    const handleBuyNow = (e: React.MouseEvent) => {
         e.preventDefault();
         e.stopPropagation();
 
@@ -59,106 +61,50 @@ export function CourseCard({ course }: { course: CourseProps }) {
         }
 
         if (!isAuthenticated) {
-            router.push("/login?redirect=/courses");
+            // Add to cart anyway so they can checkout after login
+            if (!inCart) addToCart(course);
+            router.push("/login?redirect=/checkout");
             return;
         }
 
-        if (!isLoaded) {
-            alert("Payment system is loading. Please try again in a moment.");
-            return;
+        if (!inCart) {
+            addToCart(course);
         }
-
-        setIsProcessing(true);
-
-        try {
-            const order = await createOrder(course.price, `course_${course.id}_${Date.now()}`);
-
-            openCheckout({
-                key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID!,
-                amount: order.amount,
-                currency: 'INR',
-                name: 'Skillverge',
-                description: course.title,
-                order_id: order.orderId,
-                handler: (response: any) => {
-                    // Payment successful
-                    router.push(`/success?payment_id=${response.razorpay_payment_id}&order_id=${response.razorpay_order_id}&course_id=${course.id}`);
-                },
-                prefill: {
-                    name: user?.name || '',
-                    email: user?.email || '',
-                },
-                theme: {
-                    color: '#2D6DF6',
-                },
-                modal: {
-                    ondismiss: () => {
-                        setIsProcessing(false);
-                    },
-                },
-            });
-        } catch (error) {
-            console.error('Payment failed:', error);
-            alert('Payment failed. Please try again.');
-        } finally {
-            setIsProcessing(false);
-        }
+        router.push("/checkout");
     };
 
-    const handleWishlist = (e: React.MouseEvent) => {
-        e.preventDefault();
-        e.stopPropagation();
-        if (inWishlist) {
-            removeFromWishlist(course.id);
-        } else {
-            addToWishlist(course);
-        }
-    };
+
 
     return (
         <div className="group bg-white rounded-xl border border-gray-200 overflow-hidden transition-all duration-300 flex flex-col h-full hover:shadow-[0_8px_24px_rgba(45,109,246,0.15)] hover:border-[#2D6DF6]/30 hover:-translate-y-1">
             {/* Course Thumbnail */}
-            <div className="relative w-full aspect-video overflow-hidden bg-gradient-to-br from-gray-50 to-gray-100">
+            <div className="relative w-full aspect-square overflow-hidden bg-gradient-to-br from-gray-50 to-gray-100 group">
                 {/* Badges */}
-                <div className="absolute top-3 left-3 z-10 flex gap-2">
-                    {isBestseller(course.rating) && (
-                        <span className="px-2.5 py-1 bg-[#FFA500] text-white text-xs font-semibold rounded-md shadow-sm">
-                            Bestseller
-                        </span>
-                    )}
-                    {isNew(course.id) && (
-                        <span className="px-2.5 py-1 bg-[#00B894] text-white text-xs font-semibold rounded-md shadow-sm">
-                            New
-                        </span>
-                    )}
-                </div>
 
-                {/* Wishlist Button */}
-                <button
-                    onClick={handleWishlist}
-                    className="absolute top-3 right-3 z-10 w-9 h-9 flex items-center justify-center bg-white/90 backdrop-blur-sm rounded-full shadow-sm transition-all duration-200 hover:bg-white hover:scale-110 active:scale-95"
-                    aria-label={inWishlist ? "Remove from wishlist" : "Add to wishlist"}
-                >
-                    <Heart
-                        className={`w-4 h-4 transition-colors ${inWishlist ? 'fill-red-500 text-red-500' : 'text-gray-600'}`}
+
+                {/* Image or Icon */}
+                {course.image ? (
+                    <img
+                        src={course.image}
+                        alt={course.title}
+                        className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
                     />
-                </button>
-
-                {/* Course Icon/Thumbnail */}
-                <div className="h-full flex items-center justify-center p-8">
-                    <div
-                        className="text-5xl transition-transform duration-500 group-hover:scale-110"
-                        style={{ color: course.color }}
-                    >
-                        {course.icon}
+                ) : (
+                    <div className="h-full flex items-center justify-center p-8">
+                        <div
+                            className="text-5xl transition-transform duration-500 group-hover:scale-110"
+                            style={{ color: course.color }}
+                        >
+                            {course.icon}
+                        </div>
                     </div>
-                </div>
+                )}
 
                 {/* Quick View Overlay (appears on hover) */}
-                <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+                <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center backdrop-blur-[2px]">
                     <Link
                         href={`/courses/${course.id}`}
-                        className="px-4 py-2 bg-white text-[#2D6DF6] rounded-lg font-medium text-sm flex items-center gap-2 transform translate-y-2 group-hover:translate-y-0 transition-transform duration-300 hover:bg-gray-50"
+                        className="px-4 py-2 bg-white text-[#2D6DF6] rounded-lg font-medium text-sm flex items-center gap-2 transform translate-y-2 group-hover:translate-y-0 transition-transform duration-300 hover:bg-gray-50 shadow-lg"
                     >
                         <Eye className="w-4 h-4" />
                         View Details
@@ -168,6 +114,21 @@ export function CourseCard({ course }: { course: CourseProps }) {
 
             {/* Course Content */}
             <div className="p-5 flex flex-col flex-grow">
+
+                {/* Badges (Moved from Image) */}
+                <div className="flex flex-wrap gap-2 mb-3">
+                    {isBestseller(course.rating) && (
+                        <span className="px-2 py-0.5 bg-[#FFA500] text-white text-[10px] font-bold rounded uppercase tracking-wide">
+                            Bestseller
+                        </span>
+                    )}
+                    {isNew(course.id) && (
+                        <span className="px-2 py-0.5 bg-[#00B894] text-white text-[10px] font-bold rounded uppercase tracking-wide">
+                            New
+                        </span>
+                    )}
+                </div>
+
                 {/* Category & Level */}
                 <div className="flex items-center gap-2 mb-3">
                     <span className="px-2 py-0.5 bg-[#F8F9FB] text-[#2D6DF6] text-xs font-medium rounded capitalize">

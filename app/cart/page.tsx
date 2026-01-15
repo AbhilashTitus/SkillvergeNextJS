@@ -5,21 +5,20 @@ import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
 import { useCart } from "@/lib/CartContext";
 import { useAuth } from "@/lib/AuthContext";
-import { useRazorpay } from "@/lib/useRazorpay";
 import { useRouter } from "next/navigation";
-import { Trash2, ArrowRight, ShoppingBag } from "lucide-react";
+import { Trash2, ArrowRight, ShoppingBag, CheckCircle } from "lucide-react";
 import { useState } from "react";
 
 export default function CartPage() {
     const { cartItems, removeFromCart, cartTotal, clearCart } = useCart();
     const { isAuthenticated, user } = useAuth();
-    const { createOrder, openCheckout, isLoaded } = useRazorpay();
     const router = useRouter();
     const [isProcessing, setIsProcessing] = useState(false);
+    const [redeemApplied, setRedeemApplied] = useState(false);
 
-    const handleCheckout = async () => {
+    const handleCheckout = () => {
         if (!isAuthenticated) {
-            router.push("/login?redirect=/cart");
+            router.push("/login?redirect=/checkout");
             return;
         }
 
@@ -27,48 +26,8 @@ export default function CartPage() {
             return;
         }
 
-        if (!isLoaded) {
-            alert("Payment system is loading. Please try again in a moment.");
-            return;
-        }
-
         setIsProcessing(true);
-
-        try {
-            const order = await createOrder(cartTotal, `cart_${Date.now()}`);
-
-            openCheckout({
-                key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID!,
-                amount: order.amount,
-                currency: 'INR',
-                name: 'Skillverge',
-                description: `${cartItems.length} Course${cartItems.length > 1 ? 's' : ''}`,
-                order_id: order.orderId,
-                handler: (response: any) => {
-                    // Payment successful
-                    const cartIds = cartItems.map(item => item.id).join(',');
-                    clearCart(); // Clear cart after successful payment
-                    router.push(`/success?payment_id=${response.razorpay_payment_id}&order_id=${response.razorpay_order_id}&cart_ids=${cartIds}`);
-                },
-                prefill: {
-                    name: user?.name || '',
-                    email: user?.email || '',
-                },
-                theme: {
-                    color: '#2D6DF6',
-                },
-                modal: {
-                    ondismiss: () => {
-                        setIsProcessing(false);
-                    },
-                },
-            });
-        } catch (error) {
-            console.error('Payment failed:', error);
-            alert('Payment failed. Please try again.');
-        } finally {
-            setIsProcessing(false);
-        }
+        router.push(`/checkout?redeem=${redeemApplied}`);
     };
 
     return (
@@ -98,8 +57,14 @@ export default function CartPage() {
                                     {cartItems.map((item) => (
                                         <div key={item.id} className="p-6 flex flex-col sm:flex-row gap-6 hover:bg-gray-50 transition-colors">
                                             {/* Thumbnail */}
-                                            <div className="w-full sm:w-40 aspect-video bg-gray-100 rounded-lg flex items-center justify-center shrink-0 overflow-hidden">
-                                                {item.videoEmbed ? (
+                                            <div className="w-full sm:w-32 aspect-square bg-gray-100 rounded-lg flex items-center justify-center shrink-0 overflow-hidden relative group">
+                                                {item.image ? (
+                                                    <img
+                                                        src={item.image}
+                                                        alt={item.title}
+                                                        className="w-full h-full object-cover"
+                                                    />
+                                                ) : item.videoEmbed ? (
                                                     <iframe
                                                         src={item.videoEmbed}
                                                         title={item.title}
@@ -163,26 +128,55 @@ export default function CartPage() {
                                             <span>Subtotal</span>
                                             <span>₹{cartTotal.toLocaleString()}</span>
                                         </div>
+
+                                        {/* Coin Redemption Option */}
+                                        <div className="py-2 border-y border-gray-100 my-4">
+                                            <label className={`flex items-center justify-between group ${user?.coins && user.coins > 0 ? 'cursor-pointer' : 'cursor-not-allowed opacity-60'}`}>
+                                                <div className="flex items-center gap-2">
+                                                    <div className={`w-5 h-5 rounded border flex items-center justify-center transition-colors ${redeemApplied ? 'bg-[#2D6DF6] border-[#2D6DF6]' : 'border-gray-300'}`}>
+                                                        {redeemApplied && <CheckCircle className="w-3.5 h-3.5 text-white" />}
+                                                    </div>
+                                                    <input
+                                                        type="checkbox"
+                                                        className="hidden"
+                                                        checked={redeemApplied}
+                                                        onChange={() => {
+                                                            if (user?.coins && user.coins > 0) setRedeemApplied(!redeemApplied);
+                                                        }}
+                                                        disabled={!user?.coins || user.coins === 0}
+                                                    />
+                                                    <span className="text-sm font-medium text-gray-700 group-hover:text-gray-900">
+                                                        Redeem Coins
+                                                        <span className={`ml-1 font-bold ${user?.coins && user.coins > 0 ? 'text-[#2D6DF6]' : 'text-gray-400'}`}>
+                                                            ({user?.coins && user.coins > 0 ? Math.min(user.coins, cartTotal) : 0})
+                                                        </span>
+                                                    </span>
+                                                </div>
+                                                <span className="text-sm font-medium text-green-600">
+                                                    - ₹{redeemApplied ? Math.min(user?.coins || 0, cartTotal).toLocaleString() : 0}
+                                                </span>
+                                            </label>
+                                            <p className="text-xs text-gray-500 mt-1 pl-7">
+                                                Balance: <span className="font-semibold text-gray-700">{user?.coins || 0} Coins</span>
+                                            </p>
+                                        </div>
+
                                         <div className="flex justify-between text-gray-600">
                                             <span>Discount</span>
-                                            <span className="text-[#00B894]">-₹0</span>
+                                            <span className="text-[#00B894]">-₹{redeemApplied ? Math.min(user?.coins || 0, cartTotal).toLocaleString() : 0}</span>
                                         </div>
                                         <div className="border-t border-gray-100 pt-4 flex justify-between text-lg font-bold text-[#1A1F36]">
                                             <span>Total</span>
-                                            <span>₹{cartTotal.toLocaleString()}</span>
+                                            <span>₹{(cartTotal - (redeemApplied ? Math.min(user?.coins || 0, cartTotal) : 0)).toLocaleString()}</span>
                                         </div>
                                     </div>
 
                                     <button
                                         onClick={handleCheckout}
-                                        disabled={isProcessing}
-                                        className={`w-full py-3.5 rounded-lg font-semibold text-base transition-all transform active:scale-[0.98] flex items-center justify-center gap-2 shadow-lg ${isProcessing
-                                                ? 'bg-gray-400 text-white cursor-not-allowed'
-                                                : 'bg-[#2D6DF6] text-white hover:bg-[#1a4fd6] shadow-blue-500/20'
-                                            }`}
+                                        className="w-full py-3.5 rounded-lg font-semibold text-base transition-all transform active:scale-[0.98] flex items-center justify-center gap-2 shadow-lg bg-[#2D6DF6] text-white hover:bg-[#1a4fd6] shadow-blue-500/20"
                                     >
-                                        {isProcessing ? 'Processing...' : 'Checkout'}
-                                        {!isProcessing && <ArrowRight className="w-5 h-5" />}
+                                        Checkout
+                                        <ArrowRight className="w-5 h-5" />
                                     </button>
 
                                     <p className="text-xs text-center text-gray-500 mt-4">

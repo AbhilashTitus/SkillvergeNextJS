@@ -1,6 +1,7 @@
 "use client";
+import { useState, useEffect } from "react";
 
-import { TransparentNavbar } from "@/components/TransparentNavbar";
+import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
 import { CourseCard } from "@/components/CourseCard";
 import { CategoryCard } from "@/components/CategoryCard";
@@ -12,9 +13,19 @@ import { useRouter } from "next/navigation";
 export default function Home() {
   const { isAuthenticated } = useAuth();
   const router = useRouter();
+  const [isSeller, setIsSeller] = useState(false);
+
+  useEffect(() => {
+    // Check if user is a seller (using the same key as Navbar)
+    const checkSellerStatus = () => {
+      const sellerData = localStorage.getItem("sm_new_seller"); // or the relevant key you use
+      setIsSeller(!!sellerData);
+    };
+    checkSellerStatus();
+  }, []);
 
   const handleSellerClick = () => {
-    router.push("/sell-with-us");
+    router.push("/seller/register");
   };
 
   return (
@@ -33,7 +44,7 @@ export default function Home() {
 
           {/* Navbar positioned absolutely over hero */}
           <div className="absolute top-0 left-0 w-full z-[1000]">
-            <TransparentNavbar />
+            <Navbar transparent={true} />
           </div>
 
           {/* Hero Content */}
@@ -95,7 +106,12 @@ export default function Home() {
             </h2>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mt-8">
               {categories.map((cat, index) => (
-                <CategoryCard key={index} title={cat.title} icon={cat.icon} />
+                <CategoryCard
+                  key={index}
+                  title={cat.title}
+                  icon={cat.icon}
+                  href={`/courses?category=${cat.slug}`}
+                />
               ))}
             </div>
           </div>
@@ -118,35 +134,37 @@ export default function Home() {
           </div>
         </section>
 
-        {/* CTA Section */}
-        <section className="bg-gradient-to-br from-[#2D6DF6] to-[#1a4fd6] py-24">
-          <div className="max-w-[1280px] mx-auto px-4 md:px-6">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center bg-white/10 p-12 rounded-[20px] backdrop-blur-[10px]">
-              <div className="text-center text-white">
-                <i className="bi bi-camera-video text-[4rem] text-white mb-6"></i>
-                <h2 className="text-3xl text-white mb-4 font-bold">
-                  Become a Course Creator
-                </h2>
-                <p className="text-lg text-white/90 mb-8">
-                  Sell your knowledge to thousands of learners and earn instantly.
-                </p>
-                <button
-                  onClick={handleSellerClick}
-                  className="inline-block py-4 px-8 text-lg font-medium text-center rounded-none transition-all duration-[300ms] cursor-pointer no-underline leading-[1.5] bg-white text-[#2D6DF6] hover:bg-[#00B894] hover:text-white"
-                >
-                  Start Selling
-                </button>
-              </div>
-              <div className="bg-white/20 rounded-lg p-12 flex items-center justify-center min-h-[300px] overflow-hidden">
-                <img
-                  src="/assets/teacer.webp"
-                  alt="Illustration of a teacher recording a course"
-                  className="w-full h-full object-cover rounded-lg"
-                />
+        {/* CTA Section - Show only if NOT a seller */}
+        {!isSeller && (
+          <section className="bg-gradient-to-br from-[#2D6DF6] to-[#1a4fd6] py-24">
+            <div className="max-w-[1280px] mx-auto px-4 md:px-6">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center bg-white/10 p-12 rounded-[20px] backdrop-blur-[10px]">
+                <div className="text-center text-white">
+                  <i className="bi bi-camera-video text-[4rem] text-white mb-6"></i>
+                  <h2 className="text-3xl text-white mb-4 font-bold">
+                    Become a Course Creator
+                  </h2>
+                  <p className="text-lg text-white/90 mb-8">
+                    Sell your knowledge to thousands of learners and earn instantly.
+                  </p>
+                  <button
+                    onClick={handleSellerClick}
+                    className="inline-block py-4 px-8 text-lg font-medium text-center rounded-none transition-all duration-[300ms] cursor-pointer no-underline leading-[1.5] bg-white text-[#2D6DF6] hover:bg-[#00B894] hover:text-white"
+                  >
+                    Start Selling
+                  </button>
+                </div>
+                <div className="bg-white/20 rounded-lg p-12 flex items-center justify-center min-h-[300px] overflow-hidden">
+                  <img
+                    src="/assets/teacer.webp"
+                    alt="Illustration of a teacher recording a course"
+                    className="w-full h-full object-cover rounded-lg"
+                  />
+                </div>
               </div>
             </div>
-          </div>
-        </section>
+          </section>
+        )}
       </main>
 
       <Footer />

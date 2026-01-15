@@ -551,11 +551,12 @@ export default function SellerRegistration() {
                                     Start Onboarding
                                 </a>
                             </div>
-                            <div className="bg-white/10 rounded-[20px] p-12 flex items-center justify-center min-h-[300px]">
-                                <div className="text-center text-white/70">
-                                    <i className="bi bi-image text-[4rem] mb-4"></i>
-                                    <p className="text-sm">Upload visual placeholder</p>
-                                </div>
+                            <div className="flex items-center justify-center min-h-[300px]">
+                                <img
+                                    src="/assets/seller_hero_illustration.png"
+                                    alt="Become a Seller"
+                                    className="w-full max-w-[500px] h-auto object-contain drop-shadow-2xl animate-[float_6s_ease-in-out_infinite]"
+                                />
                             </div>
                         </div>
                     </div>

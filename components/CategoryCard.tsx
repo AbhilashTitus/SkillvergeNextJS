@@ -1,13 +1,15 @@
 import React from 'react';
+import Link from 'next/link';
 
 interface CategoryProps {
     title: string;
     icon: React.ReactNode;
+    href?: string;
 }
 
-export function CategoryCard({ title, icon }: CategoryProps) {
-    return (
-        <div className="bg-white p-8 rounded-xl text-center cursor-pointer transition-all duration-[300ms] shadow-[0_2px_4px_rgba(0,0,0,0.1)] hover:shadow-[0_8px_16px_rgba(0,0,0,0.15)] hover:-translate-y-1 hover:bg-[#2D6DF6] hover:text-white group">
+export function CategoryCard({ title, icon, href }: CategoryProps) {
+    const CardContent = (
+        <div className="bg-white p-8 rounded-xl text-center cursor-pointer transition-all duration-[300ms] shadow-[0_2px_4px_rgba(0,0,0,0.1)] hover:shadow-[0_8px_16px_rgba(0,0,0,0.15)] hover:-translate-y-1 hover:bg-[#2D6DF6] hover:text-white group h-full flex flex-col items-center justify-center">
             <div className="text-[2.5rem] text-[#2D6DF6] mb-4 transition-colors duration-[300ms] group-hover:text-white [&>svg]:w-10 [&>svg]:h-10">
                 {icon}
             </div>
@@ -16,4 +18,14 @@ export function CategoryCard({ title, icon }: CategoryProps) {
             </h3>
         </div>
     );
+
+    if (href) {
+        return (
+            <Link href={href} className="block h-full no-underline text-inherit">
+                {CardContent}
+            </Link>
+        );
+    }
+
+    return CardContent;
 }

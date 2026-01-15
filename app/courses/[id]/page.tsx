@@ -47,59 +47,25 @@ export default function CourseDetailsPage() {
         }
     };
 
-    const handleBuyNow = async () => {
+    const handleBuyNow = () => {
         if (!course) return;
-        
+
         if (isPurchased) {
             router.push("/my-learning");
             return;
         }
 
         if (!isAuthenticated) {
-            router.push("/login?redirect=/courses");
+            // Add to cart anyway so they can checkout after login
+            if (!inCart) addToCart(course);
+            router.push("/login?redirect=/checkout");
             return;
         }
 
-        if (!isLoaded) {
-            alert("Payment system is loading. Please try again in a moment.");
-            return;
+        if (!inCart) {
+            addToCart(course);
         }
-
-        setIsProcessing(true);
-
-        try {
-            const order = await createOrder(course.price, `course_${course.id}_${Date.now()}`);
-            
-            openCheckout({
-                key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID!,
-                amount: order.amount,
-                currency: 'INR',
-                name: 'Skillverge',
-                description: course.title,
-                order_id: order.orderId,
-                handler: (response: any) => {
-                    // Payment successful
-                    router.push(`/success?payment_id=${response.razorpay_payment_id}&order_id=${response.razorpay_order_id}`);
-                },
-                prefill: {
-                    name: user?.name || '',
-                    email: user?.email || '',
-                },
-                theme: {
-                    color: '#2D6DF6',
-                },
-                modal: {
-                    ondismiss: () => {
-                        setIsProcessing(false);
-                    },
-                },
-            });
-        } catch (error) {
-            console.error('Payment failed:', error);
-            alert('Payment failed. Please try again.');
-        } finally {
-            setIsProcessing(false);
-        }
+        router.push("/checkout");
     };
 
     return (
@@ -181,8 +147,14 @@ export default function CourseDetailsPage() {
                         {/* Sidebar */}
                         <div className="lg:relative">
                             <div className="bg-white rounded-xl shadow-lg border border-gray-200 p-6 lg:sticky lg:top-24 -mt-32 lg:mt-0 z-10">
-                                <div className="aspect-video bg-gray-100 rounded-lg mb-6 flex items-center justify-center overflow-hidden">
-                                    {course.videoEmbed ? (
+                                <div className="aspect-square bg-gray-100 rounded-lg mb-6 flex items-center justify-center overflow-hidden relative">
+                                    {course.image ? (
+                                        <img
+                                            src={course.image}
+                                            alt={course.title}
+                                            className="w-full h-full object-cover"
+                                        />
+                                    ) : course.videoEmbed ? (
                                         <iframe
                                             src={course.videoEmbed}
                                             title={course.title}
@@ -233,11 +205,10 @@ export default function CourseDetailsPage() {
                                         <button
                                             onClick={handleBuyNow}
                                             disabled={isProcessing}
-                                            className={`w-full py-3.5 rounded-lg font-bold text-lg transition-all ${
-                                                isProcessing
-                                                    ? "bg-gray-400 text-white cursor-not-allowed"
-                                                    : "border-2 border-[#1A1F36] text-[#1A1F36] hover:bg-gray-50"
-                                            }`}
+                                            className={`w-full py-3.5 rounded-lg font-bold text-lg transition-all ${isProcessing
+                                                ? "bg-gray-400 text-white cursor-not-allowed"
+                                                : "border-2 border-[#1A1F36] text-[#1A1F36] hover:bg-gray-50"
+                                                }`}
                                         >
                                             {isProcessing ? "Processing..." : "Buy Now"}
                                         </button>
