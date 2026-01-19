@@ -3,7 +3,7 @@
 import React from 'react';
 import { useAuth } from '@/lib/AuthContext';
 import { useRouter } from 'next/navigation';
-import { Check, Star, Zap, Shield, Crown, HelpCircle } from 'lucide-react';
+import { Check, Star, Zap, Shield, Crown, HelpCircle, Coins } from 'lucide-react';
 import Link from 'next/link';
 import { Navbar } from '@/components/Navbar';
 import { Footer } from '@/components/Footer';
@@ -15,8 +15,10 @@ declare global {
 }
 
 export default function MembershipPage() {
-    const { user, isAuthenticated, upgradeMembership } = useAuth();
+    const { user, isAuthenticated, upgradeMembership, addCoins } = useAuth();
     const router = useRouter();
+    const [coinAmount, setCoinAmount] = React.useState<number>(100);
+
 
     const handleSubscribe = async (tier: 'Silver' | 'Gold', price: number) => {
         if (!isAuthenticated) {
@@ -91,6 +93,89 @@ export default function MembershipPage() {
 
         } catch (error) {
             console.error('Subscription error:', error);
+            alert('Something went wrong. Please try again.');
+        }
+    };
+
+    const handleBuyCoins = async () => {
+        if (!isAuthenticated) {
+            router.push('/login');
+            return;
+        }
+
+        if (coinAmount < 10) {
+            alert('Minimum coin purchase is 10 coins.');
+            return;
+        }
+
+        const price = coinAmount; // 1 Coin = 1 Rupee
+
+        try {
+            // 1. Create Order
+            const response = await fetch('/api/razorpay/create-order', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ amount: price }),
+            });
+
+            const data = await response.json();
+
+            if (!response.ok) {
+                alert('Failed to create order. Please try again.');
+                console.error(data.error);
+                return;
+            }
+
+            // 2. Open Razorpay Checkout
+            const options = {
+                key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID,
+                amount: data.amount,
+                currency: data.currency,
+                name: "Skillverge Coins",
+                description: `Purchase ${coinAmount} Coins`,
+                order_id: data.id,
+                handler: async function (response: any) {
+                    try {
+                        const verifyRes = await fetch('/api/razorpay/verify-payment', {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({
+                                razorpay_order_id: response.razorpay_order_id,
+                                razorpay_payment_id: response.razorpay_payment_id,
+                                razorpay_signature: response.razorpay_signature,
+                            }),
+                        });
+
+                        const verifyData = await verifyRes.json();
+
+                        if (verifyData.success) {
+                            addCoins(coinAmount);
+                            alert(`Success! Added ${coinAmount} coins to your wallet.`);
+                        } else {
+                            alert('Payment verification failed. Please contact support.');
+                        }
+                    } catch (err) {
+                        console.error('Verification error:', err);
+                        alert('An error occurred during verification.');
+                    }
+                },
+                prefill: {
+                    name: user?.name,
+                    email: user?.email,
+                },
+                theme: {
+                    color: '#2D6DF6',
+                },
+            };
+
+            const rzp1 = new window.Razorpay(options);
+            rzp1.on('payment.failed', function (response: any) {
+                alert(`Payment failed: ${response.error.description}`);
+            });
+            rzp1.open();
+
+        } catch (error) {
+            console.error('Coin purchase error:', error);
             alert('Something went wrong. Please try again.');
         }
     };
@@ -212,8 +297,53 @@ export default function MembershipPage() {
                         </div>
 
                     </div>
+
+                    {/* Coin Top-up Section */}
+                    <div className="mt-16 mx-auto max-w-2xl text-center bg-white p-8 rounded-3xl ring-1 ring-gray-200 shadow-sm relative overflow-hidden transition-all hover:shadow-md">
+                        <div className="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-blue-400 to-[#2D6DF6]"></div>
+                        <div className="flex flex-col items-center">
+                            <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-blue-50 text-[#2D6DF6] mb-4">
+                                <Coins className="h-6 w-6" />
+                            </div>
+                            <h3 className="text-xl font-bold tracking-tight text-gray-900 sm:text-2xl">Need More Coins?</h3>
+                            <p className="mt-2 text-base leading-7 text-gray-600">
+                                Top up your balance instantly. 1 Coin = ₹1.
+                            </p>
+
+                            <div className="mt-8 flex flex-col sm:flex-row gap-4 items-center justify-center w-full max-w-md">
+                                <div className="relative flex-grow w-full">
+                                    <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
+                                        <span className="text-gray-500 sm:text-sm">🪙</span>
+                                    </div>
+                                    <input
+                                        type="number"
+                                        name="coins"
+                                        id="coins"
+                                        className="block w-full rounded-md border-0 py-3 pl-10 pr-12 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-[#2D6DF6] sm:text-sm sm:leading-6 text-center text-lg font-semibold"
+                                        placeholder="100"
+                                        min="10"
+                                        value={coinAmount}
+                                        onChange={(e) => setCoinAmount(Math.max(0, parseInt(e.target.value) || 0))}
+                                    />
+                                    <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3">
+                                        <span className="text-gray-500 sm:text-sm">Coins</span>
+                                    </div>
+                                </div>
+                                <button
+                                    onClick={handleBuyCoins}
+                                    className="w-full sm:w-auto rounded-md bg-[#2D6DF6] px-6 py-3 text-center text-sm font-semibold text-white shadow-sm hover:bg-[#1a4fd6] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#2D6DF6] transition-all hover:scale-105 active:scale-95 whitespace-nowrap"
+                                >
+                                    Buy for ₹{coinAmount}
+                                </button>
+                            </div>
+                            <p className="mt-4 text-xs text-gray-500">
+                                Secure payment via Razorpay. Immediate credit.
+                            </p>
+                        </div>
+                    </div>
                 </div>
             </div>
+
 
             {/* Features / Trust Section */}
             <div className="bg-white py-16 sm:py-24">
@@ -255,6 +385,6 @@ export default function MembershipPage() {
                 </div>
             </div>
             <Footer />
-        </div>
+        </div >
     );
 }

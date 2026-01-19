@@ -22,6 +22,7 @@ interface AuthContextType {
     hasPurchased: (courseId: string) => boolean;
     upgradeMembership: (tier: 'Silver' | 'Gold') => void;
     redeemCoins: (amount: number) => void;
+    addCoins: (amount: number) => void;
     isAuthenticated: boolean;
 }
 
@@ -135,6 +136,17 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         });
     };
 
+    const addCoins = (amount: number) => {
+        if (!user) return;
+        setUser(prev => {
+            if (!prev) return null;
+            return {
+                ...prev,
+                coins: (prev.coins || 0) + amount
+            };
+        });
+    };
+
     const logout = () => {
         setUser(null);
         setPurchasedCourses([]);
@@ -186,6 +198,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
                 hasPurchased,
                 upgradeMembership,
                 redeemCoins,
+                addCoins,
                 isAuthenticated: !!user,
             }}
         >
