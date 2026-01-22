@@ -52,10 +52,10 @@ export default function Home() {
             <div className="max-w-[1280px] mx-auto px-4 md:px-6 w-full">
               <div className="text-center animate-[fadeInUp_0.8s_ease-out]">
                 <h1 className="text-5xl md:text-6xl font-bold text-white mb-6 leading-[1.1] [text-shadow:0_4px_20px_rgba(0,0,0,0.8),0_2px_8px_rgba(0,0,0,0.6)]">
-                  Upgrade Your Skills With Skillverge
+                  A World of Skills - Crafted by Creators, Chosen by You
                 </h1>
                 <p className="text-xl md:text-2xl text-white mb-12 font-medium [text-shadow:0_3px_12px_rgba(0,0,0,0.8),0_2px_6px_rgba(0,0,0,0.6)]">
-                  Affordable online learning starting from ₹100.
+                  High-quality online courses designed to upgrade your skills, starting from just ₹100.
                 </p>
                 <div className="flex gap-6 flex-wrap justify-center">
                   <Button size="lg" href="/courses">
