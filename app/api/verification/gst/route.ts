@@ -5,39 +5,24 @@ export async function GET(request: Request) {
     const gst = searchParams.get('gst');
 
     if (!gst) {
-        return NextResponse.json({ status: 'Failure', message: 'GST Number is required' }, { status: 400 });
+        return NextResponse.json({ status: 'Failure', message: 'GST number is required' }, { status: 400 });
     }
 
-    // Mock Verification Logic
-    // In production, call actual third-party API here
+    const username = process.env.EKYC_USERNAME;
+    const token = process.env.EKYC_TOKEN;
+    const orderid = `ORD-${Date.now()}-${Math.floor(Math.random() * 1000)}`;
 
-    // Pattern check: 2 alphanum, 5 chars, 4 nums, 1 char, 1 num, 1 char, 1 num
-    // Simple mock: If it starts with '29' (Karnataka) or 'DEV' succeed.
-
-    // Simulate API delay
-    await new Promise(resolve => setTimeout(resolve, 1500));
-
-    // For DEMO/TESTING pursposes: Always return success for any GST input
-    if (gst) {
-        return NextResponse.json({
-            status: 'Success',
-            data: {
-                legal_name_of_business: "SKILLVERGE DEMO SELLER LLC",
-                trade_name: "Skillverge Learning",
-                status: "Active",
-                gstin: gst,
-                registration_date: new Date().toISOString().split('T')[0]
-            }
-        });
+    if (!username || !token) {
+        return NextResponse.json({ status: 'Failure', message: 'Server misconfiguration: Credentials missing' }, { status: 500 });
     }
 
-    /* 
-    // Original Logic preserved for reference:
-    if (gst.startsWith('29') || gst.startsWith('DEV')) { ... }
-    */
+    const apiUrl = `https://connect.ekychub.in/v3/verification/gst_verification?username=${username}&token=${token}&gst=${gst}&orderid=${orderid}`;
 
-    return NextResponse.json({
-        status: 'Failure',
-        message: 'Invalid GST Number or verification failed'
-    });
+    try {
+        const response = await fetch(apiUrl);
+        const data = await response.json();
+        return NextResponse.json(data);
+    } catch (error) {
+        return NextResponse.json({ status: 'Failure', message: 'GST Verification Service Error' }, { status: 500 });
+    }
 }

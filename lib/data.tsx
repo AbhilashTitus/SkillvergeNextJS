@@ -355,7 +355,7 @@ export const courses: CourseProps[] = [
         title: "2025 AI Productivity Masterclass",
         instructor: "Video Creator",
         rating: 5.0,
-        price: 99,
+        price: 100,
         category: "productivity",
         level: "beginner",
         icon: <Bot size={48} />,

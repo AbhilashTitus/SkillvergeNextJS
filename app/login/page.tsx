@@ -18,14 +18,7 @@ function LoginContent() {
     });
     const [error, setError] = useState("");
 
-    // Seed default user for Quick Access
-    useEffect(() => {
-        const accounts = JSON.parse(localStorage.getItem("skillverge-accounts") || "[]");
-        if (!accounts.find((u: any) => u.email === "student@skillverge.com")) {
-            accounts.push({ name: "Student", email: "student@skillverge.com", password: "password123" });
-            localStorage.setItem("skillverge-accounts", JSON.stringify(accounts));
-        }
-    }, []);
+
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
@@ -47,13 +40,7 @@ function LoginContent() {
         }
     };
 
-    const handleQuickAccess = () => {
-        setFormData({
-            email: "student@skillverge.com",
-            password: "password123"
-        });
-        setError("");
-    };
+
 
     return (
         <div className="min-h-screen flex flex-col">
@@ -67,13 +54,7 @@ function LoginContent() {
                                 <div className="text-center mb-12">
                                     <h1 className="text-3xl text-[#1A1F36] mb-4">Welcome Back</h1>
                                     <p className="text-base text-gray-600">Login to access your account</p>
-                                    <button
-                                        type="button"
-                                        onClick={handleQuickAccess}
-                                        className="mt-3 text-xs text-gray-400 hover:text-[#2D6DF6] transition-colors cursor-pointer bg-none border-none underline"
-                                    >
-                                        Quick Access
-                                    </button>
+
                                 </div>
 
                                 <form onSubmit={handleSubmit} className="mb-8">

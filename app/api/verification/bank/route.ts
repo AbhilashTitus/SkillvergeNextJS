@@ -6,34 +6,24 @@ export async function GET(request: Request) {
     const ifsc = searchParams.get('ifsc');
 
     if (!accountNumber || !ifsc) {
-        return NextResponse.json({
-            status: 'Failure',
-            message: 'Account Number and IFSC Code are required'
-        }, { status: 400 });
+        return NextResponse.json({ status: 'Failure', message: 'Account number and IFSC are required' }, { status: 400 });
     }
 
-    // Simulate API delay
-    await new Promise(resolve => setTimeout(resolve, 1500));
+    const username = process.env.EKYC_USERNAME;
+    const token = process.env.EKYC_TOKEN;
+    const orderid = `ORD-${Date.now()}-${Math.floor(Math.random() * 1000)}`;
 
-    // Mock Logic
-    // For DEMO: Allow any IFSC length
-    /*
-    if (ifsc.length !== 11) {
-        return NextResponse.json({
-            status: 'Failure',
-            message: 'Invalid IFSC Code format'
-        });
+    if (!username || !token) {
+        return NextResponse.json({ status: 'Failure', message: 'Server misconfiguration: Credentials missing' }, { status: 500 });
     }
-    */
 
-    // Success for standard test cases
-    return NextResponse.json({
-        status: 'Success',
-        data: {
-            beneficiary_name: "ABHILASH TITUS", // Mock name
-            account_number: accountNumber,
-            ifsc: ifsc,
-            bank_status: "Active"
-        }
-    });
+    const apiUrl = `https://connect.ekychub.in/v3/verification/bank_verification_simple?username=${username}&token=${token}&account_number=${accountNumber}&ifsc=${ifsc}&orderid=${orderid}`;
+
+    try {
+        const response = await fetch(apiUrl);
+        const data = await response.json();
+        return NextResponse.json(data);
+    } catch (error) {
+        return NextResponse.json({ status: 'Failure', message: 'Bank Verification Service Error' }, { status: 500 });
+    }
 }

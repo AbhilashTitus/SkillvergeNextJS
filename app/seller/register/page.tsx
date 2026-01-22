@@ -16,6 +16,9 @@ export default function SellerRegistration() {
     const [isBankVerified, setIsBankVerified] = useState(false);
     const [verifyingGst, setVerifyingGst] = useState(false);
     const [verifyingBank, setVerifyingBank] = useState(false);
+    const [verificationErrors, setVerificationErrors] = useState({ gst: "", bank: "" });
+    const [gstDetails, setGstDetails] = useState<any>(null);
+    const [bankDetails, setBankDetails] = useState<any>(null);
 
     // Form State
     const [formData, setFormData] = useState({
@@ -81,19 +84,25 @@ export default function SellerRegistration() {
     const verifyGst = async () => {
         if (!formData.gstNumber) return;
         setVerifyingGst(true);
+        setVerificationErrors(prev => ({ ...prev, gst: "" }));
+
         try {
             const res = await fetch(`/api/verification/gst?gst=${formData.gstNumber}`);
             const data = await res.json();
             if (data.status === 'Success') {
                 setIsGstVerified(true);
-                // alert(`Verified: ${data.data.legal_name_of_business}`);
+                setGstDetails(data);
+                // Auto-fill Store Name if available and empty
+                if (data.trade_name_of_business && !formData.storeName) {
+                    handleInputChange('storeName', data.trade_name_of_business);
+                }
             } else {
                 setIsGstVerified(false);
-                alert(data.message || "GST Verification Failed");
+                setVerificationErrors(prev => ({ ...prev, gst: data.message || "GST Verification Failed" }));
             }
         } catch (error) {
             console.error("GST Verify Error", error);
-            alert("Verification service unavailable");
+            setVerificationErrors(prev => ({ ...prev, gst: "Verification service unavailable" }));
         } finally {
             setVerifyingGst(false);
         }
@@ -102,20 +111,25 @@ export default function SellerRegistration() {
     const verifyBank = async () => {
         if (!formData.accountNumber || !formData.ifscCode) return;
         setVerifyingBank(true);
+        setVerificationErrors(prev => ({ ...prev, bank: "" }));
+
         try {
             const res = await fetch(`/api/verification/bank?account_number=${formData.accountNumber}&ifsc=${formData.ifscCode}`);
             const data = await res.json();
             if (data.status === 'Success') {
                 setIsBankVerified(true);
-                // alert(`Verified Account Holder: ${data.data.beneficiary_name}`);
-                handleInputChange('accountHolderName', data.data.beneficiary_name);
+                setBankDetails(data);
+                // Use 'nameAtBank' from the API response
+                if (data.nameAtBank) {
+                    handleInputChange('accountHolderName', data.nameAtBank);
+                }
             } else {
                 setIsBankVerified(false);
-                alert(data.message || "Bank Verification Failed");
+                setVerificationErrors(prev => ({ ...prev, bank: data.message || "Bank Verification Failed" }));
             }
         } catch (error) {
             console.error("Bank Verify Error", error);
-            alert("Verification service unavailable");
+            setVerificationErrors(prev => ({ ...prev, bank: "Verification service unavailable" }));
         } finally {
             setVerifyingBank(false);
         }
@@ -300,6 +314,44 @@ export default function SellerRegistration() {
                                             </div>
                                         )}
                                     </div>
+                                    {verificationErrors.gst && (
+                                        <div className="mt-2 flex items-start gap-2 text-red-500 text-xs">
+                                            <AlertCircle className="w-4 h-4 shrink-0 mt-0.5" />
+                                            <span>{verificationErrors.gst}</span>
+                                        </div>
+                                    )}
+                                    {isGstVerified && gstDetails && (
+                                        <div className="mt-6 p-5 bg-gradient-to-br from-green-50 to-emerald-50 border border-green-200 rounded-xl shadow-sm animate-[fadeIn_0.5s_ease-out]">
+                                            <h4 className="font-bold text-green-900 mb-3 flex items-center gap-2 text-sm uppercase tracking-wide">
+                                                <Building2 className="w-4 h-4" /> GSTIN Verified Details
+                                            </h4>
+                                            <div className="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-3 text-sm">
+                                                <div className="flex flex-col">
+                                                    <span className="text-xs font-semibold text-green-700/70 uppercase tracking-wider mb-0.5">Legal Name</span>
+                                                    <span className="font-medium text-green-900">{gstDetails.legal_name_of_business || "N/A"}</span>
+                                                </div>
+                                                <div className="flex flex-col">
+                                                    <span className="text-xs font-semibold text-green-700/70 uppercase tracking-wider mb-0.5">Trade Name</span>
+                                                    <span className="font-medium text-green-900">{gstDetails.trade_name_of_business || "N/A"}</span>
+                                                </div>
+                                                <div className="flex flex-col">
+                                                    <span className="text-xs font-semibold text-green-700/70 uppercase tracking-wider mb-0.5">Taxpayer Type</span>
+                                                    <span className="font-medium text-green-900">{gstDetails.taxpayer_type || "N/A"}</span>
+                                                </div>
+                                                <div className="flex flex-col">
+                                                    <span className="text-xs font-semibold text-green-700/70 uppercase tracking-wider mb-0.5">Status</span>
+                                                    <div className="flex items-center gap-1.5">
+                                                        <span className="w-2 h-2 rounded-full bg-green-500 animate-pulse"></span>
+                                                        <span className="font-bold text-green-700">{gstDetails.gst_in_status || "Active"}</span>
+                                                    </div>
+                                                </div>
+                                                <div className="flex flex-col md:col-span-2 pt-2 border-t border-green-200/50 mt-1">
+                                                    <span className="text-xs font-semibold text-green-700/70 uppercase tracking-wider mb-0.5">Registered Address</span>
+                                                    <span className="font-medium text-green-900">{gstDetails.principal_place_address || "N/A"}</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    )}
                                 </div>
                                 <div>
                                     <label className="block text-sm font-semibold text-[#1A1F36] mb-2">PAN Number (Optional)</label>
@@ -424,6 +476,40 @@ export default function SellerRegistration() {
                                         Bank Account Verified
                                     </div>
                                 )}
+                                {verificationErrors.bank && (
+                                    <div className="mt-2 flex items-start gap-2 text-red-500 text-sm justify-center">
+                                        <AlertCircle className="w-4 h-4 shrink-0 mt-0.5" />
+                                        <span>{verificationErrors.bank}</span>
+                                    </div>
+                                )}
+                                {isBankVerified && bankDetails && (
+                                    <div className="mt-6 p-5 bg-gradient-to-br from-blue-50 to-indigo-50 border border-blue-200 rounded-xl shadow-sm animate-[fadeIn_0.5s_ease-out]">
+                                        <h4 className="font-bold text-blue-900 mb-3 flex items-center gap-2 text-sm uppercase tracking-wide">
+                                            <CreditCard className="w-4 h-4" /> Bank Account Verified
+                                        </h4>
+                                        <div className="grid grid-cols-1 gap-y-3 text-sm">
+                                            <div className="flex flex-col">
+                                                <span className="text-xs font-semibold text-blue-700/70 uppercase tracking-wider mb-0.5">Account Holder Name</span>
+                                                <div className="flex items-center gap-2">
+                                                    <span className="font-bold text-blue-900 text-lg">{bankDetails.nameAtBank || "N/A"}</span>
+                                                    <span className="px-2 py-0.5 bg-blue-200 text-blue-800 text-[10px] uppercase font-bold rounded-full">MATCHED</span>
+                                                </div>
+                                            </div>
+                                            <div className="flex flex-col">
+                                                <span className="text-xs font-semibold text-blue-700/70 uppercase tracking-wider mb-0.5">Account Number</span>
+                                                <span className="font-medium text-blue-900 tracking-widest font-mono">
+                                                    •••• •••• {formData.accountNumber ? formData.accountNumber.slice(-4) : "XXXX"}
+                                                </span>
+                                            </div>
+                                            {bankDetails.utr && (
+                                                <div className="flex flex-col pt-2 border-t border-blue-200/50 mt-1">
+                                                    <span className="text-xs font-semibold text-blue-700/70 uppercase tracking-wider mb-0.5">Verification Reference (UTR)</span>
+                                                    <span className="font-mono text-xs text-blue-800">{bankDetails.utr}</span>
+                                                </div>
+                                            )}
+                                        </div>
+                                    </div>
+                                )}
                             </div>
 
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pt-4 border-t border-gray-100">
@@ -479,7 +565,7 @@ export default function SellerRegistration() {
                                 </label>
                             </div>
                         </div>
-                    </div>
+                    </div >
                 );
             case 5:
                 const sellerId = JSON.parse(localStorage.getItem("sm_new_seller") || "{}").id;

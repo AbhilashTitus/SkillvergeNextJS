@@ -17,32 +17,7 @@ export default function Contact() {
         console.log("Form submitted:", formData);
     };
 
-    const faqs = [
-        {
-            question: "How do I enroll in a course?",
-            answer: "Browse our courses, click on any course you're interested in, and click the \"Enroll Now\" button. You'll need to create an account or login to complete enrollment."
-        },
-        {
-            question: "What payment methods do you accept?",
-            answer: "We accept all major credit/debit cards, UPI, net banking, and digital wallets. All payments are secure and encrypted."
-        },
-        {
-            question: "Can I get a refund?",
-            answer: "Yes, we offer a 7-day money-back guarantee. If you're not satisfied with a course, contact us within 7 days for a full refund."
-        },
-        {
-            question: "How long do I have access to a course?",
-            answer: "Once enrolled, you have lifetime access to the course materials, including all future updates."
-        },
-        {
-            question: "Do you offer certificates?",
-            answer: "Yes, you'll receive a certificate of completion after finishing all course modules and assessments."
-        },
-        {
-            question: "How can I become an instructor?",
-            answer: "Visit our \"Sell With Us\" page and fill out the instructor application form. We'll review your application within 48 hours."
-        }
-    ];
+
 
     return (
         <div className="min-h-screen flex flex-col">
@@ -75,8 +50,7 @@ export default function Contact() {
                                         </div>
                                         <div>
                                             <h4 className="text-lg mb-2 text-[#1A1F36] font-semibold">Email</h4>
-                                            <p className="text-sm text-gray-600 mb-1">support@skillverge.com</p>
-                                            <p className="text-sm text-gray-600">info@skillverge.com</p>
+                                            <p className="text-sm text-gray-600 mb-1">skillverge@alenovatech.com</p>
                                         </div>
                                     </div>
 
@@ -87,7 +61,7 @@ export default function Contact() {
                                         </div>
                                         <div>
                                             <h4 className="text-lg mb-2 text-[#1A1F36] font-semibold">Phone</h4>
-                                            <p className="text-sm text-gray-600 mb-1">+91-9876543210</p>
+                                            <p className="text-sm text-gray-600 mb-1">+91 9916190863</p>
                                             <p className="text-sm text-gray-600">Mon-Fri: 9AM - 6PM IST</p>
                                         </div>
                                     </div>
@@ -99,8 +73,8 @@ export default function Contact() {
                                         </div>
                                         <div>
                                             <h4 className="text-lg mb-2 text-[#1A1F36] font-semibold">Office</h4>
-                                            <p className="text-sm text-gray-600 mb-1">123 Tech Park, Bangalore</p>
-                                            <p className="text-sm text-gray-600">Karnataka, India - 560001</p>
+                                            <p className="text-sm text-gray-600 mb-1">No-70/5, 2nd Floor, Shamanna Reddy Building</p>
+                                            <p className="text-sm text-gray-600">Bommanahalli, Bangalore - 560068</p>
                                         </div>
                                     </div>
                                 </div>
@@ -171,20 +145,7 @@ export default function Contact() {
                     </div>
                 </section>
 
-                {/* FAQ Section */}
-                <section className="py-16 bg-white">
-                    <div className="max-w-[1280px] mx-auto px-4 md:px-6">
-                        <h2 className="text-3xl font-bold text-center mb-8 text-[#1A1F36]">Frequently Asked Questions</h2>
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mt-8">
-                            {faqs.map((faq, index) => (
-                                <div key={index} className="p-8 bg-[#F8F9FB] rounded-xl border-l-4 border-[#2D6DF6]">
-                                    <h4 className="text-lg mb-4 text-[#1A1F36] font-semibold">{faq.question}</h4>
-                                    <p className="text-base text-gray-600 leading-[1.6]">{faq.answer}</p>
-                                </div>
-                            ))}
-                        </div>
-                    </div>
-                </section>
+
             </main>
             <Footer />
         </div>

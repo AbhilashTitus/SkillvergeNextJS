@@ -7,7 +7,7 @@ import { Footer } from "@/components/Footer";
 import { useCart } from "@/lib/CartContext";
 import { useAuth } from "@/lib/AuthContext";
 import { courses } from "@/lib/data";
-import { Lock, CreditCard, CheckCircle, Tag } from "lucide-react";
+import { Lock, CreditCard, CheckCircle, Tag, Shield, Zap, Wallet, ArrowRight, AlertCircle, Sparkles } from "lucide-react";
 
 declare global {
     interface Window {
@@ -17,28 +17,14 @@ declare global {
 
 function CheckoutContent() {
     const router = useRouter();
-    const searchParams = useSearchParams();
     const { cartItems, cartTotal, clearCart } = useCart();
     const { user, buyCourses, isAuthenticated, redeemCoins } = useAuth();
     const [isProcessing, setIsProcessing] = useState(false);
     const [isSuccess, setIsSuccess] = useState(false);
 
-    // Initialize from URL param
-    const [redeemApplied, setRedeemApplied] = useState(false);
-
-    useEffect(() => {
-        if (searchParams.get('redeem') === 'true') {
-            setRedeemApplied(true);
-        }
-    }, [searchParams]);
-
     // Calculate coin usage
     const userCoins = user?.coins || 0;
-    // Cap redemption at cartTotal so we don't go negative, or potentially cap it at a percentage if desired.
-    // For now, full redemption up to cart value allowed (1 Coin = ₹1).
-    const maxRedeemable = Math.min(userCoins, cartTotal);
-    const discount = redeemApplied ? maxRedeemable : 0;
-    const finalTotal = cartTotal - discount;
+    const canAfford = userCoins >= cartTotal;
 
     useEffect(() => {
         if (!isAuthenticated) {
@@ -49,79 +35,30 @@ function CheckoutContent() {
         }
     }, [isAuthenticated, cartItems, router, isSuccess]);
 
-    const handlePayment = async (e: React.FormEvent) => {
+    const handleCoinPayment = async (e: React.FormEvent) => {
         e.preventDefault();
+
+        if (!canAfford) {
+            router.push("/membership?redirect=/checkout");
+            return;
+        }
+
         setIsProcessing(true);
 
         try {
-            // 1. Create Order
-            if (finalTotal > 0) {
-                const response = await fetch('/api/razorpay/create-order', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ amount: finalTotal }),
-                });
+            // Deduct coins
+            redeemCoins(cartTotal);
 
-                const data = await response.json();
+            // Redirect to success page
+            const params = new URLSearchParams();
+            params.append('payment_id', 'coin_payment_' + Date.now());
+            params.append('order_id', 'coin_order_' + Date.now());
 
-                if (!response.ok) {
-                    alert('Failed to create order. Please try again.');
-                    setIsProcessing(false);
-                    return;
-                }
+            // Pass cart IDs explicitly
+            const cartIds = cartItems.map(item => item.id).join(',');
+            if (cartIds) params.append('cart_ids', cartIds);
 
-                const options = {
-                    key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID,
-                    amount: data.amount,
-                    currency: data.currency,
-                    name: "Skillverge",
-                    description: "Course Purchase",
-                    order_id: data.id,
-                    handler: async function (response: any) {
-                        try {
-                            const verifyRes = await fetch('/api/razorpay/verify-payment', {
-                                method: 'POST',
-                                headers: { 'Content-Type': 'application/json' },
-                                body: JSON.stringify({
-                                    razorpay_order_id: response.razorpay_order_id,
-                                    razorpay_payment_id: response.razorpay_payment_id,
-                                    razorpay_signature: response.razorpay_signature,
-                                }),
-                            });
-
-                            const verifyData = await verifyRes.json();
-
-                            if (verifyData.success) {
-                                completePurchase(response.razorpay_payment_id, response.razorpay_order_id);
-                            } else {
-                                alert('Payment verification failed. Please contact support.');
-                                setIsProcessing(false);
-                            }
-                        } catch (err) {
-                            console.error('Verification error:', err);
-                            alert('An error occurred during verification.');
-                            setIsProcessing(false);
-                        }
-                    },
-                    prefill: {
-                        name: user?.name,
-                        email: user?.email,
-                    },
-                    theme: {
-                        color: "#2D6DF6",
-                    },
-                };
-
-                const rzp1 = new window.Razorpay(options);
-                rzp1.on('payment.failed', function (response: any) {
-                    alert(`Payment failed: ${response.error.description}`);
-                    setIsProcessing(false);
-                });
-                rzp1.open();
-            } else {
-                // Free purchase (100% coin redemption)
-                completePurchase("coin_redemption", "free_order");
-            }
+            router.push(`/success?${params.toString()}`);
 
         } catch (error) {
             console.error('Payment error:', error);
@@ -130,185 +67,229 @@ function CheckoutContent() {
         }
     };
 
-    const completePurchase = (paymentId?: string, orderId?: string) => {
-        // Deduct coins if applied
-        if (redeemApplied && discount > 0) {
-            redeemCoins(discount);
-        }
-
-        // Redirect to success page
-        // We pass the payment details. The SuccessPage will handle:
-        // 1. Reading cartItems from context
-        // 2. Calling buyCourses()
-        // 3. Clearing the cart
-        const params = new URLSearchParams();
-        if (paymentId) params.append('payment_id', paymentId);
-        if (orderId) params.append('order_id', orderId);
-
-        // Pass cart IDs explicitly to be robust against context clearing race conditions
-        const cartIds = cartItems.map(item => item.id).join(',');
-        if (cartIds) params.append('cart_ids', cartIds);
-
-        router.push(`/success?${params.toString()}`);
-    };
-
     if (!isAuthenticated || (cartItems.length === 0 && !isProcessing)) {
-        // Added !isProcessing to prevent redirect while payment/redirect is happening
-        // (Checkout might clear cart before redirect finishes if we relied solely on context, 
-        // but here we redirect first. Still, good safety)
         if (!isProcessing && cartItems.length === 0) {
-            // Use useEffect for redirect, return null here for safety
             return null;
         }
     }
 
     return (
-        <div className="min-h-screen flex flex-col bg-[#F8F9FB]">
-            <script src="https://checkout.razorpay.com/v1/checkout.js" async></script>
+        <div className="min-h-screen flex flex-col bg-[#F8F9FB] font-sans">
             <Navbar />
-            <main className="flex-grow py-12 px-4 md:px-6">
-                <div className="max-w-[1000px] mx-auto">
-                    <h1 className="text-2xl font-bold text-[#1A1F36] mb-8">Checkout</h1>
 
-                    <div className="grid grid-cols-1 lg:grid-cols-[1fr_380px] gap-8">
-                        {/* Payment Form */}
-                        <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6 md:p-8">
-                            <div className="flex items-center gap-2 mb-6 text-[#1A1F36]">
-                                <Lock className="w-5 h-5 text-[#00B894]" />
-                                <h2 className="text-xl font-bold">Billing Details</h2>
+            {/* Premium Hero Section */}
+            <div className="relative bg-[#1A1F36] pt-24 pb-32 sm:pt-32 sm:pb-40 overflow-hidden">
+                {/* Background Effects */}
+                <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-[#2D6DF6] opacity-10 blur-[120px] rounded-full pointer-events-none mix-blend-screen" />
+                <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-[#00B894] opacity-10 blur-[100px] rounded-full pointer-events-none mix-blend-screen" />
+                <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-20 brightness-100 contrast-150 mix-blend-overlay"></div>
+
+                <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center z-10">
+                    <h1 className="text-3xl md:text-5xl font-bold text-white mb-4 tracking-tight">
+                        Complete Your <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-emerald-400">Purchase</span>
+                    </h1>
+                    <p className="text-blue-200 text-lg max-w-2xl mx-auto">
+                        You're just one step away from unlocking new skills. Review your order and confirm payment below.
+                    </p>
+                </div>
+            </div>
+
+            <main className="flex-grow -mt-20 px-4 md:px-6 relative z-20 pb-20">
+                <div className="max-w-6xl mx-auto">
+                    <div className="grid grid-cols-1 lg:grid-cols-[1fr_400px] gap-8">
+                        {/* Payment Section */}
+                        <div className="space-y-6">
+                            {/* User Info Card */}
+                            <div className="bg-white rounded-2xl shadow-xl shadow-blue-900/5 border border-white/50 backdrop-blur-sm overflow-hidden">
+                                <div className="p-6 border-b border-gray-100 bg-gray-50/50 flex items-center gap-3">
+                                    <div className="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center text-[#2D6DF6]">
+                                        <Shield className="w-5 h-5" />
+                                    </div>
+                                    <div>
+                                        <h2 className="text-lg font-bold text-[#1A1F36]">Account Details</h2>
+                                        <p className="text-xs text-gray-500">Confirming your identity for this transaction</p>
+                                    </div>
+                                </div>
+                                <div className="p-6 grid grid-cols-1 md:grid-cols-2 gap-6">
+                                    <div className="space-y-2">
+                                        <label className="text-xs font-semibold text-gray-500 uppercase tracking-wider">Name</label>
+                                        <div className="p-3 bg-gray-50 rounded-xl border border-gray-100 text-[#1A1F36] font-medium flex items-center gap-2">
+                                            <div className="w-8 h-8 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center text-xs font-bold">
+                                                {user?.name?.charAt(0) || 'U'}
+                                            </div>
+                                            {user?.name}
+                                        </div>
+                                    </div>
+                                    <div className="space-y-2">
+                                        <label className="text-xs font-semibold text-gray-500 uppercase tracking-wider">Email</label>
+                                        <div className="p-3 bg-gray-50 rounded-xl border border-gray-100 text-[#1A1F36] font-medium truncate">
+                                            {user?.email}
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
 
-                            <form onSubmit={handlePayment}>
-                                <div className="space-y-6">
-                                    <div>
-                                        <label className="block text-sm font-semibold text-[#1A1F36] mb-2">Name</label>
-                                        <input
-                                            type="text"
-                                            defaultValue={user?.name}
-                                            className="w-full py-3 px-4 border border-[#E5E7EB] rounded-lg focus:outline-none focus:border-[#2D6DF6] bg-gray-50"
-                                            readOnly
-                                        />
-                                    </div>
-                                    <div>
-                                        <label className="block text-sm font-semibold text-[#1A1F36] mb-2">Email</label>
-                                        <input
-                                            type="email"
-                                            defaultValue={user?.email}
-                                            className="w-full py-3 px-4 border border-[#E5E7EB] rounded-lg focus:outline-none focus:border-[#2D6DF6] bg-gray-50"
-                                            readOnly
-                                        />
-                                    </div>
+                            {/* Wallet/Payment Card */}
+                            <div className="bg-white rounded-2xl shadow-xl shadow-blue-900/5 border border-white/50 p-6 md:p-8 relative overflow-hidden">
+                                {/* Decorator */}
+                                <div className={`absolute top-0 left-0 w-1.5 h-full ${canAfford ? 'bg-[#00B894]' : 'bg-red-500'}`} />
 
-                                    <div className="bg-blue-50 p-4 rounded-lg flex items-start gap-3">
-                                        <Lock className="w-5 h-5 text-[#2D6DF6] flex-shrink-0 mt-0.5" />
-                                        <p className="text-sm text-[#1A1F36]">
-                                            Your payment is secured with Razorpay. You will be redirected to complete the payment safely.
-                                        </p>
+                                <div className="flex items-center gap-3 mb-8">
+                                    <div className={`w-12 h-12 rounded-2xl flex items-center justify-center shadow-sm ${canAfford ? 'bg-emerald-50 text-[#00B894]' : 'bg-red-50 text-red-500'}`}>
+                                        <Wallet className="w-6 h-6" />
+                                    </div>
+                                    <div>
+                                        <h2 className="text-xl font-bold text-[#1A1F36]">Coin Wallet Payment</h2>
+                                        <p className="text-sm text-gray-500">Secure payment using your Skillverge coins</p>
+                                    </div>
+                                </div>
+
+                                <form onSubmit={handleCoinPayment}>
+                                    <div className={`rounded-2xl border p-6 mb-8 transition-colors ${canAfford ? 'bg-emerald-50/30 border-emerald-100' : 'bg-red-50/30 border-red-100'}`}>
+                                        <div className="flex flex-col sm:flex-row items-center justify-between gap-6">
+                                            <div className="flex items-center gap-4">
+                                                <div className="w-16 h-16 rounded-full bg-white shadow-md flex items-center justify-center text-2xl border border-gray-100">
+                                                    🪙
+                                                </div>
+                                                <div>
+                                                    <p className="text-sm font-semibold text-gray-500 uppercase tracking-wide">Current Balance</p>
+                                                    <p className="text-3xl font-extrabold text-[#1A1F36]">{userCoins.toLocaleString()}</p>
+                                                </div>
+                                            </div>
+
+                                            <div className="h-10 w-px bg-gray-200 hidden sm:block"></div>
+
+                                            <div className="text-center sm:text-right">
+                                                <p className="text-sm font-semibold text-gray-500 uppercase tracking-wide">Total Cost</p>
+                                                <p className="text-3xl font-extrabold text-[#2D6DF6]">{cartTotal.toLocaleString()}</p>
+                                            </div>
+                                        </div>
+
+                                        {!canAfford && (
+                                            <div className="mt-6 pt-6 border-t border-red-200/50 flex items-start gap-3">
+                                                <AlertCircle className="w-5 h-5 text-red-500 shrink-0 mt-0.5" />
+                                                <div>
+                                                    <p className="font-bold text-red-600">Insufficient Balance</p>
+                                                    <p className="text-sm text-red-600/80 mt-1">
+                                                        You need <span className="font-bold">{cartTotal - userCoins}</span> more coins to complete this purchase.
+                                                        Please top up your wallet to proceed.
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        )}
                                     </div>
 
                                     <button
                                         type="submit"
                                         disabled={isProcessing}
-                                        className={`w-full py-4 rounded-lg font-bold text-lg text-white transition-all ${isProcessing
-                                            ? "bg-gray-400 cursor-not-allowed"
-                                            : "bg-[#2D6DF6] hover:bg-[#1a4fd6] shadow-lg shadow-blue-500/20"
+                                        className={`group w-full py-4 px-6 rounded-xl font-bold text-lg text-white transition-all shadow-lg flex items-center justify-center gap-2 relative overflow-hidden ${isProcessing
+                                                ? "bg-gray-400 cursor-not-allowed"
+                                                : canAfford
+                                                    ? "bg-gradient-to-r from-[#2D6DF6] to-[#1a4fd6] hover:shadow-blue-500/30 hover:-translate-y-1"
+                                                    : "bg-[#FF4757] hover:bg-[#ff3344] hover:shadow-red-500/30 hover:-translate-y-1"
                                             }`}
                                     >
-                                        {isProcessing ? "Processing..." : `Pay ₹${finalTotal.toLocaleString()}`}
+                                        <span className="relative z-10 flex items-center gap-2">
+                                            {isProcessing ? (
+                                                <>Processing Payment...</>
+                                            ) : canAfford ? (
+                                                <>Pay {cartTotal} Coins <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" /></>
+                                            ) : (
+                                                <>Get More Coins</>
+                                            )}
+                                        </span>
                                     </button>
-                                </div>
-                            </form>
+
+                                    {!canAfford && (
+                                        <p className="text-center text-sm text-gray-500 mt-4">
+                                            You will be redirected to the membership page to purchase coins.
+                                        </p>
+                                    )}
+                                </form>
+                            </div>
                         </div>
 
-                        {/* Order Summary */}
-                        <div className="h-fit space-y-6">
-                            <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
-                                <h3 className="text-lg font-bold text-[#1A1F36] mb-4">Order Summary</h3>
-                                <div className="space-y-4 mb-6">
-                                    {cartItems.map((item) => {
-                                        // Find original course data to ensure valid React Element for icon (fixes serialization issues)
-                                        const originalCourse = courses.find(c => c.id === item.id);
-                                        const iconToRender = originalCourse ? originalCourse.icon : item.icon;
-
-                                        return (
-                                            <div key={item.id} className="flex gap-3">
-                                                <div className="w-16 h-10 bg-gray-100 rounded flex items-center justify-center shrink-0 overflow-hidden relative">
-                                                    {item.image ? (
-                                                        <img
-                                                            src={item.image}
-                                                            alt={item.title}
-                                                            className="w-full h-full object-cover"
-                                                        />
-                                                    ) : item.videoEmbed ? (
-                                                        // eslint-disable-next-line @next/next/no-img-element
-                                                        <img
-                                                            src={`https://img.youtube.com/vi/${item.videoEmbed.split('/').pop()}/0.jpg`}
-                                                            alt={item.title}
-                                                            className="w-full h-full object-cover opacity-80"
-                                                        />
-                                                    ) : (
-                                                        <div className="text-lg" style={{ color: item.color }}>
-                                                            {iconToRender}
-                                                        </div>
-                                                    )}
-                                                </div>
-                                                <div className="flex-grow min-w-0">
-                                                    <p className="text-sm font-medium text-[#1A1F36] truncate">{item.title}</p>
-                                                    <p className="text-sm text-gray-500">₹{item.price.toLocaleString()}</p>
-                                                </div>
-                                            </div>
-                                        );
-                                    })}
+                        {/* Order Summary Sidebar */}
+                        <div className="space-y-6">
+                            <div className="bg-white rounded-2xl shadow-xl shadow-blue-900/5 border border-white/50 overflow-hidden sticky top-24">
+                                <div className="p-6 bg-[#1A1F36] text-white">
+                                    <h3 className="text-lg font-bold flex items-center gap-2">
+                                        <Sparkles className="w-4 h-4 text-yellow-400" />
+                                        Order Summary
+                                    </h3>
+                                    <p className="text-sm text-gray-400 mt-1">{cartItems.length} {cartItems.length === 1 ? 'Course' : 'Courses'} in Cart</p>
                                 </div>
-                                <div className="border-t border-gray-100 pt-4 space-y-2">
-                                    <div className="flex justify-between text-sm text-gray-600">
-                                        <span>Subtotal</span>
-                                        <span>₹{cartTotal.toLocaleString()}</span>
-                                    </div>
 
-                                    {/* Coin Redemption UI */}
-                                    <div className="py-2">
-                                        <label className={`flex items-center justify-between group ${userCoins > 0 ? 'cursor-pointer' : 'cursor-not-allowed opacity-60'}`}>
-                                            <div className="flex items-center gap-2">
-                                                <div className={`w-5 h-5 rounded border flex items-center justify-center transition-colors ${redeemApplied ? 'bg-[#2D6DF6] border-[#2D6DF6]' : 'border-gray-300'}`}>
-                                                    {redeemApplied && <CheckCircle className="w-3.5 h-3.5 text-white" />}
+                                <div className="p-6 max-h-[400px] overflow-y-auto custom-scrollbar">
+                                    <div className="space-y-4">
+                                        {cartItems.map((item) => {
+                                            const originalCourse = courses.find(c => c.id === item.id);
+                                            const iconToRender = originalCourse ? originalCourse.icon : item.icon;
+
+                                            return (
+                                                <div key={item.id} className="flex gap-4 group">
+                                                    <div className="w-20 h-14 bg-gray-100 rounded-lg shrink-0 overflow-hidden relative shadow-sm group-hover:shadow-md transition-all">
+                                                        {item.image ? (
+                                                            <img
+                                                                src={item.image}
+                                                                alt={item.title}
+                                                                className="w-full h-full object-cover"
+                                                            />
+                                                        ) : item.videoEmbed ? (
+                                                            // eslint-disable-next-line @next/next/no-img-element
+                                                            <img
+                                                                src={`https://img.youtube.com/vi/${item.videoEmbed.split('/').pop()}/0.jpg`}
+                                                                alt={item.title}
+                                                                className="w-full h-full object-cover opacity-80"
+                                                            />
+                                                        ) : (
+                                                            <div className="w-full h-full flex items-center justify-center bg-gray-50 text-2xl">
+                                                                <span role="img" aria-label="course icon" style={{ color: item.color }}>{iconToRender}</span>
+                                                            </div>
+                                                        )}
+                                                    </div>
+                                                    <div className="flex-grow min-w-0 flex flex-col justify-center">
+                                                        <p className="text-sm font-bold text-[#1A1F36] line-clamp-2 leading-tight group-hover:text-[#2D6DF6] transition-colors">{item.title}</p>
+                                                        <p className="text-xs text-gray-500 font-medium mt-1">{item.price.toLocaleString()} Coins</p>
+                                                    </div>
                                                 </div>
-                                                <input
-                                                    type="checkbox"
-                                                    className="hidden"
-                                                    checked={redeemApplied}
-                                                    onChange={() => {
-                                                        if (userCoins > 0) setRedeemApplied(!redeemApplied);
-                                                    }}
-                                                    disabled={userCoins === 0}
-                                                />
-                                                <span className="text-sm font-medium text-gray-700 group-hover:text-gray-900">
-                                                    Redeem Coins
-                                                    <span className={`ml-1 font-bold ${userCoins > 0 ? 'text-[#2D6DF6]' : 'text-gray-400'}`}>
-                                                        ({userCoins > 0 ? Math.min(userCoins, cartTotal) : 0})
-                                                    </span>
-                                                </span>
-                                            </div>
-                                            <span className="text-sm font-medium text-green-600">
-                                                - ₹{userCoins > 0 ? maxRedeemable.toLocaleString() : 0}
-                                            </span>
-                                        </label>
-                                        <p className="text-xs text-gray-500 mt-1 pl-7">
-                                            Balance: <span className="font-semibold text-gray-700">{userCoins} Coins</span> (1 Coin = ₹1)
-                                            {userCoins === 0 && <span className="block text-orange-500 mt-1">Upgrade membership or complete courses to earn coins!</span>}
-                                        </p>
-                                    </div>
-
-                                    <div className="flex justify-between text-lg font-bold text-[#1A1F36] pt-2 border-t border-gray-100 mt-2">
-                                        <span>Total</span>
-                                        <span>₹{finalTotal.toLocaleString()}</span>
+                                            );
+                                        })}
                                     </div>
                                 </div>
-                            </div>
 
-                            <div className="flex items-center justify-center gap-2 text-xs text-gray-500">
-                                <Lock className="w-3 h-3" />
-                                <span>Secured by Razorpay</span>
+                                <div className="p-6 bg-gray-50 border-t border-gray-100">
+                                    <div className="space-y-3 mb-6">
+                                        <div className="flex justify-between text-sm text-gray-600">
+                                            <span>Subtotal</span>
+                                            <span className="font-medium">{cartTotal.toLocaleString()} Coins</span>
+                                        </div>
+                                        <div className="flex justify-between text-sm text-gray-600">
+                                            <span>Transaction Fee</span>
+                                            <span className="text-green-600 font-medium">Free</span>
+                                        </div>
+                                    </div>
+
+                                    <div className="flex justify-between items-end pt-4 border-t border-dashed border-gray-300">
+                                        <div>
+                                            <span className="block text-xs text-gray-500 uppercase font-bold tracking-wider">Total Amount</span>
+                                            <span className="block text-xs text-gray-400 mt-1">(Inclusive of taxes)</span>
+                                        </div>
+                                        <span className="text-2xl font-black text-[#1A1F36]">{cartTotal.toLocaleString()} <span className="text-sm text-gray-500 font-normal">Coins</span></span>
+                                    </div>
+                                </div>
+                                <div className="px-6 py-4 bg-gray-100 border-t border-gray-200">
+                                    <div className="flex items-center justify-center gap-6 text-gray-400 grayscale opacity-70">
+                                        <div className="flex items-center gap-1.5" title="Secure Payment">
+                                            <Lock className="w-3.5 h-3.5" />
+                                            <span className="text-[10px] font-bold uppercase tracking-wide">Secure</span>
+                                        </div>
+                                        <div className="flex items-center gap-1.5" title="Instant Access">
+                                            <Zap className="w-3.5 h-3.5" />
+                                            <span className="text-[10px] font-bold uppercase tracking-wide">Instant</span>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -321,7 +302,7 @@ function CheckoutContent() {
 
 export default function CheckoutPage() {
     return (
-        <Suspense fallback={<div className="min-h-screen flex items-center justify-center">Loading...</div>}>
+        <Suspense fallback={<div className="min-h-screen flex items-center justify-center bg-[#F8F9FB] text-[#1A1F36]">Loading Checkout...</div>}>
             <CheckoutContent />
         </Suspense>
     );

@@ -108,8 +108,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         if (!user) return;
 
         let bonusCoins = 0;
-        if (tier === 'Silver') bonusCoins = 50;
-        if (tier === 'Gold') bonusCoins = 100;
+        if (tier === 'Silver') bonusCoins = 100;
+        if (tier === 'Gold') bonusCoins = 200;
 
         const expiryDate = new Date();
         expiryDate.setDate(expiryDate.getDate() + 30); // 30 days from now

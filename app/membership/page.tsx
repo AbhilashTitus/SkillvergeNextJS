@@ -2,23 +2,45 @@
 
 import React from 'react';
 import { useAuth } from '@/lib/AuthContext';
-import { useRouter } from 'next/navigation';
-import { Check, Star, Zap, Shield, Crown, HelpCircle, Coins } from 'lucide-react';
+import { useRouter, useSearchParams } from 'next/navigation';
+import { Check, Star, Zap, Shield, Crown, HelpCircle, Coins, Info, CreditCard } from 'lucide-react';
+
 import Link from 'next/link';
+import Script from 'next/script';
 import { Navbar } from '@/components/Navbar';
 import { Footer } from '@/components/Footer';
+
 
 declare global {
     interface Window {
         Razorpay: any;
     }
 }
+interface RazorpaySuccessResponse {
+    razorpay_payment_id: string;
+    razorpay_order_id: string;
+    razorpay_signature: string;
+}
+
+interface RazorpayErrorResponse {
+    error: {
+        description: string;
+        code: string;
+        metadata: {
+            order_id: string;
+            payment_id: string;
+        };
+    };
+}
+
+// ... inside component ...
+
 
 export default function MembershipPage() {
     const { user, isAuthenticated, upgradeMembership, addCoins } = useAuth();
     const router = useRouter();
-    const [coinAmount, setCoinAmount] = React.useState<number>(100);
-
+    const searchParams = useSearchParams();
+    const [coinAmount, setCoinAmount] = React.useState<number | ''>(100);
 
     const handleSubscribe = async (tier: 'Silver' | 'Gold', price: number) => {
         if (!isAuthenticated) {
@@ -50,7 +72,7 @@ export default function MembershipPage() {
                 name: "Skillverge Membership",
                 description: `${tier} Membership Subscription`,
                 order_id: data.id,
-                handler: async function (response: any) {
+                handler: async function (response: RazorpaySuccessResponse) {
                     try {
                         const verifyRes = await fetch('/api/razorpay/verify-payment', {
                             method: 'POST',
@@ -86,7 +108,7 @@ export default function MembershipPage() {
             };
 
             const rzp1 = new window.Razorpay(options);
-            rzp1.on('payment.failed', function (response: any) {
+            rzp1.on('payment.failed', function (response: RazorpayErrorResponse) {
                 alert(`Payment failed: ${response.error.description}`);
             });
             rzp1.open();
@@ -103,12 +125,14 @@ export default function MembershipPage() {
             return;
         }
 
-        if (coinAmount < 10) {
+        const amount = typeof coinAmount === 'string' ? parseInt(coinAmount) || 0 : coinAmount;
+
+        if (amount < 10) {
             alert('Minimum coin purchase is 10 coins.');
             return;
         }
 
-        const price = coinAmount; // 1 Coin = 1 Rupee
+        const price = amount; // 1 Coin = 1 Rupee
 
         try {
             // 1. Create Order
@@ -132,9 +156,9 @@ export default function MembershipPage() {
                 amount: data.amount,
                 currency: data.currency,
                 name: "Skillverge Coins",
-                description: `Purchase ${coinAmount} Coins`,
+                description: `Purchase ${amount} Coins`,
                 order_id: data.id,
-                handler: async function (response: any) {
+                handler: async function (response: RazorpaySuccessResponse) {
                     try {
                         const verifyRes = await fetch('/api/razorpay/verify-payment', {
                             method: 'POST',
@@ -149,8 +173,14 @@ export default function MembershipPage() {
                         const verifyData = await verifyRes.json();
 
                         if (verifyData.success) {
-                            addCoins(coinAmount);
-                            alert(`Success! Added ${coinAmount} coins to your wallet.`);
+                            addCoins(amount);
+                            alert(`Success! Added ${amount} coins to your wallet.`);
+                            const redirect = searchParams.get('redirect');
+                            if (redirect) {
+                                router.push(redirect);
+                            } else {
+                                // Stay on page or optional redirect
+                            }
                         } else {
                             alert('Payment verification failed. Please contact support.');
                         }
@@ -169,7 +199,7 @@ export default function MembershipPage() {
             };
 
             const rzp1 = new window.Razorpay(options);
-            rzp1.on('payment.failed', function (response: any) {
+            rzp1.on('payment.failed', function (response: RazorpayErrorResponse) {
                 alert(`Payment failed: ${response.error.description}`);
             });
             rzp1.open();
@@ -181,208 +211,305 @@ export default function MembershipPage() {
     };
 
     return (
-        <div className="bg-white">
-            <script src="https://checkout.razorpay.com/v1/checkout.js" async></script>
+        <div className="min-h-screen bg-[#F8F9FB] font-sans selection:bg-[#2D6DF6] selection:text-white">
+            <Script
+                id="razorpay-checkout-js"
+                src="https://checkout.razorpay.com/v1/checkout.js"
+                strategy="lazyOnload"
+            />
             <Navbar />
 
-            {/* Hero Section */}
-            <div className="relative bg-[#1A1F36] py-20 sm:py-24">
-                <div className="absolute inset-0 overflow-hidden">
-                    <div className="absolute left-[50%] top-0 h-[40rem] w-[80rem] -translate-x-1/2 stroke-white/10 [mask-image:radial-gradient(32rem_32rem_at_center,white,transparent)]" aria-hidden="true">
-                        <svg className="absolute inset-0 h-full w-full" aria-hidden="true">
-                            <defs>
-                                <pattern id="1f932ae7-37de-4c0a-a8b0-a6e3b4d44b84" width="200" height="200" x="50%" y="-1" patternUnits="userSpaceOnUse">
-                                    <path d="M.5 200V.5H200" fill="none" />
-                                </pattern>
-                            </defs>
-                            <rect width="100%" height="100%" strokeWidth="0" fill="url(#1f932ae7-37de-4c0a-a8b0-a6e3b4d44b84)" />
-                        </svg>
+            {/* Premium Hero Section */}
+            <div className="relative bg-[#1A1F36] pt-24 pb-48 sm:pt-32 sm:pb-56 overflow-hidden">
+                {/* Abstract Background Effects */}
+                <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[1000px] h-[600px] bg-[#2D6DF6] opacity-20 blur-[100px] rounded-full pointer-events-none mix-blend-screen" />
+                <div className="absolute bottom-0 right-0 w-[800px] h-[800px] bg-[#00B894] opacity-10 blur-[120px] rounded-full pointer-events-none mix-blend-screen" />
+                <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-20 brightness-100 contrast-150 mix-blend-overlay"></div>
+
+                <div className="relative mx-auto max-w-7xl px-6 lg:px-8 text-center z-10">
+                    <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/5 text-blue-200 text-sm font-medium mb-8 backdrop-blur-md border border-white/10 shadow-xl">
+                        <Crown className="w-4 h-4 text-yellow-400 fill-yellow-400" />
+                        <span className="tracking-wide">PREMIUM MEMBERSHIP</span>
                     </div>
-                </div>
-                <div className="relative mx-auto max-w-7xl px-6 lg:px-8 text-center">
-                    <h2 className="text-lg font-semibold leading-8 text-[#2D6DF6]">Premium Access</h2>
-                    <p className="mt-2 text-3xl font-bold tracking-tight text-white sm:text-4xl">Upgrade Your Learning Journey</p>
-                    <p className="mx-auto mt-6 max-w-2xl text-lg leading-8 text-gray-300">
-                        Get exclusive access to premium courses, bonus coins, and priority support. Choose the plan that fits your goals.
+                    <h1 className="text-4xl md:text-6xl font-extrabold tracking-tight text-white mb-6 leading-tight">
+                        Invest in Your <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-purple-400 to-emerald-400 animate-gradient">Professional Future</span>
+                    </h1>
+                    <p className="mx-auto max-w-2xl text-lg md:text-xl text-gray-300 leading-relaxed font-light">
+                        Unlock unlimited potential with exclusive courses, monthly coin bonuses, and priority support. Choose the plan that accelerates your career.
                     </p>
                 </div>
             </div>
 
-            {/* Pricing Section */}
-            <div className="py-16 sm:py-24 bg-gray-50">
-                <div className="mx-auto max-w-7xl px-6 lg:px-8">
-                    <div className="grid max-w-md grid-cols-1 gap-8 mx-auto xl:max-w-none xl:grid-cols-3">
+            {/* Pricing Section - Overlapping Hero */}
+            <div className="relative z-20 -mt-24 pb-24 mx-auto max-w-7xl px-4 md:px-6 lg:px-8">
+                <div className="grid max-w-lg grid-cols-1 gap-8 mx-auto lg:max-w-none lg:grid-cols-3">
 
-                        {/* Free Tier */}
-                        <div className="flex flex-col justify-between rounded-3xl bg-white p-8 ring-1 ring-gray-200 xl:p-10 shadow-sm hover:shadow-md transition-shadow">
-                            <div>
-                                <div className="flex items-center justify-between gap-x-4">
-                                    <h3 id="tier-free" className="text-lg font-semibold leading-8 text-gray-900">Free</h3>
+                    {/* Free Tier */}
+                    <div className="flex flex-col justify-between bg-white/95 backdrop-blur-sm rounded-3xl p-8 shadow-xl border border-white/20 hover:shadow-2xl transition-all duration-300 hover:-translate-y-2 group">
+                        <div>
+                            <div className="flex items-center gap-3 mb-6">
+                                <div className="w-12 h-12 rounded-2xl bg-gray-100 flex items-center justify-center text-gray-600 group-hover:scale-110 transition-transform duration-300">
+                                    <Star className="w-6 h-6" />
                                 </div>
-                                <p className="mt-4 text-sm leading-6 text-gray-600">Perfect for getting started with basics.</p>
-                                <p className="mt-6 flex items-baseline gap-x-1">
-                                    <span className="text-4xl font-bold tracking-tight text-gray-900">₹0</span>
-                                    <span className="text-sm font-semibold leading-6 text-gray-600">/month</span>
-                                </p>
-                                <ul role="list" className="mt-8 space-y-3 text-sm leading-6 text-gray-600">
-                                    <li className="flex gap-x-3"><Check className="h-6 w-5 flex-none text-[#2D6DF6]" /> Access to free courses</li>
-                                    <li className="flex gap-x-3"><Check className="h-6 w-5 flex-none text-[#2D6DF6]" /> Community support</li>
-                                    <li className="flex gap-x-3"><Check className="h-6 w-5 flex-none text-[#2D6DF6]" /> Basic quizzes</li>
+                                <h3 className="text-xl font-bold text-gray-900">Free</h3>
+                            </div>
+                            <p className="text-sm text-gray-500 mb-6">Perfect for exploring the platform and learning the basics.</p>
+                            <div className="flex items-baseline gap-1 mb-6">
+                                <span className="text-4xl font-bold text-gray-900">₹0</span>
+                                <span className="text-gray-500 font-medium">/month</span>
+                            </div>
+                            <div className="border-t border-gray-100 pt-6 space-y-4">
+                                <ul className="space-y-4 text-sm text-gray-600">
+                                    <li className="flex gap-3 items-start"><Check className="h-5 w-5 text-green-500 shrink-0" /> Access to free courses</li>
+                                    <li className="flex gap-3 items-start"><Check className="h-5 w-5 text-green-500 shrink-0" /> Community support</li>
+                                    <li className="flex gap-3 items-start"><Check className="h-5 w-5 text-green-500 shrink-0" /> Basic quizzes</li>
                                 </ul>
                             </div>
-                            <button
-                                className="mt-8 block rounded-md bg-gray-100 px-3 py-2 text-center text-sm font-semibold leading-6 text-gray-600 shadow-sm hover:bg-gray-200 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-200 pointer-events-none"
-                            >
-                                Current Plan
-                            </button>
                         </div>
-
-                        {/* Silver Tier */}
-                        <div className="flex flex-col justify-between rounded-3xl bg-white p-8 ring-1 ring-[#2D6DF6] xl:p-10 shadow-lg relative">
-                            <div className="absolute -top-4 left-1/2 transform -translate-x-1/2 bg-[#2D6DF6] text-white px-4 py-1 rounded-full text-xs font-bold uppercase tracking-wide">
-                                Popular
-                            </div>
-                            <div>
-                                <div className="flex items-center justify-between gap-x-4">
-                                    <h3 id="tier-silver" className="text-lg font-semibold leading-8 text-[#2D6DF6]">Silver</h3>
-                                    <Zap className="h-6 w-6 text-[#2D6DF6]" />
-                                </div>
-                                <p className="mt-4 text-sm leading-6 text-gray-600">A step up for serious learners.</p>
-                                <p className="mt-6 flex items-baseline gap-x-1">
-                                    <span className="text-4xl font-bold tracking-tight text-gray-900">₹100</span>
-                                    <span className="text-sm font-semibold leading-6 text-gray-600">/month</span>
-                                </p>
-                                <ul role="list" className="mt-8 space-y-3 text-sm leading-6 text-gray-600">
-                                    <li className="flex gap-x-3"><Check className="h-6 w-5 flex-none text-[#2D6DF6]" /> All Free features</li>
-                                    <li className="flex gap-x-3"><Check className="h-6 w-5 flex-none text-[#2D6DF6]" /> <strong>+50 Coins</strong> monthly bonus</li>
-                                    <li className="flex gap-x-3"><Check className="h-6 w-5 flex-none text-[#2D6DF6]" /> Silver Profile Badge</li>
-                                    <li className="flex gap-x-3"><Check className="h-6 w-5 flex-none text-[#2D6DF6]" /> Certificate of Completion</li>
-                                </ul>
-                            </div>
-                            <button
-                                onClick={() => handleSubscribe('Silver', 100)}
-                                className="mt-8 block rounded-md bg-[#2D6DF6] px-3 py-2 text-center text-sm font-semibold leading-6 text-white shadow-sm hover:bg-[#1a4fd6] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#2D6DF6] transition-transform active:scale-95"
-                            >
-                                Upgrade to Silver
-                            </button>
-                        </div>
-
-                        {/* Gold Tier */}
-                        <div className="flex flex-col justify-between rounded-3xl bg-white p-8 ring-1 ring-yellow-400 xl:p-10 shadow-xl relative overflow-hidden">
-                            <div className="absolute top-0 right-0 -mt-4 -mr-4 w-24 h-24 bg-gradient-to-br from-yellow-300 to-yellow-500 rounded-full opacity-20 blur-xl"></div>
-                            <div>
-                                <div className="flex items-center justify-between gap-x-4">
-                                    <h3 id="tier-gold" className="text-lg font-semibold leading-8 text-yellow-600">Gold</h3>
-                                    <Crown className="h-6 w-6 text-yellow-500" />
-                                </div>
-                                <p className="mt-4 text-sm leading-6 text-gray-600">Maximum power for professionals.</p>
-                                <p className="mt-6 flex items-baseline gap-x-1">
-                                    <span className="text-4xl font-bold tracking-tight text-gray-900">₹200</span>
-                                    <span className="text-sm font-semibold leading-6 text-gray-600">/month</span>
-                                </p>
-                                <ul role="list" className="mt-8 space-y-3 text-sm leading-6 text-gray-600">
-                                    <li className="flex gap-x-3"><Check className="h-6 w-5 flex-none text-yellow-500" /> All Silver features</li>
-                                    <li className="flex gap-x-3"><Check className="h-6 w-5 flex-none text-yellow-500" /> <strong>+100 Coins</strong> monthly bonus</li>
-                                    <li className="flex gap-x-3"><Check className="h-6 w-5 flex-none text-yellow-500" /> Gold Profile Badge</li>
-                                    <li className="flex gap-x-3"><Check className="h-6 w-5 flex-none text-yellow-500" /> Priority 24/7 Support</li>
-                                    <li className="flex gap-x-3"><Check className="h-6 w-5 flex-none text-yellow-500" /> Exclusive Webinars</li>
-                                </ul>
-                            </div>
-                            <button
-                                onClick={() => handleSubscribe('Gold', 200)}
-                                className="mt-8 block rounded-md bg-gradient-to-r from-yellow-400 to-orange-500 px-3 py-2 text-center text-sm font-semibold leading-6 text-white shadow-sm hover:from-yellow-500 hover:to-orange-600 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-yellow-500 transition-transform active:scale-95"
-                            >
-                                Upgrade to Gold
-                            </button>
-                        </div>
-
+                        <button className="mt-8 w-full py-3.5 rounded-xl bg-gray-50 text-gray-900 font-semibold border border-gray-200 hover:bg-gray-100 transition-colors pointer-events-none opacity-60">
+                            Current Plan
+                        </button>
                     </div>
 
-                    {/* Coin Top-up Section */}
-                    <div className="mt-16 mx-auto max-w-2xl text-center bg-white p-8 rounded-3xl ring-1 ring-gray-200 shadow-sm relative overflow-hidden transition-all hover:shadow-md">
-                        <div className="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-blue-400 to-[#2D6DF6]"></div>
-                        <div className="flex flex-col items-center">
-                            <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-blue-50 text-[#2D6DF6] mb-4">
-                                <Coins className="h-6 w-6" />
+                    {/* Silver Tier (Popular) */}
+                    <div className="relative flex flex-col justify-between bg-white rounded-3xl p-8 shadow-2xl border-2 border-[#2D6DF6] z-10 transition-all duration-300 hover:shadow-[0_20px_40px_-15px_rgba(45,109,246,0.3)]">
+                        <div className="absolute -top-5 left-1/2 -translate-x-1/2 bg-gradient-to-r from-[#2D6DF6] to-[#4F46E5] text-white text-sm font-bold px-6 py-2 rounded-full uppercase tracking-wider shadow-lg shadow-blue-500/30">
+                            Most Popular
+                        </div>
+                        <div>
+                            <div className="flex items-center gap-3 mb-6 mt-2">
+                                <div className="w-12 h-12 rounded-2xl bg-blue-50 flex items-center justify-center text-[#2D6DF6]">
+                                    <Zap className="w-6 h-6" />
+                                </div>
+                                <h3 className="text-xl font-bold text-[#2D6DF6]">Silver</h3>
                             </div>
-                            <h3 className="text-xl font-bold tracking-tight text-gray-900 sm:text-2xl">Need More Coins?</h3>
-                            <p className="mt-2 text-base leading-7 text-gray-600">
-                                Top up your balance instantly. 1 Coin = ₹1.
-                            </p>
+                            <p className="text-sm text-gray-500 mb-6">For serious learners ready to level up their skills.</p>
+                            <div className="flex items-baseline gap-1 mb-6">
+                                <span className="text-5xl font-bold text-gray-900">₹100</span>
+                                <span className="text-gray-500 font-medium">/month</span>
+                            </div>
+                            <div className="border-t border-gray-100 pt-6">
+                                <ul className="space-y-4 text-sm text-gray-600">
+                                    <li className="flex gap-3 items-start"><Check className="h-5 w-5 text-[#2D6DF6] shrink-0" /> All Free features</li>
+                                    <li className="flex gap-3 items-start bg-blue-50 p-2 -mx-2 rounded-lg"><Check className="h-5 w-5 text-[#2D6DF6] shrink-0" /> <span className="font-semibold text-[#2D6DF6]">+100 Coins</span> <span className="text-gray-500">monthly bonus</span></li>
+                                    <li className="flex gap-3 items-start"><Check className="h-5 w-5 text-[#2D6DF6] shrink-0" /> Silver Profile Badge</li>
+                                    <li className="flex gap-3 items-start"><Check className="h-5 w-5 text-[#2D6DF6] shrink-0" /> Certificate of Completion</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <button
+                            onClick={() => handleSubscribe('Silver', 100)}
+                            className="mt-8 w-full py-4 rounded-xl bg-[#2D6DF6] text-white font-bold text-lg shadow-lg shadow-blue-500/25 hover:bg-[#1a4fd6] hover:shadow-blue-500/40 hover:-translate-y-1 transition-all active:scale-95"
+                        >
+                            Upgrade to Silver
+                        </button>
+                    </div>
 
-                            <div className="mt-8 flex flex-col sm:flex-row gap-4 items-center justify-center w-full max-w-md">
-                                <div className="relative flex-grow w-full">
-                                    <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
-                                        <span className="text-gray-500 sm:text-sm">🪙</span>
+                    {/* Gold Tier */}
+                    <div className="flex flex-col justify-between bg-[#111827] rounded-3xl p-8 shadow-2xl border border-yellow-500/30 text-white relative overflow-hidden group hover:shadow-yellow-500/10 hover:-translate-y-2 transition-all duration-300">
+                        {/* Gold Glow Effect */}
+                        <div className="absolute top-0 right-0 w-64 h-64 bg-yellow-500 opacity-10 blur-[80px] rounded-full group-hover:opacity-15 transition-opacity pointer-events-none" />
+
+                        <div>
+                            <div className="flex items-center gap-3 mb-6 relative z-10">
+                                <div className="w-12 h-12 rounded-2xl bg-yellow-500/20 flex items-center justify-center text-yellow-400 border border-yellow-500/20">
+                                    <Crown className="w-6 h-6" />
+                                </div>
+                                <h3 className="text-xl font-bold text-yellow-500">Gold</h3>
+                            </div>
+                            <p className="text-sm text-gray-400 mb-6 relative z-10">Maximum power for professionals who want it all.</p>
+                            <div className="flex items-baseline gap-1 mb-6 relative z-10">
+                                <span className="text-4xl font-bold text-white">₹200</span>
+                                <span className="text-gray-400 font-medium">/month</span>
+                            </div>
+                            <div className="border-t border-gray-700 pt-6 relative z-10">
+                                <ul className="space-y-4 text-sm text-gray-300">
+                                    <li className="flex gap-3 items-start"><Check className="h-5 w-5 text-yellow-500 shrink-0" /> All Silver features</li>
+                                    <li className="flex gap-3 items-start bg-yellow-500/10 p-2 -mx-2 rounded-lg border border-yellow-500/10"><Check className="h-5 w-5 text-yellow-500 shrink-0" /> <span className="font-semibold text-yellow-400">+200 Coins</span> <span className="text-gray-300">monthly bonus</span></li>
+                                    <li className="flex gap-3 items-start"><Check className="h-5 w-5 text-yellow-500 shrink-0" /> Gold Profile Badge</li>
+                                    <li className="flex gap-3 items-start"><Check className="h-5 w-5 text-yellow-500 shrink-0" /> Priority 24/7 Support</li>
+                                    <li className="flex gap-3 items-start"><Check className="h-5 w-5 text-yellow-500 shrink-0" /> Exclusive Webinars</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <button
+                            onClick={() => handleSubscribe('Gold', 200)}
+                            className="mt-8 w-full py-3.5 rounded-xl bg-gradient-to-r from-yellow-400 to-orange-500 text-white font-bold text-lg shadow-lg shadow-orange-500/20 hover:from-yellow-500 hover:to-orange-600 hover:shadow-orange-500/30 transition-all relative z-10 active:scale-95"
+                        >
+                            Upgrade to Gold
+                        </button>
+                    </div>
+
+                </div>
+
+                {/* Coin Top-up Section */}
+                <div className="mt-24">
+                    <div className="relative rounded-[2.5rem] overflow-hidden bg-gradient-to-br from-[#2D6DF6] to-[#0A264F] shadow-2xl">
+                        {/* Background Patterns */}
+                        <div className="absolute inset-0 bg-[#2D6DF6] opacity-90 mix-blend-multiply"></div>
+                        <div className="absolute -left-20 -bottom-20 w-96 h-96 bg-blue-400 opacity-20 blur-[100px] rounded-full pointer-events-none"></div>
+                        <div className="absolute top-0 right-0 w-full h-full bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-10"></div>
+
+                        <div className="relative z-10 px-6 py-16 sm:px-12 sm:py-20 flex flex-col lg:flex-row items-center justify-between gap-12">
+                            <div className="text-center lg:text-left text-white max-w-xl">
+                                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/20 text-white text-xs font-semibold mb-6 backdrop-blur-sm">
+                                    <Coins className="w-3 h-3" />
+                                    <span>INSTANT CREDIT</span>
+                                </div>
+                                <h2 className="text-3xl sm:text-4xl font-bold mb-4 tracking-tight">Need a Boost? Top Up Your Wallet</h2>
+                                <p className="text-blue-100 text-lg mb-8 leading-relaxed">
+                                    Running low on coins? Top up instantly to purchase individual courses without a subscription.
+                                    <br className="hidden sm:block" />
+                                    <span className="font-semibold text-white mt-2 inline-block">1 Coin = ₹1 (Indian Rupee)</span>
+                                </p>
+                                <div className="flex flex-col sm:flex-row gap-6 text-sm text-blue-100 opacity-90 justify-center lg:justify-start">
+                                    <div className="flex items-center gap-2">
+                                        <div className="bg-white/20 p-1.5 rounded-full"><Shield className="w-4 h-4" /></div>
+                                        <span>Secure Payment</span>
                                     </div>
-                                    <input
-                                        type="number"
-                                        name="coins"
-                                        id="coins"
-                                        className="block w-full rounded-md border-0 py-3 pl-10 pr-12 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-[#2D6DF6] sm:text-sm sm:leading-6 text-center text-lg font-semibold"
-                                        placeholder="100"
-                                        min="10"
-                                        value={coinAmount}
-                                        onChange={(e) => setCoinAmount(Math.max(0, parseInt(e.target.value) || 0))}
-                                    />
-                                    <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3">
-                                        <span className="text-gray-500 sm:text-sm">Coins</span>
+                                    <div className="flex items-center gap-2">
+                                        <div className="bg-white/20 p-1.5 rounded-full"><Zap className="w-4 h-4" /></div>
+                                        <span>Instant Activation</span>
                                     </div>
                                 </div>
-                                <button
-                                    onClick={handleBuyCoins}
-                                    className="w-full sm:w-auto rounded-md bg-[#2D6DF6] px-6 py-3 text-center text-sm font-semibold text-white shadow-sm hover:bg-[#1a4fd6] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#2D6DF6] transition-all hover:scale-105 active:scale-95 whitespace-nowrap"
-                                >
-                                    Buy for ₹{coinAmount}
-                                </button>
                             </div>
-                            <p className="mt-4 text-xs text-gray-500">
-                                Secure payment via Razorpay. Immediate credit.
-                            </p>
+
+                            {/* Interactive Card */}
+                            <div className="bg-white p-8 rounded-3xl shadow-xl w-full max-w-md border border-white/20 backdrop-blur-sm">
+                                <div className="flex flex-col gap-6">
+                                    <div>
+                                        <label htmlFor="coins" className="block text-sm font-semibold text-gray-700 mb-2">Enter Amount</label>
+                                        <div className="relative">
+                                            <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                                                <span className="text-2xl">🪙</span>
+                                            </div>
+                                            <input
+                                                type="number"
+                                                name="coins"
+                                                id="coins"
+                                                className="block w-full py-4 pl-12 pr-16 bg-gray-50 border-gray-200 rounded-xl text-gray-900 placeholder-gray-400 focus:ring-2 focus:ring-[#2D6DF6] focus:border-transparent text-lg font-bold transition-all"
+                                                placeholder="100"
+                                                min="10"
+                                                value={coinAmount}
+                                                onChange={(e) => {
+                                                    const val = e.target.value;
+                                                    if (val === '') {
+                                                        setCoinAmount('');
+                                                    } else {
+                                                        setCoinAmount(Math.max(0, parseInt(val) || 0));
+                                                    }
+                                                }}
+                                            />
+                                            <div className="absolute inset-y-0 right-0 pr-4 flex items-center pointer-events-none">
+                                                <span className="text-gray-500 font-medium">Coins</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <button
+                                        onClick={handleBuyCoins}
+                                        className="w-full py-4 rounded-xl bg-[#2D6DF6] text-white font-bold text-lg shadow-lg shadow-blue-500/25 hover:bg-[#1a4fd6] hover:scale-[1.02] transition-all active:scale-95"
+                                    >
+                                        Buy for ₹{typeof coinAmount === 'number' ? coinAmount : 0}
+                                    </button>
+                                    <p className="text-xs text-center text-gray-400">
+                                        Minimum purchase: 10 Coins. Non-refundable.
+                                    </p>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
 
+                {/* Trust/Why Section */}
+                <div className="mt-24 text-center">
+                    <p className="text-sm font-semibold text-[#2D6DF6] tracking-wider uppercase mb-3">Why Choose Premium?</p>
+                    <h2 className="text-3xl font-bold text-gray-900 mb-12">Everything you need to succeed</h2>
 
-            {/* Features / Trust Section */}
-            <div className="bg-white py-16 sm:py-24">
-                <div className="mx-auto max-w-7xl px-6 lg:px-8">
-                    <div className="mx-auto max-w-2xl lg:text-center">
-                        <p className="mt-2 text-3xl font-bold tracking-tight text-[#1A1F36] sm:text-4xl">
-                            Why Upgrade?
-                        </p>
-                        <p className="mt-6 text-lg leading-8 text-gray-600">
-                            Unlock the full potential of your learning experience with our premium features designed to accelerate your growth.
-                        </p>
-                    </div>
-                    <div className="mx-auto mt-16 max-w-2xl sm:mt-20 lg:mt-24 lg:max-w-4xl">
-                        <dl className="grid max-w-xl grid-cols-1 gap-x-8 gap-y-10 lg:max-w-none lg:grid-cols-2 lg:gap-y-16">
-                            <div className="relative pl-16">
-                                <dt className="text-base font-semibold leading-7 text-gray-900">
-                                    <div className="absolute left-0 top-0 flex h-10 w-10 items-center justify-center rounded-lg bg-[#2D6DF6]">
-                                        <Shield className="h-6 w-6 text-white" aria-hidden="true" />
-                                    </div>
-                                    Secure Payments
-                                </dt>
-                                <dd className="mt-2 text-base leading-7 text-gray-600">
-                                    We use Razorpay for 100% secure and encrypted transactions. cancel anytime.
-                                </dd>
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+                        <div className="p-6 rounded-2xl bg-white border border-gray-100 shadow-sm hover:shadow-md transition-shadow">
+                            <div className="w-12 h-12 bg-blue-100 rounded-xl flex items-center justify-center text-[#2D6DF6] mx-auto mb-4">
+                                <Shield className="w-6 h-6" />
                             </div>
-                            <div className="relative pl-16">
-                                <dt className="text-base font-semibold leading-7 text-gray-900">
-                                    <div className="absolute left-0 top-0 flex h-10 w-10 items-center justify-center rounded-lg bg-[#2D6DF6]">
-                                        <Zap className="h-6 w-6 text-white" aria-hidden="true" />
-                                    </div>
-                                    Instant Activation
-                                </dt>
-                                <dd className="mt-2 text-base leading-7 text-gray-600">
-                                    Your coins and badges are added to your account immediately after payment verification.
-                                </dd>
+                            <h3 className="font-bold text-gray-900 mb-2">100% Secure</h3>
+                            <p className="text-gray-500 text-sm">We use bank-level encryption via Razorpay for all transactions.</p>
+                        </div>
+                        <div className="p-6 rounded-2xl bg-white border border-gray-100 shadow-sm hover:shadow-md transition-shadow">
+                            <div className="w-12 h-12 bg-green-100 rounded-xl flex items-center justify-center text-green-600 mx-auto mb-4">
+                                <Zap className="w-6 h-6" />
                             </div>
-                        </dl>
+                            <h3 className="font-bold text-gray-900 mb-2">Instant Access</h3>
+                            <p className="text-gray-500 text-sm">Start learning immediately. No waiting times or pending approvals.</p>
+                        </div>
+                        <div className="p-6 rounded-2xl bg-white border border-gray-100 shadow-sm hover:shadow-md transition-shadow">
+                            <div className="w-12 h-12 bg-purple-100 rounded-xl flex items-center justify-center text-purple-600 mx-auto mb-4">
+                                <HelpCircle className="w-6 h-6" />
+                            </div>
+                            <h3 className="font-bold text-gray-900 mb-2">Priority Support</h3>
+                            <p className="text-gray-500 text-sm">Premium members get faster response times from our support team.</p>
+                        </div>
                     </div>
                 </div>
+
+                {/* Coin System Transparency Section */}
+                <div className="mt-24 border-t border-gray-200 pt-16">
+                    <div className="text-center mb-12">
+                        <h2 className="text-2xl font-bold text-gray-900 mb-4">Coin System Transparency</h2>
+                        <p className="text-gray-500 max-w-2xl mx-auto">
+                            We believe in honest and simple pricing. Here is everything you need to know about how our coin system works.
+                        </p>
+                    </div>
+
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                        <div className="bg-white p-8 rounded-3xl shadow-sm border border-gray-100">
+                            <h3 className="text-lg font-bold text-gray-900 mb-6 flex items-center gap-2">
+                                <Info className="w-5 h-5 text-[#2D6DF6]" />
+                                Key Rules
+                            </h3>
+                            <ul className="space-y-4">
+                                {[
+                                    "1 INR = 1 Coin. The exchange rate is fixed and transparent.",
+                                    "Courses are purchased exclusively using coins from your wallet.",
+                                    "Minimum course price is 100 coins.",
+                                    "Coins are non-transferable and linked to your account.",
+                                    "Your wallet balance can never be negative.",
+                                    "Purchased courses remain accessible permanently."
+                                ].map((item, i) => (
+                                    <li key={i} className="flex gap-3 text-sm text-gray-600">
+                                        <div className="w-1.5 h-1.5 rounded-full bg-[#2D6DF6] mt-2 shrink-0" />
+                                        {item}
+                                    </li>
+                                ))}
+                            </ul>
+                        </div>
+
+                        <div className="bg-white p-8 rounded-3xl shadow-sm border border-gray-100">
+                            <h3 className="text-lg font-bold text-gray-900 mb-6 flex items-center gap-2">
+                                <CreditCard className="w-5 h-5 text-[#2D6DF6]" />
+                                Purchase Process
+                            </h3>
+                            <div className="space-y-6">
+                                <div>
+                                    <h4 className="text-sm font-semibold text-gray-900 mb-1">1. Buying Coins</h4>
+                                    <p className="text-sm text-gray-500">
+                                        Select an amount in INR. Once your payment is successful, the exact equivalent in coins is instantly credited to your wallet.
+                                    </p>
+                                </div>
+                                <div>
+                                    <h4 className="text-sm font-semibold text-gray-900 mb-1">2. Unlocking Courses</h4>
+                                    <p className="text-sm text-gray-500">
+                                        Browsable courses show their coin price. Click to buy, and if you have sufficient balance, coins are deducted once and access is granted immediately.
+                                    </p>
+                                </div>
+                                <div className="bg-blue-50 p-4 rounded-xl">
+                                    <p className="text-xs text-[#2D6DF6] font-medium">
+                                        Note: You must be logged in to make any purchases. If your balance is low during a purchase, we'll prompt you to top up.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
             </div>
             <Footer />
         </div >

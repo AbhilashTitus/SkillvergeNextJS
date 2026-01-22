@@ -24,12 +24,26 @@ export default function SellerDashboard() {
     const router = useRouter();
     const [sellerData, setSellerData] = useState<any>(null);
     const [loading, setLoading] = useState(true);
+    const [gstDetails, setGstDetails] = useState<any>(null);
 
     useEffect(() => {
         // Load seller data from local storage
         const storedData = localStorage.getItem("sm_new_seller");
         if (storedData) {
-            setSellerData(JSON.parse(storedData));
+            const data = JSON.parse(storedData);
+            setSellerData(data);
+
+            // Fetch GST details if GST Number exists
+            if (data.gstNumber) {
+                fetch(`/api/verification/gst?gst=${data.gstNumber}`)
+                    .then(res => res.json())
+                    .then(resData => {
+                        if (resData.status === 'Success') {
+                            setGstDetails(resData);
+                        }
+                    })
+                    .catch(err => console.error("Failed to load GST details", err));
+            }
         } else {
             // Redirect to register if no data found
             router.push("/seller/register");
@@ -184,6 +198,24 @@ export default function SellerDashboard() {
                                     <DetailItem label="PAN Number" value={sellerData.panNumber || "Not Provided"} />
                                     <DetailItem label="Registration Date" value={new Date(sellerData.registeredAt).toLocaleDateString()} />
                                 </div>
+
+                                {gstDetails && (
+                                    <div className="mt-6 pt-6 border-t border-gray-100">
+                                        <h4 className="text-sm font-bold text-gray-900 mb-4 uppercase tracking-wider flex items-center gap-2">
+                                            <CheckCircle className="w-4 h-4 text-green-500" />
+                                            Official GST Registry Details
+                                        </h4>
+                                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 bg-gray-50 p-6 rounded-xl border border-gray-100">
+                                            <DetailItem label="Legal Name" value={gstDetails.legal_name_of_business} />
+                                            <DetailItem label="Trade Name" value={gstDetails.trade_name_of_business} />
+                                            <DetailItem label="Taxpayer Type" value={gstDetails.taxpayer_type} />
+                                            <DetailItem label="Status" value={gstDetails.gst_in_status} />
+                                            <div className="md:col-span-2">
+                                                <DetailItem label="Registered Address" value={gstDetails.principal_place_address} />
+                                            </div>
+                                        </div>
+                                    </div>
+                                )}
                             </div>
 
                             {/* Address & Contact */}

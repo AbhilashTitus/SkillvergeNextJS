@@ -2,20 +2,29 @@ import Link from "next/link";
 
 export function Footer() {
     return (
-        <footer className="bg-[#1A1F36] text-white pt-16 pb-6 mt-auto">
-            <div className="max-w-[1280px] mx-auto px-4 md:px-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12 mb-12">
+        <footer className="bg-[#0f111a] text-white pt-20 pb-10 mt-auto border-t border-white/5 relative overflow-hidden">
+            {/* Decorative top border gradient */}
+            <div className="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-[#2D6DF6] to-transparent opacity-50"></div>
+
+            <div className="max-w-[1280px] mx-auto px-4 md:px-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-16 relative z-10">
                 {/* Brand Column */}
                 <div>
-                    <h4 className="text-lg font-semibold text-white mb-6">Skillverge</h4>
-                    <p className="text-sm text-white/80 leading-[1.6] mb-4">
+                    <h4 className="text-2xl font-bold bg-gradient-to-r from-white to-gray-400 bg-clip-text text-transparent mb-6">Skillverge</h4>
+                    <p className="text-sm text-gray-400 font-medium mb-2">
+                        Alenova Technologies Pvt Ltd
+                    </p>
+                    <p className="text-sm text-gray-400 leading-relaxed mb-6">
                         Empowering learners and creators through affordable, quality education. Join thousands of students and instructors on India's fastest-growing EdTech platform.
                     </p>
                 </div>
 
                 {/* Quick Links */}
                 <div>
-                    <h4 className="text-lg font-semibold text-white mb-6">Quick Links</h4>
-                    <ul className="list-none p-0 m-0">
+                    <h4 className="text-lg font-semibold text-white mb-6 flex items-center gap-2">
+                        <span className="w-1.5 h-1.5 rounded-full bg-[#2D6DF6]"></span>
+                        Quick Links
+                    </h4>
+                    <ul className="space-y-3">
                         {[
                             { name: "Home", href: "/" },
                             { name: "Courses", href: "/courses" },
@@ -23,10 +32,10 @@ export function Footer() {
                             { name: "About", href: "/about" },
                             { name: "Contact", href: "/contact" },
                         ].map((link) => (
-                            <li key={link.name} className="mb-4">
+                            <li key={link.name}>
                                 <Link
                                     href={link.href}
-                                    className="text-sm text-white/80 no-underline transition-all duration-[200ms] inline-block hover:text-white hover:translate-x-1"
+                                    className="text-sm text-gray-400 hover:text-[#2D6DF6] transition-all duration-300 inline-block hover:translate-x-1"
                                 >
                                     {link.name}
                                 </Link>
@@ -35,29 +44,78 @@ export function Footer() {
                     </ul>
                 </div>
 
-                {/* Social */}
+                {/* Legal Links */}
                 <div>
-                    <h4 className="text-lg font-semibold text-white mb-6">Connect With Us</h4>
-                    <div className="flex gap-4 mt-4">
-                        {["facebook", "twitter", "instagram", "linkedin", "youtube"].map((social) => (
-                            <a
-                                key={social}
-                                href={`#${social}`}
-                                className="flex items-center justify-center w-10 h-10 bg-white/10 rounded-lg text-white text-xl no-underline transition-all duration-[200ms] hover:bg-[#2D6DF6] hover:-translate-y-0.5 focus-visible:outline-2 focus-visible:outline-white focus-visible:outline-offset-2"
-                                aria-label={social}
-                            >
-                                <i className={`bi bi-${social}`}></i>
-                            </a>
+                    <h4 className="text-lg font-semibold text-white mb-6 flex items-center gap-2">
+                        <span className="w-1.5 h-1.5 rounded-full bg-[#2D6DF6]"></span>
+                        Legal
+                    </h4>
+                    <ul className="space-y-3">
+                        {[
+                            { name: "Terms & Conditions", href: "/terms-conditions" },
+                            { name: "Privacy Policy", href: "/privacy-policy" },
+                            { name: "Refund Policy", href: "/refund-policy" },
+                            { name: "Chargeback Policy", href: "/chargeback-policy" },
+                            { name: "Shipping Policy", href: "/shipping-policy" },
+                            { name: "Delivery Policy", href: "/delivery-policy" },
+                            { name: "Cancellation Policy", href: "/cancellation-policy" },
+                        ].map((link) => (
+                            <li key={link.name}>
+                                <Link
+                                    href={link.href}
+                                    className="text-sm text-gray-400 hover:text-[#2D6DF6] transition-all duration-300 inline-block hover:translate-x-1"
+                                >
+                                    {link.name}
+                                </Link>
+                            </li>
                         ))}
-                    </div>
+                    </ul>
+                </div>
+
+                {/* Contact Us */}
+                <div>
+                    <h4 className="text-lg font-semibold text-white mb-6 flex items-center gap-2">
+                        <span className="w-1.5 h-1.5 rounded-full bg-[#2D6DF6]"></span>
+                        Contact Us
+                    </h4>
+                    <ul className="space-y-4 text-sm text-gray-400">
+                        <li className="flex items-start gap-4 group">
+                            <div className="w-8 h-8 rounded-lg bg-white/5 flex items-center justify-center shrink-0 group-hover:bg-[#2D6DF6]/10 transition-colors">
+                                <i className="bi bi-geo-alt text-[#2D6DF6]"></i>
+                            </div>
+                            <span className="leading-relaxed">
+                                No-70/5, 2nd Floor,<br />
+                                Shamanna Reddy Building,<br />
+                                Bommanahalli, Bangalore - 560068
+                            </span>
+                        </li>
+                        <li className="flex items-center gap-4 group">
+                            <div className="w-8 h-8 rounded-lg bg-white/5 flex items-center justify-center shrink-0 group-hover:bg-[#2D6DF6]/10 transition-colors">
+                                <i className="bi bi-telephone text-[#2D6DF6]"></i>
+                            </div>
+                            <a href="tel:+919916190863" className="hover:text-white transition-colors">
+                                +91 9916190863
+                            </a>
+                        </li>
+                        <li className="flex items-center gap-4 group">
+                            <div className="w-8 h-8 rounded-lg bg-white/5 flex items-center justify-center shrink-0 group-hover:bg-[#2D6DF6]/10 transition-colors">
+                                <i className="bi bi-envelope text-[#2D6DF6]"></i>
+                            </div>
+                            <a href="mailto:skillverge@alenovatech.com" className="hover:text-white transition-colors break-words">
+                                skillverge@alenovatech.com
+                            </a>
+                        </li>
+                    </ul>
                 </div>
             </div>
 
             {/* Footer Bottom */}
-            <div className="max-w-[1280px] mx-auto px-4 md:px-6 pt-6 border-t border-white/10 text-center">
-                <p className="text-sm text-white/60 m-0">
-                    © {new Date().getFullYear()} Skillverge. All rights reserved.
-                </p>
+            <div className="max-w-[1280px] mx-auto px-4 md:px-6 relative z-10">
+                <div className="pt-8 border-t border-white/5 text-center">
+                    <p className="text-xs text-gray-500">
+                        © {new Date().getFullYear()} Skillverge • Alenova Technologies Pvt Ltd • Bangalore
+                    </p>
+                </div>
             </div>
         </footer>
     );

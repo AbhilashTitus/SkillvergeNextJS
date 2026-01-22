@@ -224,7 +224,7 @@ export default function MyLearningPage() {
                                             </div>
 
                                             <h3 className="text-xl font-bold text-[#1A1F36] mb-2 line-clamp-1 group-hover:text-[#2D6DF6] transition-colors">{course.title}</h3>
-                                            <p className="text-sm text-gray-500 mb-6">By {course.instructor}</p>
+
 
                                             <div className="flex flex-col gap-3 pt-4 border-t border-gray-100">
                                                 <div className="flex items-center justify-between">
