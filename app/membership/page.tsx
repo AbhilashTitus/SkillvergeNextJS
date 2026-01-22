@@ -1,6 +1,6 @@
 "use client";
 
-import React from 'react';
+import React, { Suspense } from 'react';
 import { useAuth } from '@/lib/AuthContext';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { Check, Star, Zap, Shield, Crown, HelpCircle, Coins, Info, CreditCard } from 'lucide-react';
@@ -36,7 +36,7 @@ interface RazorpayErrorResponse {
 // ... inside component ...
 
 
-export default function MembershipPage() {
+function MembershipContent() {
     const { user, isAuthenticated, upgradeMembership, addCoins } = useAuth();
     const router = useRouter();
     const searchParams = useSearchParams();
@@ -513,5 +513,17 @@ export default function MembershipPage() {
             </div>
             <Footer />
         </div >
+    );
+}
+
+export default function MembershipPage() {
+    return (
+        <Suspense fallback={
+            <div className="min-h-screen flex items-center justify-center bg-gray-50">
+                <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#2D6DF6]"></div>
+            </div>
+        }>
+            <MembershipContent />
+        </Suspense>
     );
 }
