@@ -24,7 +24,7 @@ export const metadata: Metadata = {
 };
 
 // Set to true to enable maintenance mode across the site
-const isMaintenanceMode = true;
+const isMaintenanceMode = false;
 
 export default function RootLayout({
   children,
